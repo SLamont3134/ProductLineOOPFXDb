@@ -1,4 +1,4 @@
-package sample;
+package lamont;
 
 public class Controller {
 }
