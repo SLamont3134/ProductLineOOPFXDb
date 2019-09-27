@@ -1,9 +1,10 @@
 /**
+ * The Controller class where all of the code will be stored.
+ *
  * @author Sean Lamont
  * @brief This is the main controller file which handles all of the operations of the GUI
  * @date 9/28/19
  */
-
 package lamont;
 
 import java.net.URL;
@@ -20,8 +21,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 
 /**
+ * The controller class carries out the functions of the GUI.
+ *
  * @author Sean Lamont
- * The Controller class, Controls the GUI and calls all methods.
  */
 public class Controller implements Initializable {
 
@@ -43,7 +45,8 @@ public class Controller implements Initializable {
   @FXML private TextArea productionLogTextArea;
 
   /**
-   * @brief The addButtonAction this method handle the event of the addButton being pressed.
+   * The addButtonAction this method handle the event of the addButton being pressed.
+   *
    * @return void
    * @param event sets the action event
    */
@@ -64,8 +67,8 @@ public class Controller implements Initializable {
   }
 
   /**
-   * The recordProductionButton this method handle the event of the productionButton being
-   *     pressed.
+   * The recordProductionButton this method handle the event of the productionButton being pressed.
+   *
    * @return void
    * @param event this event handles the record product button
    */
@@ -74,32 +77,28 @@ public class Controller implements Initializable {
     System.out.println("Record Production Button Pressed");
   }
 
+  /** The addButtonAction this method handle the event of the addButton being pressed. */
   @Override
-  /**
-   * The addButtonAction this method handle the event of the addButton being pressed.
-   * @return void the module returns void
-   * @param location, resources
-   */
   public void initialize(URL location, ResourceBundle resources) {
-    /**connects to database */
+    // connects to database */
     connectToDB();
-    /**sets a few options on startup for chooseQtyBox */
+    // sets a few options on startup for chooseQtyBox */
     chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     chooseQtyBox.setEditable(true);
     chooseQtyBox.getSelectionModel().selectFirst();
   }
 
   /**
+   * Establishes connection to database.
+   *
    * @author Sean Lamont
-   * The connect to database method. Establishes connection to ProductionDB H2 Database.
    */
   public void connectToDB() {
     try {
       Class.forName(JDBC_DRIVER);
 
-      /**
-       * @brief for this following line of code we receive a empty database password flag on bugfix
-       *     this issue will be addressed in later veresions if a password is to be implemented
+      /*For this following line of code we receive a empty database password flag on FindBugs
+       * this issue will be addressed in later versions if a password is to be implemented
        */
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
       statement = conn.createStatement();

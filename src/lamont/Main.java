@@ -1,4 +1,6 @@
 /**
+ * The Main Class that contains the Main method and initializes the stage.
+ *
  * @author Sean Lamont
  * @brief This is the main file which builds the environment and calls the controller
  * @date 9/28/19
@@ -12,13 +14,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * The Main class, sets the stage of the GUI, calls all other methods.
+ *
  * @author Sean Lamont
- * The main method, calls all other methods
  */
 public class Main extends Application {
 
   /**
    * the start method is the starting point of a JavaFX program. The start method sets the title.
+   *
    * @param primaryStage the primary stage
    */
   @Override
@@ -32,6 +36,7 @@ public class Main extends Application {
 
   /**
    * The main method, simply launches the program.
+   *
    * @param args Arguments passed into main method to launch()
    */
   public static void main(String[] args) {
