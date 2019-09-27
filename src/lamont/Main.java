@@ -34,7 +34,7 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    connectToDB();
+    //connectToDB();
     Parent root = FXMLLoader.load(getClass().getResource("OOPProject.fxml"));
     primaryStage.setTitle("OOPProject");
     primaryStage.setScene(new Scene(root));
@@ -46,6 +46,7 @@ public class Main extends Application {
    * @brief The connect to database method. Establishes connection to ProductionDB H2 Database.
    * @throws Exception ex, ClassNotFoundException
    */
+  /*
   protected static void connectToDB() {
     final String JDBC_DRIVER = "org.h2.Driver";
     final String DB_URL = "jdbc:h2:./res/ProductionDB";
@@ -71,6 +72,8 @@ public class Main extends Application {
       ex.printStackTrace();
     }
   }
+
+   */
 
   /**
    * @brief The main method, simply launches the program.

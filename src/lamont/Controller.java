@@ -27,10 +27,11 @@ import javafx.scene.control.TextArea;
 public class Controller implements Initializable {
 
   static final String JDBC_DRIVER = "org.h2.Driver";
-  static final String DB_URL = "jdbc:h2:./res/ProductionDB";
-  static final String USER = "SeanLamont";
-  static final String PASS = "password";
-  Connection conn = null;
+  static final String DB_URL = "jdbc:h2:./rsc/ProductDB";
+  static final String USER = "";
+  static final String PASS = "";
+  private Connection conn = null;
+  private Statement statement;
 
   @FXML private Button addButton;
 
@@ -50,30 +51,21 @@ public class Controller implements Initializable {
    */
   @FXML
   void addButtonAction(ActionEvent event) {
-    Statement statement;
-
-    System.out.println("Add Button Pressed");
 
     try {
-      // Main.connectToDB();
-
-      Class.forName(JDBC_DRIVER);
-
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-      statement = conn.createStatement();
       String sql =
           "INSERT INTO Product(type, manufacturer, name) VALUES " + "( 'AUDIO', 'Apple', 'iPod' );";
+      //String sql = "SELECT * FROM PRODUCT";
       statement.execute(sql);
-
-      statement.close();
-      conn.close();
-
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
 
     } catch (Exception ex) {
       ex.printStackTrace();
     }
+
+
+    System.out.println("Add Button Pressed");
+
+
   }
 
   /**
@@ -94,6 +86,20 @@ public class Controller implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    try {
+      // Main.connectToDB();
+
+      Class.forName(JDBC_DRIVER);
+
+      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+      statement = conn.createStatement();
+
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
     chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     chooseQtyBox.setEditable(true);
     chooseQtyBox.getSelectionModel().selectFirst();
