@@ -13,16 +13,13 @@ import javafx.stage.Stage;
 
 /**
  * @author Sean Lamont
- * @desc The main method, establishes communication with the database.
+ * The main method, calls all other methods
  */
 public class Main extends Application {
 
   /**
    * the start method is the starting point of a JavaFX program. The start method sets the title.
-   *
-   * @brief
    * @param primaryStage the primary stage
-   * @throws Exception Any problems with code
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -34,8 +31,8 @@ public class Main extends Application {
   }
 
   /**
-   * @brief The main method, simply launches the program.
-   * @param args
+   * The main method, simply launches the program.
+   * @param args Arguments passed into main method to launch()
    */
   public static void main(String[] args) {
     launch(args);

@@ -21,8 +21,7 @@ import javafx.scene.control.TextArea;
 
 /**
  * @author Sean Lamont
- * @brief The Controller class, Controls the GUI and calls all methods.
- * @throws Exception ex, ClassNotFoundException
+ * The Controller class, Controls the GUI and calls all methods.
  */
 public class Controller implements Initializable {
 
@@ -65,7 +64,7 @@ public class Controller implements Initializable {
   }
 
   /**
-   * @brief The recordProductionButton this method handle the event of the productionButton being
+   * The recordProductionButton this method handle the event of the productionButton being
    *     pressed.
    * @return void
    * @param event this event handles the record product button
@@ -77,14 +76,14 @@ public class Controller implements Initializable {
 
   @Override
   /**
-   * @brief The addButtonAction this method handle the event of the addButton being pressed.
+   * The addButtonAction this method handle the event of the addButton being pressed.
    * @return void the module returns void
    * @param location, resources
    */
   public void initialize(URL location, ResourceBundle resources) {
-    /**@brief connects to database */
+    /**connects to database */
     connectToDB();
-    /** @brief sets a few options on startup for chooseQtyBox */
+    /**sets a few options on startup for chooseQtyBox */
     chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     chooseQtyBox.setEditable(true);
     chooseQtyBox.getSelectionModel().selectFirst();
@@ -92,8 +91,7 @@ public class Controller implements Initializable {
 
   /**
    * @author Sean Lamont
-   * @brief The connect to database method. Establishes connection to ProductionDB H2 Database.
-   * @throws Exception ex, ClassNotFoundException
+   * The connect to database method. Establishes connection to ProductionDB H2 Database.
    */
   public void connectToDB() {
     try {
