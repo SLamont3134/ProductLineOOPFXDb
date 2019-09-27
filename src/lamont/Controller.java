@@ -82,7 +82,7 @@ public class Controller implements Initializable {
    * @param location, resources
    */
   public void initialize(URL location, ResourceBundle resources) {
-    /** @brief connects to database */
+    /**@brief connects to database */
     connectToDB();
     /** @brief sets a few options on startup for chooseQtyBox */
     chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
