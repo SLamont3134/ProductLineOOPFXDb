@@ -7,6 +7,9 @@
  */
 package lamont;
 
+// There is a conflict above "package lamont;" between line formatting (cntrl+alt+L) and CheckStyle,
+// they keep adding or taking away a gap respectively.
+
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -97,7 +100,7 @@ public class Controller implements Initializable {
     try {
       Class.forName(JDBC_DRIVER);
 
-      /*For this following line of code we receive a empty database password flag on FindBugs
+      /*For this following line of code I receive a empty database password flag on FindBugs
        * this issue will be addressed in later versions if a password is to be implemented
        */
       conn = DriverManager.getConnection(DB_URL, USER, PASS);

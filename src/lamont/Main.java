@@ -7,6 +7,9 @@
  */
 package lamont;
 
+// There is a conflict above "package lamont;" between line formatting (cntrl+alt+L) and CheckStyle,
+// they keep adding or taking away a gap respectively.
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
