@@ -1,5 +1,7 @@
 /**
  * @author Sean Lamont
+ * @brief This is the main controller file which handles all of the operations of the GUI
+ * @date 9/28/19
  */
 
 package lamont;
@@ -7,7 +9,6 @@ package lamont;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-
 
 /**
  * @author Sean Lamont
@@ -43,11 +43,10 @@ public class Controller implements Initializable {
 
   @FXML private TextArea productionLogTextArea;
 
-
   /**
    * @brief The addButtonAction this method handle the event of the addButton being pressed.
    * @return void
-   * @param event
+   * @param event sets the action event
    */
   @FXML
   void addButtonAction(ActionEvent event) {
@@ -55,42 +54,55 @@ public class Controller implements Initializable {
     try {
       String sql =
           "INSERT INTO Product(type, manufacturer, name) VALUES " + "( 'AUDIO', 'Apple', 'iPod' );";
-      //String sql = "SELECT * FROM PRODUCT";
+      // String sql = "SELECT * FROM PRODUCT";
       statement.execute(sql);
 
     } catch (Exception ex) {
       ex.printStackTrace();
     }
 
-
     System.out.println("Add Button Pressed");
-
-
   }
 
   /**
-   * @brief The recordProductionButton this method handle the event of the
-   * productionButton being pressed.
+   * @brief The recordProductionButton this method handle the event of the productionButton being
+   *     pressed.
    * @return void
-   * @param event
+   * @param event this event handles the record product button
    */
   @FXML
   void recordProductionBttnAction(ActionEvent event) {
     System.out.println("Record Production Button Pressed");
   }
 
+  @Override
   /**
    * @brief The addButtonAction this method handle the event of the addButton being pressed.
-   * @return void
+   * @return void the module returns void
    * @param location, resources
    */
-  @Override
   public void initialize(URL location, ResourceBundle resources) {
-    try {
-      // Main.connectToDB();
+    /** @brief connects to database */
+    connectToDB();
+    /** @brief sets a few options on startup for chooseQtyBox */
+    chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    chooseQtyBox.setEditable(true);
+    chooseQtyBox.getSelectionModel().selectFirst();
+  }
 
+  /**
+   * @author Sean Lamont
+   * @brief The connect to database method. Establishes connection to ProductionDB H2 Database.
+   * @throws Exception ex, ClassNotFoundException
+   */
+  public void connectToDB() {
+    try {
       Class.forName(JDBC_DRIVER);
 
+      /**
+       * @brief for this following line of code we receive a empty database password flag on bugfix
+       *     this issue will be addressed in later veresions if a password is to be implemented
+       */
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
       statement = conn.createStatement();
 
@@ -100,8 +112,5 @@ public class Controller implements Initializable {
     } catch (Exception ex) {
       ex.printStackTrace();
     }
-    chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    chooseQtyBox.setEditable(true);
-    chooseQtyBox.getSelectionModel().selectFirst();
   }
 }
