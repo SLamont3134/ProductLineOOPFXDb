@@ -19,9 +19,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 /**
  * The controller class carries out the functions of the GUI.
@@ -36,6 +38,14 @@ public class Controller implements Initializable {
   static final String PASS = "";
   private Connection conn = null;
   private Statement statement;
+
+  @FXML
+  private TextField productNameWindow;
+
+  @FXML
+  private TextField manufacturerNameWindow;
+  @FXML
+  private ChoiceBox<ItemType> itemTypeCB;
 
   @FXML private Button addButton;
 
@@ -57,6 +67,7 @@ public class Controller implements Initializable {
   void addButtonAction(ActionEvent event) {
 
     try {
+
       String sql =
           "INSERT INTO Product(type, manufacturer, name) VALUES " + "( 'AUDIO', 'Apple', 'iPod' );";
       // String sql = "SELECT * FROM PRODUCT";
