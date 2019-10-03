@@ -41,7 +41,6 @@ public class Controller implements Initializable {
 
   @FXML
   private TextField productNameWindow;
-
   @FXML
   private TextField manufacturerNameWindow;
   @FXML
@@ -100,6 +99,8 @@ public class Controller implements Initializable {
     chooseQtyBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
     chooseQtyBox.setEditable(true);
     chooseQtyBox.getSelectionModel().selectFirst();
+    itemTypeCB.getItems().setAll(ItemType.values());
+    itemTypeCB.getSelectionModel().selectFirst();
   }
 
   /**
