@@ -7,6 +7,9 @@
  */
 package lamont;
 
+
+import java.time.LocalDateTime;
+
 // Create an abstract type called Product that will implement the Item interface
 public abstract class Product implements Item {
 
@@ -21,6 +24,8 @@ public abstract class Product implements Item {
   private String manufacturer;
   //    String name
   private String name;
+
+  private LocalDateTime manDate;
 
   // Complete the methods from the interface Item.
   // A method getId that would return an int
@@ -47,18 +52,28 @@ public abstract class Product implements Item {
     return this.manufacturer;
   }
 
+  public LocalDateTime getManDate(){
+    return this.manDate;
+  }
+
   // Add a constructor that will take in the name of the product and set this to the
   // field variable name.
   Product() {}
 
-  Product(String name, String manufacturer, String type) {
+  Product(int id,String name, String manufacturer, String type) {
+    this.id = id;
     this.name = name;
     this.manufacturer = manufacturer;
     this.type = type;
+    this.manDate = LocalDateTime.now();;
   }
 
   // Add a toString method that will return the following: (example data shown).
   public String toString() {
-    return "\nName: " + name + "\nManufacturer: " + manufacturer + "\nType: " + type;
+    return
+        "\nManufacturer: " + manufacturer +
+        "\nSerial Number: " + id +
+            "\nDate: " + manDate +
+            "\nName: " + name;
   }
 }

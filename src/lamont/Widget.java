@@ -10,7 +10,7 @@ package lamont;
 public class Widget extends Product {
 
   Widget(String name, String manufacturer, String type) {
-    super(name, manufacturer, type);
+    super(1, name, manufacturer, type);
   }
 
   public String toString() {
