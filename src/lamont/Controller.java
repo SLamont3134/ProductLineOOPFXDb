@@ -39,12 +39,9 @@ public class Controller implements Initializable {
   private Connection conn = null;
   private Statement statement;
 
-  @FXML
-  private TextField productNameWindow;
-  @FXML
-  private TextField manufacturerNameWindow;
-  @FXML
-  private ChoiceBox<ItemType> itemTypeCB;
+  @FXML private TextField productNameWindow;
+  @FXML private TextField manufacturerNameWindow;
+  @FXML private ChoiceBox<ItemType> itemTypeCB;
 
   @FXML private Button addButton;
 
@@ -66,9 +63,17 @@ public class Controller implements Initializable {
   void addButtonAction(ActionEvent event) {
 
     try {
-
+      String type = itemTypeCB.getValue().code;
+      String brand = manufacturerNameWindow.getText();
+      String name = productNameWindow.getText();
       String sql =
-          "INSERT INTO Product(type, manufacturer, name) VALUES " + "( 'AUDIO', 'Apple', 'iPod' );";
+          "INSERT INTO Product(type, manufacturer, name) VALUES( '"
+              + type
+              + "', '"
+              + brand
+              + "', '"
+              + name
+              + "' );";
       // String sql = "SELECT * FROM PRODUCT";
       statement.execute(sql);
 
@@ -101,6 +106,7 @@ public class Controller implements Initializable {
     chooseQtyBox.getSelectionModel().selectFirst();
     itemTypeCB.getItems().setAll(ItemType.values());
     itemTypeCB.getSelectionModel().selectFirst();
+    // System.out.println(itemTypeCB.getValue());
   }
 
   /**

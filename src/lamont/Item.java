@@ -1,18 +1,23 @@
+/**
+ * The Item Interface. The acceptable item methods.
+ *
+ * @author Sean Lamont
+ * @date 10/7/19
+ */
 package lamont;
 
-//Create an interface called Item that will force all classes to implement the following functions:
+// Create an interface called Item that will force all classes to implement the following functions:
 public interface Item {
 
-  //A method getId that would return an int
+  // A method getId that would return an int
   int getID();
-  //A method setName that would have one String parameter
+  // A method setName that would have one String parameter
   void setName(String name);
-  //A method getName that would return a String
+  // A method getName that would return a String
   String getName();
-  //A method setManufacturer that would have one String parameter
+  // A method setManufacturer that would have one String parameter
   void setManufacturer(String manufacturer);
 
-  //A method getManufacturer that would return a String
+  // A method getManufacturer that would return a String
   String getManufacturer();
-
 }
