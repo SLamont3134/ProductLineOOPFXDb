@@ -5,6 +5,7 @@
  * @brief  The ScreenSpec Interface. establishes the framework for all screens.
  * @date 10/8/19
  */
+
 package lamont;
 
 // Create an interface called ScreenSpec. This will define 3 methods:

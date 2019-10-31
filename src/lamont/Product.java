@@ -7,8 +7,7 @@
  */
 package lamont;
 
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 // Create an abstract type called Product that will implement the Item interface
 public abstract class Product implements Item {
@@ -19,18 +18,21 @@ public abstract class Product implements Item {
   //    int id
   private int id;
   //    String type
-  private String type;
+  private ItemType type;
   //    String manufacturer
   private String manufacturer;
   //    String name
   private String name;
 
-  private LocalDateTime manDate;
+  private Date manDate;
 
   // Complete the methods from the interface Item.
   // A method getId that would return an int
   public int getID() {
     return this.id;
+  }
+  public void setID(int newID){
+    this.id = newID;
   }
 
   // A method setName that would have one String parameter
@@ -42,6 +44,7 @@ public abstract class Product implements Item {
   public String getName() {
     return this.name;
   }
+
   // A method setManufacturer that would have one String parameter
   public void setManufacturer(String manufacturer) {
     this.manufacturer = manufacturer;
@@ -52,28 +55,43 @@ public abstract class Product implements Item {
     return this.manufacturer;
   }
 
-  public LocalDateTime getManDate(){
+  public Date getManDate() {
     return this.manDate;
+  }
+  public ItemType getItemTypeCode(){
+    return this.type;
   }
 
   // Add a constructor that will take in the name of the product and set this to the
   // field variable name.
   Product() {}
 
-  Product(int id,String name, String manufacturer, String type) {
+  Product( /* int id,
+      String name, String manufacturer, String type) {
     this.id = id;
     this.name = name;
     this.manufacturer = manufacturer;
     this.type = type;
-    this.manDate = LocalDateTime.now();;
-  }
+    this.manDate = LocalDateTime.now();
+    */
+    String name, String manufacturer, ItemType type) {
+      this.name = name;
+      this.manufacturer = manufacturer;
+      this.type = type;
+
+    }
 
   // Add a toString method that will return the following: (example data shown).
   public String toString() {
-    return
-        "\nManufacturer: " + manufacturer +
-        "\nSerial Number: " + id +
-            "\nDate: " + manDate +
-            "\nName: " + name;
+    return "Name: "
+        + name
+        + "\nManufacturer: "
+        + manufacturer
+        + "\nType: "
+        + type;
+  }
+
+  public String productLogString(){
+    return "Name: " + name + " Manufacturer: " + manufacturer + " Type: " + type + "\n";
   }
 }

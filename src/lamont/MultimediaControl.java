@@ -5,6 +5,7 @@
  * @brief An interface method called MultimediaControl that defines several methods.
  * @date 10/7/19
  */
+
 package lamont;
 
 // Create an interface called MultimediaControl that will define the following methods

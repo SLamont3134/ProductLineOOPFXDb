@@ -24,13 +24,15 @@ public class MoviePlayer extends Product implements MultimediaControl {
   }
 
   public MoviePlayer(
-      int id,
-      String name,
-      String manufacturer,
-      String type,
-      Screen screen,
-      MonitorType monitorType) {
-    super(id, name, manufacturer, type);
+      /* int id,
+      String name, String manufacturer, String type,
+      Screen screen, MonitorType monitorType) {
+    super(name, manufacturer, type);
+    this.screen = screen;
+    this.monitorType = monitorType;
+    */
+      String name, String manufacturer, Screen screen, MonitorType monitorType) {
+    super(name, manufacturer, ItemType.Visual);
     this.screen = screen;
     this.monitorType = monitorType;
   }
@@ -61,5 +63,9 @@ public class MoviePlayer extends Product implements MultimediaControl {
   // displays the monitor and the screen details.
   public String toString() {
     return super.toString() + screen.toString() + "\nMonitor Type: " + monitorType.toString();
+  }
+  @Override
+  public String productLogString(){
+    return super.productLogString();
   }
 }

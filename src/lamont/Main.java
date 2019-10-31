@@ -5,6 +5,7 @@
  * @brief This is the main file which builds the environment and calls the controller
  * @date 9/28/19
  */
+
 package lamont;
 
 // There is a conflict above "package lamont;" between line formatting (cntrl+alt+L) and CheckStyle,

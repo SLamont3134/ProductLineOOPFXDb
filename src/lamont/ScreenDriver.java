@@ -5,6 +5,7 @@
  * @brief The ScreenDriver class was created simply to test the Screen class.
  * @date 10/8/19
  */
+
 package lamont;
 
 // Create a Driver class for Screen that tests the functionality of the screen class.

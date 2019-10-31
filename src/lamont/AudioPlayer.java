@@ -6,15 +6,20 @@ public class AudioPlayer extends Product implements MultimediaControl {
 
   private String supportedPlaylistFormats;
 
+
   public AudioPlayer(
-      int id,
+      //int id,
       String name,
       String manufacturer,
       String supportedAudioFormats,
       String supportedPlaylistFormats) {
-    super(id, name, manufacturer, "AUDIO");
+    super(//id,
+        name, manufacturer, ItemType.Audio);
     this.supportedAudioFormats = supportedAudioFormats;
     this.supportedPlaylistFormats = supportedPlaylistFormats;
+  }
+  public AudioPlayer(){
+      this("default", "default", "none", "none");
   }
 
   @Override
@@ -24,7 +29,7 @@ public class AudioPlayer extends Product implements MultimediaControl {
 
   @Override
   public void stop() {
-    System.out.println("Stopped");
+    System.out.println("Stopping");
   }
 
   @Override
@@ -43,5 +48,9 @@ public class AudioPlayer extends Product implements MultimediaControl {
         + supportedAudioFormats
         + "\nSupported Playlist Formats: "
         + supportedPlaylistFormats;
+  }
+  @Override
+  public String productLogString(){
+    return super.productLogString();
   }
 }

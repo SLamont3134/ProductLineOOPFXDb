@@ -5,6 +5,7 @@
  * @brief The Screen class that creates screen object implementing ScreenSpec..
  * @date 10/8/19
  */
+
 package lamont;
 
 // Create a class called Screen that implements ScreenSpec. Add three fields
@@ -53,11 +54,11 @@ public class Screen implements ScreenSpec {
   // Add a toString method that will return the details of the 3 field in the
   // same format as the Product Class.
   public String toString() {
-    return "\nScreen : Resolution: "
+    return "Screen:\nResolution: "
         + resolution
         + "\nRefresh rate: "
         + refreshrate
-        + "\nResponse Time: "
+        + "\nResponse time: "
         + responseTime;
   }
 }
