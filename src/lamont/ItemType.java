@@ -5,8 +5,9 @@
  * @date 10/7/19
  */
 package lamont;
+// conflict between CheckStyle and google format.
 
-// Create an enum called ItemType that will store the following information:
+/** Create an enum called ItemType that will store the following information:. */
 public enum ItemType {
   Audio("AU"),
   Visual("VI"),

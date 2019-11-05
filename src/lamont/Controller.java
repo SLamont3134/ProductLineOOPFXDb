@@ -6,8 +6,9 @@
  * @date 9/28/19
  */
 package lamont;
+// Conflict between Google Format and CheckStyle.
 
-// There is a conflict above "package lamont;" between line formatting (cntrl+alt+L) and CheckStyle,
+// There is a conflict above "package lamont;" between line formatting (ctrl+alt+L) and CheckStyle,
 // they keep adding or taking away a gap respectively.
 
 import java.net.URL;
@@ -48,12 +49,13 @@ public class Controller implements Initializable {
   private int visualCount;
   private int audioMobileCount;
   private int visualMobileCount;
-  private ArrayList<Product> productLine = new ArrayList<>();
   private ArrayList<ProductionRecord> productionRecord = new ArrayList<>();
-  ObservableList<Product> observableProductLine = FXCollections.observableArrayList(productLine);
+  ObservableList<Product> observableProductLine = FXCollections.observableArrayList();
 
   @FXML private TextField productNameWindow;
+
   @FXML private TextField manufacturerNameWindow;
+
   @FXML private ChoiceBox<ItemType> itemTypeCB;
 
   @FXML private Button addButton;
@@ -66,19 +68,13 @@ public class Controller implements Initializable {
 
   @FXML private TextArea productionLogTextArea;
 
-  @FXML
-  private TableColumn<?, ?> productNameColumn;
+  @FXML private TableColumn<?, ?> productNameColumn;
 
-  @FXML
-  private TableColumn<?, ?> productTypeColumn;
+  @FXML private TableColumn<?, ?> productTypeColumn;
 
-  @FXML
-  private ListView<Product> chooseProductWindow;
+  @FXML private ListView<Product> chooseProductWindow;
 
-  @FXML
-  private TableColumn<?, ?> productManufacturerColumn;
-
-
+  @FXML private TableColumn<?, ?> productManufacturerColumn;
 
   /**
    * The addButtonAction this method handle the event of the addButton being pressed.
@@ -90,8 +86,6 @@ public class Controller implements Initializable {
   void addButtonAction(ActionEvent event) {
 
     createProductObject();
-    updateObservableList();
-    displayProductionRecordLog();
     displayProductionRecordLog();
     setProductWindow();
     System.out.println("Add Button Pressed");
@@ -108,8 +102,6 @@ public class Controller implements Initializable {
     createProductionRecordObject();
     System.out.println("Record Production Button Pressed");
   }
-
-
 
   /**
    * Establishes connection to database.
@@ -134,6 +126,32 @@ public class Controller implements Initializable {
     }
   }
 
+  /** Called when a new product is made and needs to be inserted into the database. */
+  public void createProductObject() {
+    ItemType type = itemTypeCB.getValue();
+    String brand = manufacturerNameWindow.getText();
+    String name = productNameWindow.getText();
+    switch (type) {
+      case Audio:
+        observableProductLine.add(
+            new AudioPlayer(
+                name, brand, "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL"));
+        break;
+      case Visual:
+        Screen newScreen = new Screen("720x480", 40, 22);
+        observableProductLine.add(new MoviePlayer(name, brand, newScreen, MonitorType.LCD));
+        break;
+      case AudioMobile:
+        break;
+      case VisualMobile:
+        break;
+      default:
+        break;
+    }
+    return;
+  }
+
+  /** Called after every database interaction is concluded to close connection to the database. */
   public void disconnectFromDB() {
     try {
       conn.close();
@@ -144,6 +162,7 @@ public class Controller implements Initializable {
     }
   }
 
+  /** Test class for multimedia, not usually used. */
   public void testMultimedia() {
     int serialNumber = 00001;
     AudioPlayer newAudioProduct =
@@ -156,6 +175,7 @@ public class Controller implements Initializable {
         new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
     newMovieProduct.setID(serialNumber);
     ProductionRecord newRecord = new ProductionRecord(serialNumber);
+    System.out.println(newRecord.getSerialNum());
     ArrayList<MultimediaControl> productLine = new ArrayList<MultimediaControl>();
     productLine.add(newAudioProduct);
     productLine.add(newMovieProduct);
@@ -171,24 +191,33 @@ public class Controller implements Initializable {
     }
   }
 
+  /**
+   * Displays the production log in the production log text area. Called every time the production
+   * log is updated to update the window.
+   */
   public void displayProductionRecordLog() {
     productionLogTextArea.clear();
-    for(Product product: productLine){
-      productionLogTextArea.appendText(product.productLogString());
+    for (ProductionRecord product : productionRecord) {
+      productionLogTextArea.appendText(product.toString());
     }
-    //productionLogTextArea.appendText(productLine.productLogString());
   }
 
-
+  /** Sets up the boxes, called once at initialization. */
   public void setUpBoxes() {
     itemTypeCB.getItems().setAll(ItemType.values());
     itemTypeCB.getSelectionModel().selectFirst();
     chooseQtyBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
     chooseQtyBox.setEditable(true);
     chooseQtyBox.getSelectionModel().selectFirst();
-    // System.out.println(itemTypeCB.getValue());
   }
 
+  /**
+   * Keeps track of incremental portion of serial number. Will probably be replaced by database
+   * incrementation.
+   *
+   * @param product Product, used to determine which count to return and increment.
+   * @return int, the number to be appended to the serial number.
+   */
   public int itemCount(Product product) {
     int tempInt;
     switch (product.getItemTypeCode()) {
@@ -211,124 +240,86 @@ public class Controller implements Initializable {
     return tempInt;
   }
 
-  public void createProductObject() {
-    ItemType type = itemTypeCB.getValue();
-    String brand = manufacturerNameWindow.getText();
-    String name = productNameWindow.getText();
-    switch (type) {
-      case Audio:
-        productLine.add(
-            new AudioPlayer(
-                name, brand, "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
-                "M3U/PLS/WPL"));
-        break;
-      case Visual:
-        Screen newScreen = new Screen("720x480", 40, 22);
-        productLine.add(new MoviePlayer(name, brand, newScreen,
-            MonitorType.LCD));
-        break;
-      case AudioMobile:
-        break;
-      case VisualMobile:
-        break;
-      default:
-        break;
-    }
-    return;
-  }
-
-  public void createProductDB() {
-    try {
-      String type = itemTypeCB.getValue().code;
-      String brand = manufacturerNameWindow.getText();
-      String name = productNameWindow.getText();
-      String sql =
-          "INSERT INTO Product(type, manufacturer, name) VALUES( '"
-              + type
-              + "', '"
-              + brand
-              + "', '"
-              + name
-              + "' );";
-      // String sql = "SELECT * FROM PRODUCT";
-      statement.execute(sql);
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-
-    System.out.println("Add Button Pressed");
-  }
-
-
-    public void setProductLineTable() {
-    observableProductLine.clear();
-      productLine.add(new AudioPlayer(
-          "ted", "brand", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
-          "M3U/PLS/WPL"));
-      observableProductLine = FXCollections.observableArrayList(productLine);
-      productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
-      productTypeColumn.setCellValueFactory(new PropertyValueFactory("type.toString()"));
-      productManufacturerColumn.setCellValueFactory(new PropertyValueFactory("manufacturer"));
-      existingProductWindow.setItems(observableProductLine);
-    }
-
-  public void updateObservableList() {
-    observableProductLine.clear();
-    observableProductLine = FXCollections.observableArrayList(productLine);
+  /**
+   * Sets up the product line table as well as the observable list. Called once at initialization,
+   * currently starts with test data, will be replaced once database is running.
+   */
+  public void setProductLineTable() {
+    // observableProductLine.clear();
+    observableProductLine = FXCollections.observableArrayList();
+    observableProductLine.add(
+        new AudioPlayer(
+            "Demo", "Product", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL"));
     productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     productTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
     productManufacturerColumn.setCellValueFactory(new PropertyValueFactory("manufacturer"));
     existingProductWindow.setItems(observableProductLine);
   }
 
-  public void setProductWindow(){
+  /**
+   * Sets the product window to display the observable list. Called once at initialize then
+   * automatically updated with observable list.
+   */
+  public void setProductWindow() {
     chooseProductWindow.getItems().clear();
-    chooseProductWindow.getItems().addAll(productLine);
+    chooseProductWindow.getItems().addAll(observableProductLine);
   }
 
-  public void testSerialNumber(){
+  /**
+   * Method to test serial number generation. Not currently used, will eventually be removed once
+   * testing is complete.
+   */
+  public void testSerialNumber() {
     Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer moviePlayer1 = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
-        MonitorType.LCD);
+    MoviePlayer moviePlayer1 =
+        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
     ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10, itemCount(moviePlayer1));
     test1.setSerialNum(test1.getProduct(), itemCount(test1.getProduct()));
     System.out.println(test1);
-    MoviePlayer moviePlayer2 = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
-        MonitorType.LCD);
+    MoviePlayer moviePlayer2 =
+        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
     ProductionRecord test2 = new ProductionRecord(moviePlayer2, 10, itemCount(moviePlayer2));
     test2.setSerialNum(test2.getProduct(), itemCount(test2.getProduct()));
     System.out.println(test2);
   }
 
-  public void createProductionRecordObject(){
-    //System.out.println(Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem()));
+  /**
+   * Called whenever a new production record is produced. Creates production record based on input
+   * from the gui, then posts it to production log area.
+   */
+  public void createProductionRecordObject() {
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
-    for(int i=0; i<qnty; i++){
+    for (int i = 0; i < qnty; i++) {
 
-    productionRecord.add(new ProductionRecord(chooseProductWindow.getSelectionModel().getSelectedItem(),
-            qnty, itemCount(chooseProductWindow.getSelectionModel().getSelectedItem())));
+      productionRecord.add(
+          new ProductionRecord(
+              chooseProductWindow.getSelectionModel().getSelectedItem(),
+              qnty,
+              itemCount(chooseProductWindow.getSelectionModel().getSelectedItem())));
     }
     productionLogTextArea.clear();
     productionLogTextArea.appendText(productionRecord.toString());
   }
-  public void setProductionRecordWindow(){
+
+  /** Sets the initial production record window at initialize. */
+  public void setProductionRecordWindow() {
     productionLogTextArea.clear();
     productionLogTextArea.appendText(productionRecord.toString());
   }
 
-
+  /**
+   * Called every time the program starts for the first time. Sets the tables buttons etc.
+   *
+   * @param location Location.
+   * @param resources ResourceBundle.
+   */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    connectToDB();
-    // testMultimedia();
     setUpBoxes();
     setProductLineTable();
     displayProductionRecordLog();
-    //updateWindows();
-    disconnectFromDB();
     setProductWindow();
     setProductionRecordWindow();
   }

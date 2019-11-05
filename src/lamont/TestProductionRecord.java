@@ -1,12 +1,26 @@
+/**
+ * Class designed to test the ProductionRecord class.
+ *
+ * @author Sean Lamont
+ * @brief Tests the ProductionRecord class.
+ * @date 11/5/19
+ */
 package lamont;
+// conflict between CheckStyle and google format.
 
 import java.util.Date;
 
 public class TestProductionRecord {
+
+  /**
+   * Main runnable class to test ProductionRecord.
+   *
+   * @param args main arguments.
+   */
   public static void main(String[] args) {
 
     // test constructor used when creating production records from user interface
-    Integer numProduced = 3;  // this will come from the combobox in the UI
+    Integer numProduced = 3; // this will come from the combobox in the UI
 
     for (int productionRunProduct = 0; productionRunProduct < numProduced; productionRunProduct++) {
       ProductionRecord pr = new ProductionRecord(0);
@@ -31,14 +45,12 @@ public class TestProductionRecord {
     System.out.println(pr.getProdDate());
 
     Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer moviePlayer1 = new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen,
-        MonitorType.LCD);
+    MoviePlayer moviePlayer1 =
+        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
     ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10, 10);
 
     System.out.println(moviePlayer1);
     System.out.println(test1);
   }
-
-
-  }
+}
