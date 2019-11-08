@@ -76,6 +76,8 @@ public class Controller implements Initializable {
 
   @FXML private TableColumn<?, ?> productManufacturerColumn;
 
+  @FXML private TableColumn<?, ?> productIdColumn;
+
   /**
    * The addButtonAction this method handle the event of the addButton being pressed.
    *
@@ -250,6 +252,7 @@ public class Controller implements Initializable {
     observableProductLine.add(
         new AudioPlayer(
             "Demo", "Product", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL"));
+    productNameColumn.setCellValueFactory(new PropertyValueFactory("id"));
     productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     productTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
     productManufacturerColumn.setCellValueFactory(new PropertyValueFactory("manufacturer"));

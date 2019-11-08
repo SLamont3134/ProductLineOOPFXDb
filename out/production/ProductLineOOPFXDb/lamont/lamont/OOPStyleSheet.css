@@ -1,0 +1,10 @@
+/**
+ * @author Sean Lamont
+ *@brief This si the stylesheet which sets the fonts colors etc of the GUI
+ *@9/28/19
+ */
+
+.root {
+  -fx-background: rgb(325, 234, 150);
+  -fx-base: rgb(128, 125, 68);
+}
