@@ -7,6 +7,7 @@
  */
 package lamont;
 
+// Hello
 // There is a conflict above "package lamont;" between line formatting (ctrl+alt+L) and CheckStyle,
 // they keep adding or taking away a gap respectively.
 
