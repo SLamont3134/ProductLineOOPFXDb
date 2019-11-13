@@ -12,10 +12,17 @@ package lamont;
 // they keep adding or taking away a gap respectively.
 
 import java.net.URL;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -85,7 +92,7 @@ public class Controller implements Initializable {
    * @param event sets the action event
    */
   @FXML
-  void addButtonAction(ActionEvent event) {
+  void addButtonAction(ActionEvent event) throws SQLException {
 
     createProductObject();
     displayProductionRecordLog();
@@ -100,8 +107,11 @@ public class Controller implements Initializable {
    * @param event this event handles the record product button
    */
   @FXML
-  void recordProductionBttnAction(ActionEvent event) {
+  void recordProductionBttnAction(ActionEvent event) throws SQLException {
     createProductionRecordObject();
+    //loadProductionLog();
+    showProduction();
+
     System.out.println("Record Production Button Pressed");
   }
 
@@ -128,29 +138,16 @@ public class Controller implements Initializable {
     }
   }
 
-  /** Called when a new product is made and needs to be inserted into the database. */
-  public void createProductObject() {
-    ItemType type = itemTypeCB.getValue();
-    String brand = manufacturerNameWindow.getText();
-    String name = productNameWindow.getText();
-    switch (type) {
-      case Audio:
-        observableProductLine.add(
-            new AudioPlayer(
-                name, brand, "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL"));
-        break;
-      case Visual:
-        Screen newScreen = new Screen("720x480", 40, 22);
-        observableProductLine.add(new MoviePlayer(name, brand, newScreen, MonitorType.LCD));
-        break;
-      case AudioMobile:
-        break;
-      case VisualMobile:
-        break;
-      default:
-        break;
-    }
-    return;
+  public void insertProductIntoDB(String[] insertValues) throws SQLException {
+    connectToDB();
+    String insertQuery =
+        "INSERT INTO PRODUCT " + "(NAME, TYPE, MANUFACTURER)" + " VALUES (?, ?, ?)";
+    PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+    pstmt.setString(1, insertValues[0]);
+    pstmt.setString(2, insertValues[1]);
+    pstmt.setString(3, insertValues[2]);
+    pstmt.executeUpdate();
+    disconnectFromDB();
   }
 
   /** Called after every database interaction is concluded to close connection to the database. */
@@ -164,33 +161,55 @@ public class Controller implements Initializable {
     }
   }
 
-  /** Test class for multimedia, not usually used. */
-  public void testMultimedia() {
-    int serialNumber = 00001;
-    AudioPlayer newAudioProduct =
-        new AudioPlayer(
-            "DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
-    newAudioProduct.setID(serialNumber);
-    // serialNumber++;
-    Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer newMovieProduct =
-        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
-    newMovieProduct.setID(serialNumber);
-    ProductionRecord newRecord = new ProductionRecord(serialNumber);
-    System.out.println(newRecord.getSerialNum());
-    ArrayList<MultimediaControl> productLine = new ArrayList<MultimediaControl>();
-    productLine.add(newAudioProduct);
-    productLine.add(newMovieProduct);
-    productionLogTextArea.appendText(productLine.toString());
-    // System.out.println(newRecord.findProductMatch(productLine));
+  /** Called when a new product is made and needs to be inserted into the database. */
+  public void createProductObject() throws SQLException {
+    String[] product = new String[3];
+    product[0] = productNameWindow.getText();
+    product[1] = itemTypeCB.getValue().getCode();
+    product[2] = manufacturerNameWindow.getText();
+    insertProductIntoDB(product);
+    loadProductList();
+    productNameWindow.clear();
+    manufacturerNameWindow.clear();
+  }
 
-    for (MultimediaControl p : productLine) {
-      System.out.println(p);
-      p.play();
-      p.stop();
-      p.next();
-      p.previous();
+  private void loadProductList() throws SQLException {
+    connectToDB();
+    String sql = "SELECT * FROM PRODUCT";
+    ResultSet rs = statement.executeQuery(sql);
+    observableProductLine.clear();
+    while (rs.next()) {
+      // these lines correspond to the database table columns
+      Integer id = rs.getInt(1);
+      String name = rs.getString(2);
+      String type = rs.getString(3);
+      String manufacturer = rs.getString(4);
+      // create object
+      switch (type) {
+        case "AU":
+          observableProductLine.add(
+              new AudioPlayer(
+                  name,
+                  manufacturer,
+                  "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
+                  "M3U/PLS/WPL"));
+          break;
+        case "VI":
+          Screen newScreen = new Screen("720x480", 40, 22);
+          observableProductLine.add(
+              new MoviePlayer(name, manufacturer, newScreen, MonitorType.LCD));
+          break;
+        case "AM":
+          System.out.println("Feature Coming Soon");
+          break;
+        case "VM":
+          System.out.println("Feature Coming Soonish");
+          break;
+        default:
+          break;
+      }
     }
+    disconnectFromDB();
   }
 
   /**
@@ -247,11 +266,7 @@ public class Controller implements Initializable {
    * currently starts with test data, will be replaced once database is running.
    */
   public void setProductLineTable() {
-    // observableProductLine.clear();
     observableProductLine = FXCollections.observableArrayList();
-    observableProductLine.add(
-        new AudioPlayer(
-            "Demo", "Product", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL"));
     productNameColumn.setCellValueFactory(new PropertyValueFactory("id"));
     productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     productTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
@@ -269,6 +284,31 @@ public class Controller implements Initializable {
   }
 
   /**
+   * showProduction should: populate the TextArea on the Production Log tab with the information
+   * from the productionLog, replacing the productId with the product name, with one line for each
+   * product produced
+   */
+  public void showProduction() {
+    String tempString;
+    productionLogTextArea.clear();
+    for (ProductionRecord record : productionRecord) {
+      for (int i = 0; i < record.getCount(); i++) {
+        tempString =
+            "Prod. Name: "
+                + record.getProduct().getName()
+                + " Product ID: "
+                + record.getProductID()
+                + " Serial Num: "
+                + record.getSerialNumber()
+                + " Date: "
+                + record.getProdDate()
+                + "\n";
+        productionLogTextArea.appendText(tempString);
+      }
+    }
+  }
+
+  /**
    * Method to test serial number generation. Not currently used, will eventually be removed once
    * testing is complete.
    */
@@ -277,13 +317,13 @@ public class Controller implements Initializable {
     MoviePlayer moviePlayer1 =
         new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
-    ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10, itemCount(moviePlayer1));
+    ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10);
     test1.setSerialNum(test1.getProduct(), itemCount(test1.getProduct()));
     System.out.println(test1);
     MoviePlayer moviePlayer2 =
         new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
-    ProductionRecord test2 = new ProductionRecord(moviePlayer2, 10, itemCount(moviePlayer2));
+    ProductionRecord test2 = new ProductionRecord(moviePlayer2, 10);
     test2.setSerialNum(test2.getProduct(), itemCount(test2.getProduct()));
     System.out.println(test2);
   }
@@ -292,25 +332,43 @@ public class Controller implements Initializable {
    * Called whenever a new production record is produced. Creates production record based on input
    * from the gui, then posts it to production log area.
    */
-  public void createProductionRecordObject() {
+  public void createProductionRecordObject() throws SQLException {
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
-    for (int i = 0; i < qnty; i++) {
+    Product tempProduct = chooseProductWindow.getSelectionModel().getSelectedItem();
+    ProductionRecord tempRecord = new ProductionRecord(tempProduct, qnty);
 
-      productionRecord.add(
-          new ProductionRecord(
-              chooseProductWindow.getSelectionModel().getSelectedItem(),
-              qnty,
-              itemCount(chooseProductWindow.getSelectionModel().getSelectedItem())));
-    }
-    productionLogTextArea.clear();
-    productionLogTextArea.appendText(productionRecord.toString());
+    productionRecord.add(tempRecord);
+
+    String[] tempString = new String[3];
+    tempString[0] = String.valueOf(0);
+    tempString[1] = String.valueOf(tempRecord.getProduct().getID());
+    tempString[2] = tempRecord.getSerialNumber();
+    addToProductionDBMethod(tempString);
   }
+
+  public void addToProductionDBMethod(String[] insertValues) throws SQLException {
+    connectToDB();
+    String insertQuery =
+        "INSERT INTO PRODUCTIONRECORD "
+            + "(PRODUCTION_NUM, PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)"
+            + " VALUES (?, ?, ?, ?)";
+    PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+    pstmt.setInt(1, Integer.parseInt(insertValues[0]));
+    pstmt.setInt(2, Integer.parseInt(insertValues[1]));
+    pstmt.setString(3, insertValues[2]);
+    pstmt.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+    pstmt.executeUpdate();
+    disconnectFromDB();
+  }
+
 
   /** Sets the initial production record window at initialize. */
-  public void setProductionRecordWindow() {
+  /*
+  public void loadProductionLog() {
     productionLogTextArea.clear();
     productionLogTextArea.appendText(productionRecord.toString());
   }
+  */
 
   /**
    * Called every time the program starts for the first time. Sets the tables buttons etc.
@@ -322,8 +380,16 @@ public class Controller implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     setUpBoxes();
     setProductLineTable();
+
+    try {
+      loadProductList();
+    } catch (SQLException e) {
+      System.out.println("Couldn't Load Product List");
+    }
+
     displayProductionRecordLog();
     setProductWindow();
-    setProductionRecordWindow();
+    //loadProductionLog();
+    showProduction();
   }
 }

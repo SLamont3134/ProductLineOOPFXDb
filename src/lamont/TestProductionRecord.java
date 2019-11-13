@@ -39,7 +39,7 @@ public class TestProductionRecord {
     System.out.println(pr.getProductID());
 
     pr.setSerialNum("2");
-    System.out.println(pr.getSerialNum());
+    System.out.println(pr.getSerialNumber());
 
     pr.setProdDate(new Date());
     System.out.println(pr.getProdDate());
@@ -48,7 +48,7 @@ public class TestProductionRecord {
     MoviePlayer moviePlayer1 =
         new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
-    ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10, 10);
+    ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10);
 
     System.out.println(moviePlayer1);
     System.out.println(test1);

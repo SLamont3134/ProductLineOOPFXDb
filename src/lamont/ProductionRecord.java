@@ -81,15 +81,13 @@ public class ProductionRecord {
    *
    * @param newProduct Product, the product that has been produced.
    * @param count int, the quantity of products produced.
-   * @param serialNumber int, the serial number of the products produced.
    */
-  ProductionRecord(Product newProduct, int count, int serialNumber) {
+  ProductionRecord(Product newProduct, int count) {
     this.product = newProduct;
     this.productID = newProduct.getID();
     this.productionNumber = 0;
     this.dateProduced = new Date();
     this.count = count;
-    setSerialNum(newProduct, serialNumber);
   }
 
   // Create accessors and mutators for all fields.
@@ -128,15 +126,6 @@ public class ProductionRecord {
    */
   public void setProductID(int productID) {
     this.productID = productID;
-  }
-
-  /**
-   * Gets Serial Number.
-   *
-   * @return String, returns serial number.
-   */
-  public String getSerialNum() {
-    return serialNumber;
   }
 
   /**
@@ -241,21 +230,10 @@ public class ProductionRecord {
         + serialNumber
         + " Date: "
         + dateProduced
+        + " Quantity: "
+        + count
         + "\n";
   }
 
-  /*
-  public Product findProductMatch(ArrayList<MultimediaControl> list){
-    Product tempProduct = new AudioPlayer();
-    for (MultimediaControl product : list) {
-      if (list instanceof Product) {
-        if (this.productID == product.getID()) {
-          tempProduct = product;
-        }
-      }
-      }
-    return tempProduct;
-    }
-   */
 
 }
