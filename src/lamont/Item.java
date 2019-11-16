@@ -18,7 +18,7 @@ public interface Item {
    *
    * @return int, will return Item ID.
    */
-  int getID();
+  int getId();
 
   /**
    * A method setName that would have one String parameter.

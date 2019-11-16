@@ -150,6 +150,27 @@ public class Controller implements Initializable {
     disconnectFromDB();
   }
 
+  public int selectProductIDFromDB(Product product) {
+    int id = 0;
+    connectToDB();
+    ResultSet rs = null;
+    //System.out.println("SELECT ID FROM PRODUCT WHERE NAME = \'" + product.getName() + "\';");
+    try {
+      Statement stmt = conn.createStatement();
+      rs = stmt.executeQuery("SELECT ID FROM PRODUCT WHERE NAME = \'" + product.getName()
+          + "\';");
+
+      while(rs.next()) {
+        id= rs.getInt("ID");
+      }
+
+    } catch (SQLException e) {
+      System.out.println("ERROR: QUERY FAILED!");
+    }
+    disconnectFromDB();
+    return id;
+  }
+
   /** Called after every database interaction is concluded to close connection to the database. */
   public void disconnectFromDB() {
     try {
@@ -187,17 +208,20 @@ public class Controller implements Initializable {
       // create object
       switch (type) {
         case "AU":
-          observableProductLine.add(
-              new AudioPlayer(
-                  name,
-                  manufacturer,
-                  "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
-                  "M3U/PLS/WPL"));
+          AudioPlayer tempObject1 = new AudioPlayer(
+              name,
+              manufacturer,
+              "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
+              "M3U/PLS/WPL");
+          tempObject1.setId(id);
+          observableProductLine.add(tempObject1);
+
           break;
         case "VI":
           Screen newScreen = new Screen("720x480", 40, 22);
-          observableProductLine.add(
-              new MoviePlayer(name, manufacturer, newScreen, MonitorType.LCD));
+          MoviePlayer tempObject2 = new MoviePlayer(name, manufacturer, newScreen, MonitorType.LCD);
+          tempObject2.setId(id);
+          observableProductLine.add(tempObject2);
           break;
         case "AM":
           System.out.println("Feature Coming Soon");
@@ -267,8 +291,8 @@ public class Controller implements Initializable {
    */
   public void setProductLineTable() {
     observableProductLine = FXCollections.observableArrayList();
-    productNameColumn.setCellValueFactory(new PropertyValueFactory("id"));
     productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
+    productIdColumn.setCellValueFactory(new PropertyValueFactory("id"));
     productTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
     productManufacturerColumn.setCellValueFactory(new PropertyValueFactory("manufacturer"));
     existingProductWindow.setItems(observableProductLine);
@@ -344,7 +368,8 @@ public class Controller implements Initializable {
 
     String[] tempString = new String[3];
     tempString[0] = String.valueOf(0);
-    tempString[1] = String.valueOf(tempRecord.getProduct().getID());
+    tempString[1] = String.valueOf(tempRecord.getProduct().getId());
+    //System.out.println(tempRecord.getProduct().getID());
     tempString[2] = tempRecord.getSerialNumber();
     addToProductionDBMethod(tempString);
   }

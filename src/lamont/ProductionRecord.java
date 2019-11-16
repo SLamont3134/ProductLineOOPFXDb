@@ -84,7 +84,7 @@ public class ProductionRecord {
    */
   ProductionRecord(Product newProduct, int count) {
     this.product = newProduct;
-    this.productID = newProduct.getID();
+    this.productID = newProduct.getId();
     this.productionNumber = 0;
     this.dateProduced = new Date();
     this.count = count;

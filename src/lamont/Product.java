@@ -37,7 +37,7 @@ public abstract class Product implements Item {
    *
    * @return int, product ID.
    */
-  public int getID() {
+  public int getId() {
     return this.id;
   }
 
@@ -46,7 +46,7 @@ public abstract class Product implements Item {
    *
    * @param newID int, sets product ID to this value.
    */
-  public void setID(int newID) {
+  public void setId(int newID) {
     this.id = newID;
   }
 
