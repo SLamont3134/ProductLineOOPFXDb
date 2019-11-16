@@ -302,6 +302,9 @@ public class Controller implements Initializable {
                 + record.getSerialNumber()
                 + " Date: "
                 + record.getProdDate()
+
+
+
                 + "\n";
         productionLogTextArea.appendText(tempString);
       }
