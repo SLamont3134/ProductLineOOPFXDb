@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" stylesheets="@OOPStyleSheet.css" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lamont.Controller">
+<GridPane alignment="center" hgap="10" stylesheets="@OOPStyleSheet.css" vgap="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lamont.Controller">
   <columnConstraints>
     <ColumnConstraints />
   </columnConstraints>
@@ -72,7 +72,7 @@
                               <TableColumn prefWidth="776.0" text="Existing Products">
                                  <columns>
                           <TableColumn fx:id="productNameColumn" prefWidth="200.0" text="Name" />
-                                    <TableColumn fx:id="productIDColumn" prefWidth="156.7999725341797" text="Product ID" />
+                                    <TableColumn fx:id="productIdColumn" prefWidth="156.7999725341797" text="Product ID" />
                                     <TableColumn fx:id="productTypeColumn" prefWidth="135.20001220703125" text="Type" />
                                     <TableColumn fx:id="productManufacturerColumn" maxWidth="300.0" prefWidth="483.20001220703125" text="Manufacturer" />
                                  </columns>
