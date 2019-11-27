@@ -11,18 +11,11 @@ package lamont;
 // There is a conflict above "package lamont;" between line formatting (ctrl+alt+L) and CheckStyle,
 // they keep adding or taking away a gap respectively.
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,18 +39,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class Controller implements Initializable {
 
-  static final String JDBC_DRIVER = "org.h2.Driver";
-  static final String DB_URL = "jdbc:h2:./rsc/ProductDB";
-  static final String USER = "";
-  static final String PASS = "";
-  private Connection conn = null;
-  private Statement statement;
   private int audioCount;
   private int visualCount;
   private int audioMobileCount;
   private int visualMobileCount;
   private ArrayList<ProductionRecord> productionRecord = new ArrayList<>();
   ObservableList<Product> observableProductLine = FXCollections.observableArrayList();
+  DatabaseManager database = new DatabaseManager();
+  Employee currentEmployee;
 
   @FXML private TextField productNameWindow;
 
@@ -85,6 +74,22 @@ public class Controller implements Initializable {
 
   @FXML private TableColumn<?, ?> productIdColumn;
 
+  @FXML private Button addEmployeeBttn;
+
+  @FXML private TextField employeeNameField;
+
+  @FXML private TextField employeePasswordField;
+
+  @FXML
+  private TextArea employeeInfo;
+
+  public Controller() throws SQLException, IOException {}
+
+  public static final String addNameError = "Length Must Be Greater Than Zero";
+  public static final String addManufacturerError = "Must Be Longer Than 3 Letters";
+  public static final String employeeNameError = "Must be two Words with a space";
+  public static final String passwordError = "Password Must Have One UpperCase Letter and One Symbol";
+
   /**
    * The addButtonAction this method handle the event of the addButton being pressed.
    *
@@ -93,11 +98,30 @@ public class Controller implements Initializable {
    */
   @FXML
   void addButtonAction(ActionEvent event) throws SQLException {
-
-    createProductObject();
-    displayProductionRecordLog();
-    setProductWindow();
-    System.out.println("Add Button Pressed");
+    manufacturerNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+    productNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+    // System.out.println((productNameWindow.getLength() > 0));
+    // System.out.println((productNameWindow.getText() != null));
+    // System.out.println(!(productNameWindow.getText().equals(addNameError)));
+    if ((productNameWindow.getLength() > 0)
+        && (productNameWindow.getText() != null)
+        && !(productNameWindow.getText().equals(addNameError))) {
+      if ((manufacturerNameWindow.getLength() > 3)
+          && (manufacturerNameWindow.getText() != null)
+          && !(manufacturerNameWindow.getText().equals(addManufacturerError))) {
+        createProductObject();
+        displayProductionRecordLog();
+        setProductWindow();
+        setProductLineTable();
+        System.out.println("Add Button Pressed");
+      } else {
+        manufacturerNameWindow.setText(addManufacturerError);
+        manufacturerNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+      }
+    } else {
+      productNameWindow.setText(addNameError);
+      productNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+    }
   }
 
   /**
@@ -109,139 +133,82 @@ public class Controller implements Initializable {
   @FXML
   void recordProductionBttnAction(ActionEvent event) throws SQLException {
     createProductionRecordObject();
-    //loadProductionLog();
+    // loadProductionLog();
     showProduction();
 
     System.out.println("Record Production Button Pressed");
   }
 
-  /**
-   * Establishes connection to database.
-   *
-   * @author Sean Lamont
-   */
-  public void connectToDB() {
-    try {
-      Class.forName(JDBC_DRIVER);
-
-      /*For this following line of code I receive a empty database password flag on FindBugs
-       * this issue will be addressed in later versions if a password is to be implemented
-       */
-      conn = DriverManager.getConnection(DB_URL, USER, PASS);
-      statement = conn.createStatement();
-
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  public void insertProductIntoDB(String[] insertValues) throws SQLException {
-    connectToDB();
-    String insertQuery =
-        "INSERT INTO PRODUCT " + "(NAME, TYPE, MANUFACTURER)" + " VALUES (?, ?, ?)";
-    PreparedStatement pstmt = conn.prepareStatement(insertQuery);
-    pstmt.setString(1, insertValues[0]);
-    pstmt.setString(2, insertValues[1]);
-    pstmt.setString(3, insertValues[2]);
-    pstmt.executeUpdate();
-    disconnectFromDB();
-  }
-
-  public int selectProductIDFromDB(Product product) {
-    int id = 0;
-    connectToDB();
-    ResultSet rs = null;
-    //System.out.println("SELECT ID FROM PRODUCT WHERE NAME = \'" + product.getName() + "\';");
-    try {
-      Statement stmt = conn.createStatement();
-      rs = stmt.executeQuery("SELECT ID FROM PRODUCT WHERE NAME = \'" + product.getName()
-          + "\';");
-
-      while(rs.next()) {
-        id= rs.getInt("ID");
+  @FXML
+  void addEmployeeButtonAction(ActionEvent event) {
+    employeeNameField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+    employeeNameField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+    employeePasswordField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+    employeePasswordField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+    if ((employeeNameField.getLength() > 0)
+        && (employeeNameField.getText() != null)
+        && !(employeeNameField.getText().equals(employeeNameError))) {
+      Boolean hasSpace = false;
+      for (int i = 0; i < employeeNameField.getText().length(); i++) {
+        if (employeeNameField.getText().charAt(i) == ' ') {
+          hasSpace = true;
+        }
       }
-
-    } catch (SQLException e) {
-      System.out.println("ERROR: QUERY FAILED!");
+      if (hasSpace) {
+        // Insert all code here
+        if ((employeePasswordField.getLength() > 0)
+            && (employeePasswordField.getText() != null)
+            && !(employeePasswordField.getText().equals(employeeNameError))) {
+          creatEmployee();
+          employeeInfo.setText("Current User Information: \n" + currentEmployee.secureToString());
+          employeeInfo.setOpacity(1.0);
+        }
+        else {
+          employeePasswordField.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+          employeePasswordField.setText(passwordError);
+        }
+        System.out.println("Add employee Button Pressed");
+      } else {
+        employeeNameField.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+        employeeNameField.setText("Name must contain a space.");
+      }
+    } else {
+      employeeNameField.setText(employeeNameError);
+      employeeNameField.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
     }
-    disconnectFromDB();
-    return id;
   }
 
-  /** Called after every database interaction is concluded to close connection to the database. */
-  public void disconnectFromDB() {
-    try {
-      conn.close();
-      statement.close();
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
+  public void creatEmployee() {
+    String name = employeeNameField.getText();
+    String password = employeePasswordField.getText();
+    currentEmployee = new Employee(name, password);
+    System.out.println("Employee Set!");
+    System.out.println(currentEmployee);
   }
 
   /** Called when a new product is made and needs to be inserted into the database. */
   public void createProductObject() throws SQLException {
+
     String[] product = new String[3];
     product[0] = productNameWindow.getText();
     product[1] = itemTypeCB.getValue().getCode();
     product[2] = manufacturerNameWindow.getText();
-    insertProductIntoDB(product);
-    loadProductList();
+    database.insertProductIntoDB(product);
+    observableProductLine = database.loadProductList();
     productNameWindow.clear();
     manufacturerNameWindow.clear();
-  }
-
-  private void loadProductList() throws SQLException {
-    connectToDB();
-    String sql = "SELECT * FROM PRODUCT";
-    ResultSet rs = statement.executeQuery(sql);
-    observableProductLine.clear();
-    while (rs.next()) {
-      // these lines correspond to the database table columns
-      Integer id = rs.getInt(1);
-      String name = rs.getString(2);
-      String type = rs.getString(3);
-      String manufacturer = rs.getString(4);
-      // create object
-      switch (type) {
-        case "AU":
-          AudioPlayer tempObject1 = new AudioPlayer(
-              name,
-              manufacturer,
-              "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
-              "M3U/PLS/WPL");
-          tempObject1.setId(id);
-          observableProductLine.add(tempObject1);
-
-          break;
-        case "VI":
-          Screen newScreen = new Screen("720x480", 40, 22);
-          MoviePlayer tempObject2 = new MoviePlayer(name, manufacturer, newScreen, MonitorType.LCD);
-          tempObject2.setId(id);
-          observableProductLine.add(tempObject2);
-          break;
-        case "AM":
-          System.out.println("Feature Coming Soon");
-          break;
-        case "VM":
-          System.out.println("Feature Coming Soonish");
-          break;
-        default:
-          break;
-      }
-    }
-    disconnectFromDB();
   }
 
   /**
    * Displays the production log in the production log text area. Called every time the production
    * log is updated to update the window.
    */
-  public void displayProductionRecordLog() {
+  public void displayProductionRecordLog() throws SQLException {
     productionLogTextArea.clear();
+    productionRecord = database.loadProductionRecordList(observableProductLine);
+    audioCount = database.getAudioCount();
+    visualCount = database.getVisualCount();
+    //System.out.println(productionRecord);
     for (ProductionRecord product : productionRecord) {
       productionLogTextArea.appendText(product.toString());
     }
@@ -290,7 +257,6 @@ public class Controller implements Initializable {
    * currently starts with test data, will be replaced once database is running.
    */
   public void setProductLineTable() {
-    observableProductLine = FXCollections.observableArrayList();
     productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     productIdColumn.setCellValueFactory(new PropertyValueFactory("id"));
     productTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
@@ -316,22 +282,17 @@ public class Controller implements Initializable {
     String tempString;
     productionLogTextArea.clear();
     for (ProductionRecord record : productionRecord) {
-      for (int i = 0; i < record.getCount(); i++) {
-        tempString =
-            "Prod. Name: "
-                + record.getProduct().getName()
-                + " Product ID: "
-                + record.getProductID()
-                + " Serial Num: "
-                + record.getSerialNumber()
-                + " Date: "
-                + record.getProdDate()
-
-
-
-                + "\n";
-        productionLogTextArea.appendText(tempString);
-      }
+      tempString =
+          "Prod. Name: "
+              + record.getProduct().getName()
+              + " Product ID: "
+              + record.getProductID()
+              + " Serial Num: "
+              + record.getSerialNumber()
+              + " Date: "
+              + record.getProdDate()
+              + "\n";
+      productionLogTextArea.appendText(tempString);
     }
   }
 
@@ -345,14 +306,14 @@ public class Controller implements Initializable {
         new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
     ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10);
-    test1.setSerialNum(test1.getProduct(), itemCount(test1.getProduct()));
-    System.out.println(test1);
+    // test1.setSerialNum(test1.getProduct(), itemCount(test1.getProduct()));
+    //System.out.println(test1);
     MoviePlayer moviePlayer2 =
         new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
 
     ProductionRecord test2 = new ProductionRecord(moviePlayer2, 10);
-    test2.setSerialNum(test2.getProduct(), itemCount(test2.getProduct()));
-    System.out.println(test2);
+    // test2.setSerialNum(test2.getProduct(), itemCount(test2.getProduct()));
+    //System.out.println(test2);
   }
 
   /**
@@ -361,42 +322,31 @@ public class Controller implements Initializable {
    */
   public void createProductionRecordObject() throws SQLException {
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
-    Product tempProduct = chooseProductWindow.getSelectionModel().getSelectedItem();
-    ProductionRecord tempRecord = new ProductionRecord(tempProduct, qnty);
 
-    productionRecord.add(tempRecord);
-
-    String[] tempString = new String[3];
-    tempString[0] = String.valueOf(0);
-    tempString[1] = String.valueOf(tempRecord.getProduct().getId());
-    //System.out.println(tempRecord.getProduct().getID());
-    tempString[2] = tempRecord.getSerialNumber();
-    addToProductionDBMethod(tempString);
+    for (int i = qnty; i > 0; i--) {
+      Product tempProduct = chooseProductWindow.getSelectionModel().getSelectedItem();
+      int tempInt = 0;
+      if (tempProduct instanceof AudioPlayer) {
+        tempInt = ++audioCount;
+        //System.out.println("Audio Count is " + tempInt);
+      }
+      if (tempProduct instanceof MoviePlayer) {
+        tempInt = ++visualCount;
+        //System.out.println("Visual Count is " + tempInt);
+      }
+      ProductionRecord tempRecord = new ProductionRecord(tempProduct, tempInt);
+      productionRecord.add(tempRecord);
+      if (!(database.checkDBForProductionRecordName(tempRecord))) {
+        String[] tempString = new String[3];
+        tempString[0] = String.valueOf(0);
+        tempString[1] = String.valueOf(tempProduct.getId());
+        tempString[2] = tempRecord.getSerialNumber();
+        database.addToProductionDBMethod(tempString);
+        System.out.println("Production Record Added to Database");
+      }
+    }
   }
 
-  public void addToProductionDBMethod(String[] insertValues) throws SQLException {
-    connectToDB();
-    String insertQuery =
-        "INSERT INTO PRODUCTIONRECORD "
-            + "(PRODUCTION_NUM, PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)"
-            + " VALUES (?, ?, ?, ?)";
-    PreparedStatement pstmt = conn.prepareStatement(insertQuery);
-    pstmt.setInt(1, Integer.parseInt(insertValues[0]));
-    pstmt.setInt(2, Integer.parseInt(insertValues[1]));
-    pstmt.setString(3, insertValues[2]);
-    pstmt.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-    pstmt.executeUpdate();
-    disconnectFromDB();
-  }
-
-
-  /** Sets the initial production record window at initialize. */
-  /*
-  public void loadProductionLog() {
-    productionLogTextArea.clear();
-    productionLogTextArea.appendText(productionRecord.toString());
-  }
-  */
 
   /**
    * Called every time the program starts for the first time. Sets the tables buttons etc.
@@ -407,17 +357,26 @@ public class Controller implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     setUpBoxes();
-    setProductLineTable();
 
     try {
-      loadProductList();
+      observableProductLine = database.loadProductList();
+      // System.out.println(productionRecord);
     } catch (SQLException e) {
       System.out.println("Couldn't Load Product List");
     }
+    try {
+      displayProductionRecordLog();
+    } catch (SQLException e) {
+      System.out.println("Couldn't Load Production Record");
+    }
 
-    displayProductionRecordLog();
+    setProductLineTable();
     setProductWindow();
-    //loadProductionLog();
+    // loadProductionLog();
     showProduction();
+  }
+
+  public void print() {
+    System.out.println(chooseProductWindow.getSelectionModel().getSelectedItem());
   }
 }

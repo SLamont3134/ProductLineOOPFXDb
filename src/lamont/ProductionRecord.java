@@ -8,6 +8,7 @@
 package lamont;
 //conflict between google format and CheckStyle.
 
+import com.sun.scenario.effect.impl.prism.PrReflectionPeer;
 import java.util.Date;
 
 /**
@@ -87,7 +88,7 @@ public class ProductionRecord {
     this.productID = newProduct.getId();
     this.productionNumber = 0;
     this.dateProduced = new Date();
-    this.count = count;
+    setSerialNum(count);
   }
 
   // Create accessors and mutators for all fields.
@@ -144,7 +145,6 @@ public class ProductionRecord {
    * assigned.
    *
    * @param newProduct Product, the product that is to have it's serial number set.
-   * @param count int, the int being incremented by the controller to be added to the serial number.
    */
   public void setSerialNum(Product newProduct, int count) {
     String tempString = "";
@@ -152,11 +152,39 @@ public class ProductionRecord {
     while (countString.length() < 5) {
       countString = "0" + countString;
     }
-    tempString = newProduct.getManufacturer().substring(0, 3);
-    tempString = tempString.concat(newProduct.getItemTypeCode().code);
+    if (newProduct.getManufacturer().length() > 3) {
+      tempString = newProduct.getManufacturer().substring(0, 3);
+      }
+    else{
+      tempString = newProduct.getManufacturer();
+
+    }
+    tempString = tempString.concat(newProduct.getItemTypeCode().getCode());
     // need to change next line for itemtype
     tempString = tempString.concat(countString);
     this.serialNumber = tempString;
+  }
+
+  public void setSerialNum(int count) {
+    String tempString = "";
+    String countString = Integer.toString(count);
+    while (countString.length() < 5) {
+      countString = "0" + countString;
+    }
+    if (this.getProduct().getManufacturer().length() > 3) {
+      tempString = this.getProduct().getManufacturer().substring(0, 3);
+    }
+    else{
+      tempString = this.getProduct().getManufacturer();
+
+    }
+    tempString = tempString.concat(this.getProduct().getItemTypeCode().getCode());
+    // need to change next line for itemtype
+    tempString = tempString.concat(countString);
+    this.serialNumber = tempString;
+  }
+  public void setProduct(Product product){
+    this.product = product;
   }
 
   /**

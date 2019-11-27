@@ -6,8 +6,8 @@ Overall document style
 @import url('resources/fonts/dejavu.css');
 
 body {
-    background-color:#ffffff;
-    color:#353833;
+    background-color:#d3d3d3;
+    color:#d3d3d3;
     font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
     font-size:14px;
     margin:0;
@@ -18,7 +18,7 @@ a:link, a:visited {
 }
 a:hover, a:focus {
     text-decoration:none;
-    color:#bb7a2a;
+    color:#2a3439;
 }
 a:active {
     text-decoration:none;
@@ -101,7 +101,7 @@ Document title and Copyright styles
     text-decoration:none;
 }
 .bar a:hover, .bar a:focus {
-    color:#bb7a2a;
+    color:#2a3439;
 }
 .tab {
     background-color:#0066FF;
@@ -181,11 +181,11 @@ ul.subNavList li{
 }
 .topNav a:hover, .bottomNav a:hover {
     text-decoration:none;
-    color:#bb7a2a;
+    color:#2a3439;
     text-transform:uppercase;
 }
 .navBarCell1Rev {
-    background-color:#F8981D;
+    background-color:#2a3439;
     color:#253441;
     margin: auto 5px;
 }
@@ -400,7 +400,7 @@ Table styles
     padding-bottom:7px;
     display:inline-block;
     float:left;
-    background-color:#F8981D;
+    background-color:#2a3439;
     border: none;
     height:16px;
 }
@@ -412,7 +412,7 @@ Table styles
     margin-right:3px;
     display:inline-block;
     float:left;
-    background-color:#F8981D;
+    background-color:#2a3439;
     height:16px;
 }
 .memberSummary caption span.tableTab span {
@@ -440,7 +440,7 @@ Table styles
     width:5px;
     position:relative;
     float:left;
-    background-color:#F8981D;
+    background-color:#2a3439;
 }
 .memberSummary .activeTableTab .tabEnd {
     display:none;
@@ -448,7 +448,7 @@ Table styles
     margin-right:3px;
     position:relative; 
     float:left;
-    background-color:#F8981D;
+    background-color:#2a3439;
 }
 .memberSummary .tableTab .tabEnd {
     display:none;

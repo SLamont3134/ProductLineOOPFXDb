@@ -14,7 +14,7 @@ public enum ItemType {
   AudioMobile("AM"),
   VisualMobile("VM");
 
-  public final String code;
+  private final String code;
 
   ItemType(String code) {
     this.code = code;
