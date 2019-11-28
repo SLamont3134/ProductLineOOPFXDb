@@ -1,6 +1,5 @@
 package lamont;
 
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,8 +20,8 @@ public class DatabaseManager {
 
   static final String JDBC_DRIVER = "org.h2.Driver";
   static final String DB_URL = "jdbc:h2:./rsc/ProductDB";
-  private  String USER = new String("");
-  private  String PASS = new String("");
+  private String USER = new String("");
+  private String PASS = new String("");
   private Connection conn = null;
   private Statement statement;
   private int audioCount;
@@ -38,20 +37,18 @@ public class DatabaseManager {
    */
   public void connectToDB() {
 
-    try{
+    try {
       Properties prop = new Properties();
       prop.load(new FileInputStream("rsc/properties"));
-      PASS = prop.getProperty("password");
+      String tempPassword = prop.getProperty("password");
+      PASS = reverseString(tempPassword);
     } catch (IOException e) {
-      System.out.println(e);
+      System.out.println("Couldn't Retrieve Database Password");
     }
 
     try {
       Class.forName(JDBC_DRIVER);
 
-      /*For this following line of code I receive a empty database password flag on FindBugs
-       * this issue will be addressed in later versions if a password is to be implemented
-       */
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
       statement = conn.createStatement();
 
@@ -65,23 +62,25 @@ public class DatabaseManager {
     }
   }
 
-  public boolean checkDBForProductionRecordName(ProductionRecord productionRecord){
+  public boolean checkDBForProductionRecordName(ProductionRecord productionRecord) {
     connectToDB();
     ResultSet rs = null;
-    int count =1;
-    try{
+    int count = 1;
+    try {
       Statement stmt = conn.createStatement();
-      rs =stmt.executeQuery("SELECT COUNT(SERIAL_NUM) FROM PRODUCTIONRECORD WHERE SERIAL_NUM = \'" + productionRecord.getSerialNumber() + "\' ;");
-    while(rs.next())
-      count = rs.getInt(1);
+      rs =
+          stmt.executeQuery(
+              "SELECT COUNT(SERIAL_NUM) FROM PRODUCTIONRECORD WHERE SERIAL_NUM = \'"
+                  + productionRecord.getSerialNumber()
+                  + "\' ;");
+      while (rs.next()) count = rs.getInt(1);
 
     } catch (SQLException e) {
       System.out.println("Couldn't Check database for production record");
     }
-    if (count > 0){
+    if (count > 0) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
@@ -159,7 +158,8 @@ public class DatabaseManager {
     return observableProductLine;
   }
 
-  public ArrayList loadProductionRecordList(ObservableList<Product> observableList) throws SQLException {
+  public ArrayList loadProductionRecordList(ObservableList<Product> observableList)
+      throws SQLException {
     ArrayList<ProductionRecord> productionRecordList = new ArrayList<>();
     connectToDB();
     String sql = "SELECT * FROM PRODUCTIONRECORD";
@@ -180,48 +180,49 @@ public class DatabaseManager {
       productionRecordList.add(tempRecord);
       tempSerial = tempRecord.getSerialNumber();
       tempSerial = tempSerial.substring(tempSerial.length() - 5, tempSerial.length());
-      //System.out.println(tempSerial);
+      // System.out.println(tempSerial);
 
       if (tempRecord.getProduct() instanceof AudioPlayer) {
         // System.out.println("AudioPlayer Production Created");
         if (audioCount <= Integer.parseInt(tempSerial)) {
-          audioCount = Integer.parseInt(tempSerial) ;
-          //System.out.println(visualCount);
+          audioCount = Integer.parseInt(tempSerial);
+          // System.out.println(visualCount);
         }
       }
       if (tempRecord.getProduct() instanceof MoviePlayer) {
         // System.out.println("MoviePlayer Production Created");
         if (visualCount <= Integer.parseInt(tempSerial)) {
           visualCount = Integer.parseInt(tempSerial);
-          //System.out.println(visualCount);
+          // System.out.println(visualCount);
         }
       }
-      }
+    }
     disconnectFromDB();
     return productionRecordList;
   }
 
   public void addToProductionDBMethod(String[] insertValues) throws SQLException {
     connectToDB();
-    //String sql = "SELECT COUNT(SERIAL_NUM) FROM PRODUCTIONRECORD WHERE SERIAL_NUM = \'" + insertValues[2] + "\'" ;
-    //ResultSet rs = statement.executeQuery(sql);
-    //if (rs == null) {
-      String insertQuery =
-          "INSERT INTO PRODUCTIONRECORD "
-              + "(PRODUCTION_NUM, PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)"
-              + " VALUES (?, ?, ?, ?)";
-      PreparedStatement pstmt = conn.prepareStatement(insertQuery);
-      pstmt.setInt(1, Integer.parseInt(insertValues[0]));
-      pstmt.setInt(2, Integer.parseInt(insertValues[1]));
-      pstmt.setString(3, insertValues[2]);
-      pstmt.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-      pstmt.executeUpdate();
-      disconnectFromDB();
-    }
-   // else{
-      //System.out.println("Production Record already exists");
-    //}
-  //}
+    // String sql = "SELECT COUNT(SERIAL_NUM) FROM PRODUCTIONRECORD WHERE SERIAL_NUM = \'" +
+    // insertValues[2] + "\'" ;
+    // ResultSet rs = statement.executeQuery(sql);
+    // if (rs == null) {
+    String insertQuery =
+        "INSERT INTO PRODUCTIONRECORD "
+            + "(PRODUCTION_NUM, PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED)"
+            + " VALUES (?, ?, ?, ?)";
+    PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+    pstmt.setInt(1, Integer.parseInt(insertValues[0]));
+    pstmt.setInt(2, Integer.parseInt(insertValues[1]));
+    pstmt.setString(3, insertValues[2]);
+    pstmt.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+    pstmt.executeUpdate();
+    disconnectFromDB();
+  }
+  // else{
+  // System.out.println("Production Record already exists");
+  // }
+  // }
 
   /** Called after every database interaction is concluded to close connection to the database. */
   public void disconnectFromDB() {
@@ -233,10 +234,19 @@ public class DatabaseManager {
       ex.printStackTrace();
     }
   }
-  public int getAudioCount(){
+
+  public String reverseString(String string) {
+    if (string.isEmpty()) {
+      return string;
+    }
+    return reverseString(string.substring(1)) + string.charAt(0);
+  }
+
+  public int getAudioCount() {
     return audioCount;
   }
-  public int getVisualCount(){
+
+  public int getVisualCount() {
     return visualCount;
   }
 }

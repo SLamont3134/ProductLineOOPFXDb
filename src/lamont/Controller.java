@@ -25,12 +25,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 
 /**
  * The controller class carries out the functions of the GUI.
@@ -47,6 +51,11 @@ public class Controller implements Initializable {
   ObservableList<Product> observableProductLine = FXCollections.observableArrayList();
   DatabaseManager database = new DatabaseManager();
   Employee currentEmployee;
+
+  @FXML
+  private Label productionErrorBox;
+  @FXML
+  private ImageView productImage;
 
   @FXML private TextField productNameWindow;
 
@@ -83,6 +92,10 @@ public class Controller implements Initializable {
   @FXML
   private TextArea employeeInfo;
 
+
+  @FXML
+  private Label productErrorWindow;
+
   public Controller() throws SQLException, IOException {}
 
   public static final String addNameError = "Length Must Be Greater Than Zero";
@@ -98,31 +111,37 @@ public class Controller implements Initializable {
    */
   @FXML
   void addButtonAction(ActionEvent event) throws SQLException {
-    manufacturerNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-    productNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-    // System.out.println((productNameWindow.getLength() > 0));
-    // System.out.println((productNameWindow.getText() != null));
-    // System.out.println(!(productNameWindow.getText().equals(addNameError)));
-    if ((productNameWindow.getLength() > 0)
-        && (productNameWindow.getText() != null)
-        && !(productNameWindow.getText().equals(addNameError))) {
-      if ((manufacturerNameWindow.getLength() > 3)
-          && (manufacturerNameWindow.getText() != null)
-          && !(manufacturerNameWindow.getText().equals(addManufacturerError))) {
-        createProductObject();
-        displayProductionRecordLog();
-        setProductWindow();
-        setProductLineTable();
-        System.out.println("Add Button Pressed");
+    productErrorWindow.setText("");
+    if (!(currentEmployee == null)) {
+      manufacturerNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+      productNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
+      // System.out.println((productNameWindow.getLength() > 0));
+      // System.out.println((productNameWindow.getText() != null));
+      // System.out.println(!(productNameWindow.getText().equals(addNameError)));
+      if ((productNameWindow.getLength() > 0)
+          && (productNameWindow.getText() != null)
+          && !(productNameWindow.getText().equals(addNameError))) {
+        if ((manufacturerNameWindow.getLength() > 3)
+            && (manufacturerNameWindow.getText() != null)
+            && !(manufacturerNameWindow.getText().equals(addManufacturerError))) {
+          createProductObject();
+          displayProductionRecordLog();
+          setProductWindow();
+          setProductLineTable();
+          System.out.println("Add Button Pressed");
+        } else {
+          manufacturerNameWindow.setText(addManufacturerError);
+          manufacturerNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+        }
       } else {
-        manufacturerNameWindow.setText(addManufacturerError);
-        manufacturerNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+        productNameWindow.setText(addNameError);
+        productNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
       }
-    } else {
-      productNameWindow.setText(addNameError);
-      productNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
     }
-  }
+    else{
+      productErrorWindow.setText("You Must Be Logged In To Do That");
+    }
+    }
 
   /**
    * The recordProductionButton this method handle the event of the productionButton being pressed.
@@ -132,9 +151,16 @@ public class Controller implements Initializable {
    */
   @FXML
   void recordProductionBttnAction(ActionEvent event) throws SQLException {
-    createProductionRecordObject();
-    // loadProductionLog();
-    showProduction();
+    productionErrorBox.setText("");
+
+
+    if (!(currentEmployee == null)) {
+      createProductionRecordObject();
+      showProduction();
+    }
+    else{
+      productionErrorBox.setText("You must be logged in");
+    }
 
     System.out.println("Record Production Button Pressed");
   }
@@ -321,6 +347,8 @@ public class Controller implements Initializable {
    * from the gui, then posts it to production log area.
    */
   public void createProductionRecordObject() throws SQLException {
+
+    if (!(chooseProductWindow.getSelectionModel().isEmpty())){
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
 
     for (int i = qnty; i > 0; i--) {
@@ -345,6 +373,11 @@ public class Controller implements Initializable {
         System.out.println("Production Record Added to Database");
       }
     }
+    } else {
+      productionErrorBox.setText("Please Select a Product");
+      }
+    productionErrorBox.setText("");
+
   }
 
 

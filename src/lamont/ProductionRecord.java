@@ -6,7 +6,7 @@
  * @date 10/15/19
  */
 package lamont;
-//conflict between google format and CheckStyle.
+// conflict between google format and CheckStyle.
 
 import com.sun.scenario.effect.impl.prism.PrReflectionPeer;
 import java.util.Date;
@@ -154,10 +154,8 @@ public class ProductionRecord {
     }
     if (newProduct.getManufacturer().length() > 3) {
       tempString = newProduct.getManufacturer().substring(0, 3);
-      }
-    else{
+    } else {
       tempString = newProduct.getManufacturer();
-
     }
     tempString = tempString.concat(newProduct.getItemTypeCode().getCode());
     // need to change next line for itemtype
@@ -173,17 +171,16 @@ public class ProductionRecord {
     }
     if (this.getProduct().getManufacturer().length() > 3) {
       tempString = this.getProduct().getManufacturer().substring(0, 3);
-    }
-    else{
+    } else {
       tempString = this.getProduct().getManufacturer();
-
     }
     tempString = tempString.concat(this.getProduct().getItemTypeCode().getCode());
     // need to change next line for itemtype
     tempString = tempString.concat(countString);
     this.serialNumber = tempString;
   }
-  public void setProduct(Product product){
+
+  public void setProduct(Product product) {
     this.product = product;
   }
 
@@ -262,6 +259,4 @@ public class ProductionRecord {
         + count
         + "\n";
   }
-
-
 }

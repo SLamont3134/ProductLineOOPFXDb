@@ -38,7 +38,7 @@ public class Employee {
       i++;
     }
     System.out.println(name.charAt(i));
-    tempSB.append(name.substring(i+1).toLowerCase());
+    tempSB.append(name.substring(i + 1).toLowerCase());
     this.username = tempSB.toString();
   }
 
@@ -109,10 +109,9 @@ public class Employee {
       this.username = "default";
       this.email = "user@oracleacademy.Test";
     }
-    if(isValidPassword(password)){
+    if (isValidPassword(password)) {
       this.password = password;
-    }
-    else{
+    } else {
       this.password = "pw";
     }
   }
@@ -120,11 +119,8 @@ public class Employee {
   /**
    * Overload toString to produce:
    *
-   * <p><Employee Details
-   * Name : Tim Lee
-   *Username : tlee
-   * Email : tim.lee@oracleacademy.Test
-   * Initial Password : aBcd!
+   * <p><Employee Details Name : Tim Lee Username : tlee Email : tim.lee@oracleacademy.Test Initial
+   * Password : aBcd!
    *
    * @return Employee toString()
    */
@@ -142,14 +138,10 @@ public class Employee {
   }
 
   public String secureToString() {
-    return ("Employee Details" +
-            "\nName : " + name.toString() +
-            "\nUsername : " + username +
-            "\nEmail : " + email);
+    return ("Name : " + name.toString() + "\nUsername : " + username + "\nEmail : " + email);
   }
 
-
-  public static void main(String[] args){
+  public static void main(String[] args) {
     Employee testEmployee = new Employee("Tim Lee", "Password!");
     System.out.println(testEmployee.toString());
     System.out.println(testEmployee.toString());
