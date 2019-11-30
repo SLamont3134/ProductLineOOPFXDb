@@ -36,6 +36,8 @@ public class ProductionRecord {
 
   private Product product;
 
+  private String employeeUsername;
+
   /**
    * Make one constructor that just has a parameter for the productID. This will be the constructor
    * called when the user records production from the user interface.
@@ -144,25 +146,8 @@ public class ProductionRecord {
    * sequential for the item type. The entire Serial Number should be programmatically created and
    * assigned.
    *
-   * @param newProduct Product, the product that is to have it's serial number set.
+   * @param count int, the number that is to be used in the Serial Number generation.
    */
-  public void setSerialNum(Product newProduct, int count) {
-    String tempString = "";
-    String countString = Integer.toString(count);
-    while (countString.length() < 5) {
-      countString = "0" + countString;
-    }
-    if (newProduct.getManufacturer().length() > 3) {
-      tempString = newProduct.getManufacturer().substring(0, 3);
-    } else {
-      tempString = newProduct.getManufacturer();
-    }
-    tempString = tempString.concat(newProduct.getItemTypeCode().getCode());
-    // need to change next line for itemtype
-    tempString = tempString.concat(countString);
-    this.serialNumber = tempString;
-  }
-
   public void setSerialNum(int count) {
     String tempString = "";
     String countString = Integer.toString(count);
@@ -180,10 +165,6 @@ public class ProductionRecord {
     this.serialNumber = tempString;
   }
 
-  public void setProduct(Product product) {
-    this.product = product;
-  }
-
   /**
    * Overloaded method to manually set serial number.
    *
@@ -191,6 +172,15 @@ public class ProductionRecord {
    */
   public void setSerialNum(String serialNumber) {
     this.serialNumber = serialNumber;
+  }
+
+  /**
+   * Sets the PRoduct associtated with the Production Record.
+   *
+   * @param product the product to be set.
+   */
+  public void setProduct(Product product) {
+    this.product = product;
   }
 
   /**
@@ -245,6 +235,34 @@ public class ProductionRecord {
    *
    * @return String, the production record description in String format.
    */
+  public int getProductionNumber() {
+    return productionNumber;
+  }
+
+  public void setProductionNumber(int productionNumber) {
+    this.productionNumber = productionNumber;
+  }
+
+  public void setSerialNumber(String serialNumber) {
+    this.serialNumber = serialNumber;
+  }
+
+  public Date getDateProduced() {
+    return dateProduced;
+  }
+
+  public void setDateProduced(Date dateProduced) {
+    this.dateProduced = dateProduced;
+  }
+
+  public String getEmployeeUsername() {
+    return employeeUsername;
+  }
+
+  public void setEmployeeUsername(String employeeUsername) {
+    this.employeeUsername = employeeUsername;
+  }
+
   @Override
   public String toString() {
     return "Prod. Num: "

@@ -9,6 +9,30 @@ package lamont;
  */
 public class Employee {
 
+  public StringBuilder getName() {
+    return name;
+  }
+
+  public void setName(StringBuilder name) {
+    this.name = name;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
   // StringBuilder name;
   StringBuilder name;
 
@@ -57,7 +81,7 @@ public class Employee {
    * setEmail will set the email field to the first name, then a period, then the last name (all
    * lowercase) followed by @oracleacademy.Test
    *
-   * @param name
+   * @param name String, the first and last name of the employee.
    */
   // private void setEmail
   private void setEmail(String name) {
@@ -80,10 +104,13 @@ public class Employee {
    */
   // private boolean isValidPassword
   private boolean isValidPassword(String password) {
-    boolean lCase = !(password.equals(password.toUpperCase()));
-    boolean uCase = !(password.equals(password.toLowerCase()));
-    boolean spCase = !(password.matches("[A-Za-z0-9 ]*"));
-    if (lCase && uCase && spCase) {
+    // checks to see if the password is all lower case
+    boolean lwrCase = !(password.equals(password.toUpperCase()));
+    // checks to see if the password is all upper case
+    boolean upprCase = !(password.equals(password.toLowerCase()));
+    // checks to see  if the password doesn't have at least one special character in it
+    boolean spclCase = !(password.matches("[A-Za-z0-9 ]*"));
+    if (lwrCase && upprCase && spclCase) {
       return true;
     } else {
       return false;
@@ -96,8 +123,8 @@ public class Employee {
    * call setUsername and setEmail, passing the name in to both. If it doesn't contain a space, set
    * the username to "default" and the email to "user@oracleacademy.Test"
    *
-   * @param name
-   * @param password
+   * @param name String, first and last name of employee separated by a space.
+   * @param password String, the password to be verified then set.
    */
   Employee(String name, String password) {
     if (checkName(name)) {
@@ -119,8 +146,8 @@ public class Employee {
   /**
    * Overload toString to produce:
    *
-   * <p><Employee Details Name : Tim Lee Username : tlee Email : tim.lee@oracleacademy.Test Initial
-   * Password : aBcd!
+   * <p>Employee Details Name: Tim Lee Username: tlee Email: tim.lee@oracleacademy.Test Initial
+   * Password: aBcd!
    *
    * @return Employee toString()
    */
@@ -141,6 +168,10 @@ public class Employee {
     return ("Name : " + name.toString() + "\nUsername : " + username + "\nEmail : " + email);
   }
 
+  /**
+   * Test method to test the Employee class. Not used for GUI.
+   * @param args runnable code segment.
+   */
   public static void main(String[] args) {
     Employee testEmployee = new Employee("Tim Lee", "Password!");
     System.out.println(testEmployee.toString());

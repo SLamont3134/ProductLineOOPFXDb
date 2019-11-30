@@ -61,7 +61,7 @@
                                     <Insets top="5.0" />
                                  </GridPane.margin>
                               </Button>
-                              <TextField fx:id="employeeNameField" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="310.0" promptText="First And Last Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+                              <TextField fx:id="employeeNameField" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="310.0" promptText="First And Last Name" text="Sean Lamont" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" />
                                  </GridPane.margin>
@@ -76,20 +76,22 @@
                                     <Insets />
                                  </opaqueInsets>
                               </Label>
-                              <TextField fx:id="employeePasswordField" alignment="TOP_CENTER" layoutX="399.0" layoutY="68.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="330.0" promptText="Password" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                              <TextField fx:id="employeePasswordField" alignment="TOP_CENTER" layoutX="399.0" layoutY="68.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="330.0" promptText="Password" text="PasswordYeah!!" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </GridPane.margin>
                                  <font>
                                     <Font size="24.0" />
                                  </font></TextField>
-                              <TextArea fx:id="employeeInfo" opacity="0.0" prefHeight="200.0" prefWidth="200.0" promptText="Please Login" style="-fx-background-color: gray;">
+                              <Label fx:id="employeeInfo" prefHeight="140.0" prefWidth="350.0" GridPane.rowIndex="3" />
+                              <Label fx:id="employeeErrorBox" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="260.0" textAlignment="CENTER" textFill="#e20707" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font name="Serif Bold" size="12.0" />
+                                    <Font name="System Bold" size="15.0" />
                                  </font>
-                                 <opaqueInsets>
-                                    <Insets />
-                                 </opaqueInsets></TextArea>
+                                 <GridPane.margin>
+                                    <Insets top="15.0" />
+                                 </GridPane.margin>
+                              </Label>
                            </children>
                         </GridPane>
                      </children>
@@ -111,11 +113,11 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                   <children>
-                    <TextField fx:id="productNameWindow" alignment="BOTTOM_CENTER" prefHeight="46.0" prefWidth="390.0" promptText="Product Name" GridPane.columnIndex="1">
+                    <TextField fx:id="productNameWindow" alignment="BOTTOM_CENTER" prefHeight="45.0" prefWidth="390.0" promptText="Product Name" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
                                  <font>
                                     <Font size="24.0" />
                                  </font></TextField>
-                    <TextField fx:id="manufacturerNameWindow" alignment="CENTER" layoutX="399.0" layoutY="58.0" prefHeight="46.0" prefWidth="390.0" promptText="Manufacturer" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <TextField fx:id="manufacturerNameWindow" alignment="CENTER" layoutX="399.0" layoutY="58.0" minHeight="-Infinity" prefHeight="45.0" prefWidth="390.0" promptText="Manufacturer" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                                  <font>
                                     <Font size="24.0" />
                                  </font></TextField>
@@ -138,10 +140,18 @@
                                     <Insets left="10.0" top="5.0" />
                                  </opaqueInsets>
                     </Label>
-                              <Label fx:id="productErrorWindow" prefHeight="63.0" prefWidth="382.0" textFill="#e80505" GridPane.rowIndex="2">
+                              <Label fx:id="productErrorWindow" alignment="CENTER" prefHeight="63.0" prefWidth="382.0" textFill="#e80505" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="Arial Black" size="20.0" />
                                  </font>
+                              </Label>
+                              <Label fx:id="productEmplBox" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="66.0" prefWidth="393.0" text="Not Logged In" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                                 <font>
+                                    <Font name="Tahoma" size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
                               </Label>
                   </children>
                 </GridPane>
@@ -182,10 +192,18 @@
                     <Font size="24.0" />
                   </font>
                 </Button>
-                        <Label fx:id="productionErrorBox" contentDisplay="CENTER" layoutX="10.0" layoutY="494.0" prefHeight="35.0" prefWidth="306.0" textFill="#da0b0b">
+                        <Label fx:id="productionErrorBox" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="494.0" prefHeight="35.0" prefWidth="306.0" textFill="#da0b0b">
                            <font>
                               <Font size="24.0" />
                            </font>
+                        </Label>
+                        <Label fx:id="productionEmplBox" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="389.0" prefHeight="45.0" prefWidth="394.0" text="Not Logged In">
+                           <font>
+                              <Font name="Tahoma" size="24.0" />
+                           </font>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
                         </Label>
               </children>
             </AnchorPane>
@@ -197,7 +215,20 @@
               <children>
                 <AnchorPane layoutX="-3.0" layoutY="-3.0" prefHeight="555.0" prefWidth="783.0" style="-fx-background-color: grey;" stylesheets="@OOPStyleSheet.css">
                   <children>
-                    <TextArea fx:id="productionLogTextArea" layoutX="17.0" layoutY="15.0" prefHeight="518.0" prefWidth="747.0" />
+                              <Label fx:id="productionLogEmplBox" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="381.0" layoutY="2.0" prefHeight="45.0" prefWidth="394.0" text="Not Logged In">
+                                 <font>
+                                    <Font name="Tahoma" size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </Label>
+                    <TextArea fx:id="productionLogTextArea" layoutX="6.0" layoutY="42.0" prefHeight="508.0" prefWidth="770.0" />
+                              <Label layoutX="10.0" layoutY="5.0" prefHeight="39.0" prefWidth="210.0" text="Production Log">
+                                 <font>
+                                    <Font name="System Italic" size="24.0" />
+                                 </font>
+                              </Label>
                   </children>
                 </AnchorPane>
               </children>

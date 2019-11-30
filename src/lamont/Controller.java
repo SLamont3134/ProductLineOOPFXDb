@@ -52,10 +52,8 @@ public class Controller implements Initializable {
   DatabaseManager database = new DatabaseManager();
   Employee currentEmployee;
 
-  @FXML
-  private Label productionErrorBox;
-  @FXML
-  private ImageView productImage;
+  @FXML private Label productionErrorBox;
+  @FXML private ImageView productImage;
 
   @FXML private TextField productNameWindow;
 
@@ -89,19 +87,28 @@ public class Controller implements Initializable {
 
   @FXML private TextField employeePasswordField;
 
-  @FXML
-  private TextArea employeeInfo;
+  @FXML private Label employeeInfo;
 
+  @FXML private Label productErrorWindow;
 
-  @FXML
-  private Label productErrorWindow;
+  @FXML private Label employeeErrorBox;
 
+  @FXML private Label productEmplBox;
+
+  @FXML private Label productionEmplBox;
+
+  @FXML private Label productionLogEmplBox;
+
+  // There is a conflict here between CheckStyle and Google Formatting about the "}" being on a
+  // separate line
   public Controller() throws SQLException, IOException {}
 
-  public static final String addNameError = "Length Must Be Greater Than Zero";
-  public static final String addManufacturerError = "Must Be Longer Than 3 Letters";
-  public static final String employeeNameError = "Must be two Words with a space";
-  public static final String passwordError = "Password Must Have One UpperCase Letter and One Symbol";
+  public static final String addNameError = "Name Length Must Be Greater Than Zero";
+  public static final String addManufacturerError = "Manufacturer Must Be Longer Than 3 Letters";
+  public static final String employeeNameError = "Name Must be two Words with a space";
+  public static final String passwordError =
+      "Password Must Have One UpperCase Letter and One Symbol";
+  public static final String employeeError = "You Must Log In";
 
   /**
    * The addButtonAction this method handle the event of the addButton being pressed.
@@ -111,37 +118,14 @@ public class Controller implements Initializable {
    */
   @FXML
   void addButtonAction(ActionEvent event) throws SQLException {
-    productErrorWindow.setText("");
-    if (!(currentEmployee == null)) {
-      manufacturerNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-      productNameWindow.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-      // System.out.println((productNameWindow.getLength() > 0));
-      // System.out.println((productNameWindow.getText() != null));
-      // System.out.println(!(productNameWindow.getText().equals(addNameError)));
-      if ((productNameWindow.getLength() > 0)
-          && (productNameWindow.getText() != null)
-          && !(productNameWindow.getText().equals(addNameError))) {
-        if ((manufacturerNameWindow.getLength() > 3)
-            && (manufacturerNameWindow.getText() != null)
-            && !(manufacturerNameWindow.getText().equals(addManufacturerError))) {
-          createProductObject();
-          displayProductionRecordLog();
-          setProductWindow();
-          setProductLineTable();
-          System.out.println("Add Button Pressed");
-        } else {
-          manufacturerNameWindow.setText(addManufacturerError);
-          manufacturerNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
-        }
-      } else {
-        productNameWindow.setText(addNameError);
-        productNameWindow.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
-      }
+    System.out.println("Add Button Pressed");
+    if (verifyProduct()) {
+      createProductObject();
+      displayProductionRecordLog();
+      setProductWindow();
+      setProductLineTable();
     }
-    else{
-      productErrorWindow.setText("You Must Be Logged In To Do That");
-    }
-    }
+  }
 
   /**
    * The recordProductionButton this method handle the event of the productionButton being pressed.
@@ -151,65 +135,36 @@ public class Controller implements Initializable {
    */
   @FXML
   void recordProductionBttnAction(ActionEvent event) throws SQLException {
-    productionErrorBox.setText("");
-
-
-    if (!(currentEmployee == null)) {
+    System.out.println("Record Production Button Pressed");
+    if (verifyProductionRecord()) {
       createProductionRecordObject();
       showProduction();
     }
-    else{
-      productionErrorBox.setText("You must be logged in");
-    }
-
-    System.out.println("Record Production Button Pressed");
   }
 
   @FXML
   void addEmployeeButtonAction(ActionEvent event) {
-    employeeNameField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-    employeeNameField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-    employeePasswordField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-    employeePasswordField.setStyle("-fx-text-fill: black; -fx-font-size: 16px;");
-    if ((employeeNameField.getLength() > 0)
-        && (employeeNameField.getText() != null)
-        && !(employeeNameField.getText().equals(employeeNameError))) {
-      Boolean hasSpace = false;
-      for (int i = 0; i < employeeNameField.getText().length(); i++) {
-        if (employeeNameField.getText().charAt(i) == ' ') {
-          hasSpace = true;
-        }
-      }
-      if (hasSpace) {
-        // Insert all code here
-        if ((employeePasswordField.getLength() > 0)
-            && (employeePasswordField.getText() != null)
-            && !(employeePasswordField.getText().equals(employeeNameError))) {
-          creatEmployee();
-          employeeInfo.setText("Current User Information: \n" + currentEmployee.secureToString());
-          employeeInfo.setOpacity(1.0);
-        }
-        else {
-          employeePasswordField.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
-          employeePasswordField.setText(passwordError);
-        }
-        System.out.println("Add employee Button Pressed");
-      } else {
-        employeeNameField.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
-        employeeNameField.setText("Name must contain a space.");
-      }
-    } else {
-      employeeNameField.setText(employeeNameError);
-      employeeNameField.setStyle("-fx-text-fill: red; -fx-font-size: 16px;");
+    System.out.println("Add employee Button Pressed");
+    if (verifyEmployee()) {
+      creatEmployee();
+      showProduction();
     }
   }
 
+  /**
+   * Createes a new employee object that allows access to other functions of the program. Also
+   * populates several fields to indicate the current employee.
+   */
   public void creatEmployee() {
     String name = employeeNameField.getText();
     String password = employeePasswordField.getText();
     currentEmployee = new Employee(name, password);
+    employeeInfo.setText("Current User Information: \n" + currentEmployee.secureToString());
+    employeeInfo.setOpacity(1.0);
+    productEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
+    productionEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
+    productionLogEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
     System.out.println("Employee Set!");
-    System.out.println(currentEmployee);
   }
 
   /** Called when a new product is made and needs to be inserted into the database. */
@@ -234,7 +189,7 @@ public class Controller implements Initializable {
     productionRecord = database.loadProductionRecordList(observableProductLine);
     audioCount = database.getAudioCount();
     visualCount = database.getVisualCount();
-    //System.out.println(productionRecord);
+    // System.out.println(productionRecord);
     for (ProductionRecord product : productionRecord) {
       productionLogTextArea.appendText(product.toString());
     }
@@ -250,35 +205,6 @@ public class Controller implements Initializable {
   }
 
   /**
-   * Keeps track of incremental portion of serial number. Will probably be replaced by database
-   * incrementation.
-   *
-   * @param product Product, used to determine which count to return and increment.
-   * @return int, the number to be appended to the serial number.
-   */
-  public int itemCount(Product product) {
-    int tempInt;
-    switch (product.getItemTypeCode()) {
-      case Audio:
-        tempInt = ++audioCount;
-        break;
-      case Visual:
-        tempInt = ++visualCount;
-        break;
-      case AudioMobile:
-        tempInt = ++audioMobileCount;
-        break;
-      case VisualMobile:
-        tempInt = ++visualMobileCount;
-        break;
-      default:
-        tempInt = 00000;
-        break;
-    }
-    return tempInt;
-  }
-
-  /**
    * Sets up the product line table as well as the observable list. Called once at initialization,
    * currently starts with test data, will be replaced once database is running.
    */
@@ -291,7 +217,7 @@ public class Controller implements Initializable {
   }
 
   /**
-   * Sets the product window to display the observable list. Called once at initialize then
+   * Sets the product window to display the observable list. Called once at initialize then.
    * automatically updated with observable list.
    */
   public void setProductWindow() {
@@ -300,6 +226,7 @@ public class Controller implements Initializable {
   }
 
   /**
+   * Loads the Production Log Text area with the information from the ArrayList productionRecord.
    * showProduction should: populate the TextArea on the Production Log tab with the information
    * from the productionLog, replacing the productId with the product name, with one line for each
    * product produced
@@ -307,39 +234,25 @@ public class Controller implements Initializable {
   public void showProduction() {
     String tempString;
     productionLogTextArea.clear();
-    for (ProductionRecord record : productionRecord) {
-      tempString =
-          "Prod. Name: "
-              + record.getProduct().getName()
-              + " Product ID: "
-              + record.getProductID()
-              + " Serial Num: "
-              + record.getSerialNumber()
-              + " Date: "
-              + record.getProdDate()
-              + "\n";
-      productionLogTextArea.appendText(tempString);
+    if (isLoggedIn()) {
+      for (ProductionRecord record : productionRecord) {
+        tempString =
+            "Prod. Name: "
+                + record.getProduct().getName()
+                + " Product ID: "
+                + record.getProductID()
+                + " Serial Num: "
+                + record.getSerialNumber()
+                + " Date: "
+                + record.getProdDate()
+                + " UsrNme: "
+                + record.getEmployeeUsername()
+                + "\n";
+        productionLogTextArea.appendText(tempString);
+      }
+    } else {
+      productionLogTextArea.appendText(employeeError);
     }
-  }
-
-  /**
-   * Method to test serial number generation. Not currently used, will eventually be removed once
-   * testing is complete.
-   */
-  public void testSerialNumber() {
-    Screen newScreen = new Screen("720x480", 40, 22);
-    MoviePlayer moviePlayer1 =
-        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
-
-    ProductionRecord test1 = new ProductionRecord(moviePlayer1, 10);
-    // test1.setSerialNum(test1.getProduct(), itemCount(test1.getProduct()));
-    //System.out.println(test1);
-    MoviePlayer moviePlayer2 =
-        new MoviePlayer("DBPOWER MK101", "OracleProduction", newScreen, MonitorType.LCD);
-
-    ProductionRecord test2 = new ProductionRecord(moviePlayer2, 10);
-    // test2.setSerialNum(test2.getProduct(), itemCount(test2.getProduct()));
-    //System.out.println(test2);
   }
 
   /**
@@ -347,39 +260,31 @@ public class Controller implements Initializable {
    * from the gui, then posts it to production log area.
    */
   public void createProductionRecordObject() throws SQLException {
-
-    if (!(chooseProductWindow.getSelectionModel().isEmpty())){
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
-
     for (int i = qnty; i > 0; i--) {
       Product tempProduct = chooseProductWindow.getSelectionModel().getSelectedItem();
       int tempInt = 0;
       if (tempProduct instanceof AudioPlayer) {
         tempInt = ++audioCount;
-        //System.out.println("Audio Count is " + tempInt);
+        // System.out.println("Audio Count is " + tempInt);
       }
       if (tempProduct instanceof MoviePlayer) {
         tempInt = ++visualCount;
-        //System.out.println("Visual Count is " + tempInt);
+        // System.out.println("Visual Count is " + tempInt);
       }
       ProductionRecord tempRecord = new ProductionRecord(tempProduct, tempInt);
       productionRecord.add(tempRecord);
-      if (!(database.checkDBForProductionRecordName(tempRecord))) {
-        String[] tempString = new String[3];
+      if (!(database.checkDbForProductionRecordName(tempRecord))) {
+        String[] tempString = new String[4];
         tempString[0] = String.valueOf(0);
         tempString[1] = String.valueOf(tempProduct.getId());
         tempString[2] = tempRecord.getSerialNumber();
-        database.addToProductionDBMethod(tempString);
+        tempString[3] = currentEmployee.getUsername();
+        database.addToProductionDbMethod(tempString);
         System.out.println("Production Record Added to Database");
       }
     }
-    } else {
-      productionErrorBox.setText("Please Select a Product");
-      }
-    productionErrorBox.setText("");
-
   }
-
 
   /**
    * Called every time the program starts for the first time. Sets the tables buttons etc.
@@ -409,7 +314,99 @@ public class Controller implements Initializable {
     showProduction();
   }
 
-  public void print() {
-    System.out.println(chooseProductWindow.getSelectionModel().getSelectedItem());
+  /**
+   * Verifies to make sure all of the necessary information to create the Product are present.
+   *
+   * @return Returns true if all of the parameters are met and returns false if any are not met.
+   */
+  public boolean verifyProduct() {
+    productErrorWindow.setText("");
+    if (isLoggedIn()) {
+      if ((productNameWindow.getLength() > 0)
+          && (productNameWindow.getText() != null)
+          && !(productNameWindow.getText().equals(addNameError))) {
+        if ((manufacturerNameWindow.getLength() > 3)
+            && (manufacturerNameWindow.getText() != null)
+            && !(manufacturerNameWindow.getText().equals(addManufacturerError))) {
+          return true;
+        } else {
+          productErrorWindow.setText(addManufacturerError);
+        }
+      } else {
+        productErrorWindow.setText(addNameError);
+      }
+    } else {
+      productErrorWindow.setText(employeeError);
+    }
+    return false;
+  }
+
+  /**
+   * Verifies all necessary input and employee information needed to create a Production Record.
+   * Then sets the errors and warning dependant on the missing information.
+   *
+   * @return returns true if all parameters are correct, false if any of the parameters are wrong.
+   */
+  public boolean verifyProductionRecord() {
+    productionErrorBox.setText("");
+    if (isLoggedIn()) {
+      if (!(chooseProductWindow.getSelectionModel().isEmpty())) {
+        productionErrorBox.setText("");
+        return true;
+      } else {
+        productionErrorBox.setText("Please Select a Product");
+      }
+    } else {
+      productionErrorBox.setText(employeeError);
+    }
+    return false;
+  }
+
+  /**
+   * Verifies all necessary information needed to create an Employee. Then sets the errors and
+   * warning dependant on the missing information.
+   *
+   * @return returns true if all parameters are correct, false if any of the parameters are wrong.
+   */
+  public boolean verifyEmployee() {
+    employeeErrorBox.setText("");
+    if ((employeeNameField.getLength() > 0)
+        && (employeeNameField.getText() != null)
+        && !(employeeNameField.getText().equals(employeeNameError))) {
+      Boolean hasSpace = false;
+      for (int i = 0; i < employeeNameField.getText().length(); i++) {
+        if (employeeNameField.getText().charAt(i) == ' ') {
+          hasSpace = true;
+        }
+      }
+      if (hasSpace) {
+        if ((employeePasswordField.getLength() > 0)
+            && (employeePasswordField.getText() != null)
+            && !(employeePasswordField.getText().equals(employeeNameError))) {
+          employeeErrorBox.setText("");
+          return true;
+        } else {
+          employeeErrorBox.setText(passwordError);
+        }
+      } else {
+        employeeErrorBox.setText("Name must contain a space.");
+      }
+    } else {
+      employeeErrorBox.setText(employeeNameError);
+    }
+    return false;
+  }
+
+  /**
+   * Verifies if there is an Employee Currently logged into the system.
+   *
+   * @return Returns true if there is an Employee logged in, false if there is not.
+   */
+  public boolean isLoggedIn() {
+    if (!(currentEmployee == null)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -39,6 +39,22 @@ public class MoviePlayer extends Product implements MultimediaControl {
     this.monitorType = monitorType;
   }
 
+  /**
+   * Five argument constructor.
+   *
+   * @param id int, the id for the MoviePlayer.
+   * @param name String, name of movie player.
+   * @param manufacturer String, name of manufacturer.
+   * @param screen Screen, type of screen in movie player.
+   * @param monitorType MonitorType, type of monitor.
+   */
+  public MoviePlayer(
+      int id, String name, String manufacturer, Screen screen, MonitorType monitorType) {
+    super(id, name, manufacturer, ItemType.Visual);
+    this.screen = screen;
+    this.monitorType = monitorType;
+  }
+
   // Complete the methods from the MultimediaControl interface in a similar
   // fashion to the audio player.
 

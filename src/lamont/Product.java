@@ -139,6 +139,23 @@ public abstract class Product implements Item {
     this.name = name;
     this.manufacturer = manufacturer;
     this.type = type;
+    setManDate(new Date());
+  }
+
+  /**
+   * Four argument Constructor.
+   *
+   * @param id int, id of the Product.
+   * @param name String, the name of the product.
+   * @param manufacturer String, the name of the manufacturer.
+   * @param type ItemType, the enum ItemType that represents product's type.
+   */
+  Product(int id, String name, String manufacturer, ItemType type) {
+    this.id = id;
+    this.name = name;
+    this.manufacturer = manufacturer;
+    this.type = type;
+    setManDate(new Date());
   }
 
   /** Empty constructor for defaults. */
