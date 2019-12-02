@@ -22,6 +22,7 @@ public class AudioPlayerDriver {
 
   /** Tests the AudioPlayer class. */
   public static void testPlayer() {
+    try{
     AudioPlayer player1 =
         new AudioPlayer(
             "DP-X1A", "Onkyo", "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC", "M3U/PLS/WPL");
@@ -30,5 +31,9 @@ public class AudioPlayerDriver {
     player1.stop();
     player1.next();
     player1.previous();
+    }
+    catch (IllegalProductArgumentException e){
+      System.out.println(e);
+    }
   }
 }

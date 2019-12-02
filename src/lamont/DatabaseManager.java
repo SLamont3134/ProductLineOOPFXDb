@@ -175,6 +175,7 @@ public class DatabaseManager {
       String manufacturer = rs.getString(4);
       switch (type) {
         case "AU":
+          try{
           AudioPlayer tempObject1 =
               new AudioPlayer(
                   id,
@@ -183,12 +184,21 @@ public class DatabaseManager {
                   "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
                   "M3U/PLS/WPL");
           observableProductLine.add(tempObject1);
+          }
+          catch (IllegalProductArgumentException e){
+            System.out.println(e);
+          }
           break;
         case "VI":
+          try{
           Screen newScreen = new Screen("720x480", 40, 22);
           MoviePlayer tempObject2 =
               new MoviePlayer(id, name, manufacturer, newScreen, MonitorType.LCD);
           observableProductLine.add(tempObject2);
+          }
+          catch (IllegalProductArgumentException e){
+            System.out.println(e);
+          }
           break;
         case "AM":
           System.out.println("Feature Coming Soon");

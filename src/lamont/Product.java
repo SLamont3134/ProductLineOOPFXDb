@@ -9,6 +9,7 @@ package lamont;
 // conflict between CheckStyle and google format.
 
 import java.util.Date;
+import javax.xml.crypto.Data;
 
 /**
  * Create an abstract type called Product that will implement the Item interface Product will
@@ -44,19 +45,29 @@ public abstract class Product implements Item {
   /**
    * Sets the product ID.
    *
-   * @param newID int, sets product ID to this value.
+   * @param newId int, sets product ID to this value.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
-  public void setId(int newID) {
-    this.id = newID;
+  public void setId(int newId) throws IllegalProductArgumentException {
+    if (newId > 0) {
+      this.id = newId;
+    } else
+      throw new IllegalProductArgumentException(
+          "Illegal ID " + newId + " Must be a number greater than 0.");
   }
 
   /**
    * A method setName that would have one String parameter.
    *
    * @param name String, the value fo this String will be set to product name.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
-  public void setName(String name) {
-    this.name = name;
+  public void setName(String name) throws IllegalProductArgumentException {
+    if (name != null && name.length() > 0) {
+      this.name = name;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Name " + name + " Must be at least one character.");
   }
 
   /**
@@ -72,9 +83,14 @@ public abstract class Product implements Item {
    * A method setManufacturer that would have one String parameter.
    *
    * @param manufacturer String, sets the product manufacturer to this String.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
-  public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
+  public void setManufacturer(String manufacturer) throws IllegalProductArgumentException {
+    if (manufacturer != null && manufacturer.length() > 0) {
+      this.manufacturer = manufacturer;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Manufacturer " + manufacturer + " Must be at least one character.");
   }
 
   /**
@@ -96,6 +112,11 @@ public abstract class Product implements Item {
     return date;
   }
 
+  /**
+   * Sets the manufactured date of the product.
+   *
+   * @param date Date(), the date the product was created.
+   */
   public void setManDate(Date date) {
     this.manDate = new Date(date.getTime());
   }
@@ -119,13 +140,28 @@ public abstract class Product implements Item {
   }
 
   /**
+   * Sets the ItemType of the Product
+   *
+   * @param type ItemType Enum. the Product's type.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
+   */
+  public void setType(ItemType type) throws IllegalProductArgumentException {
+    if (type instanceof ItemType) {
+      this.type = type;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Item Type " + type + " Must be of ItemType");
+  }
+
+  /**
    * Add a constructor that will take in the name of the product and set this to the field variable
    * name.
    *
    * @param name String, name of product.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
-  Product(String name) {
-    this.name = name;
+  Product(String name) throws IllegalProductArgumentException {
+    setName(name);
   }
 
   /**
@@ -134,11 +170,12 @@ public abstract class Product implements Item {
    * @param name String, the name of the product.
    * @param manufacturer String, the name of the manufacturer.
    * @param type ItemType, the enum ItemType that represents product's type.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
-  Product(String name, String manufacturer, ItemType type) {
-    this.name = name;
-    this.manufacturer = manufacturer;
-    this.type = type;
+  Product(String name, String manufacturer, ItemType type) throws IllegalProductArgumentException {
+    setName(name);
+    setManufacturer(manufacturer);
+    setType(type);
     setManDate(new Date());
   }
 
@@ -149,20 +186,26 @@ public abstract class Product implements Item {
    * @param name String, the name of the product.
    * @param manufacturer String, the name of the manufacturer.
    * @param type ItemType, the enum ItemType that represents product's type.
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
-  Product(int id, String name, String manufacturer, ItemType type) {
-    this.id = id;
-    this.name = name;
-    this.manufacturer = manufacturer;
-    this.type = type;
+  Product(int id, String name, String manufacturer, ItemType type)
+      throws IllegalProductArgumentException {
+    setId(id);
+    setName(name);
+    setManufacturer(manufacturer);
+    setType(type);
     setManDate(new Date());
   }
 
-  /** Empty constructor for defaults. */
-  Product() {
-    this.name = "Default";
-    this.manufacturer = "None";
-    this.type = ItemType.Audio;
+  /**
+   * Empty constructor for defaults.
+   *
+   * @throws IllegalProductArgumentException thrown if a parameter is not valid.
+   */
+  Product() throws IllegalProductArgumentException {
+    setName("Default");
+    setManufacturer("None");
+    setType(ItemType.Audio);
   }
 
   /**

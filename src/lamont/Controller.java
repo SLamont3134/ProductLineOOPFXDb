@@ -14,7 +14,6 @@ package lamont;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -33,8 +32,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
 
 /**
  * The controller class carries out the functions of the GUI.
@@ -54,49 +51,27 @@ public class Controller implements Initializable {
 
   @FXML private Label productionErrorBox;
   @FXML private ImageView productImage;
-
   @FXML private TextField productNameWindow;
-
   @FXML private TextField manufacturerNameWindow;
-
   @FXML private ChoiceBox<ItemType> itemTypeCB;
-
   @FXML private Button addButton;
-
   @FXML private TableView<Product> existingProductWindow;
-
   @FXML private ComboBox<String> chooseQtyBox;
-
   @FXML private Button recordProductionBttn;
-
   @FXML private TextArea productionLogTextArea;
-
   @FXML private TableColumn<?, ?> productNameColumn;
-
   @FXML private TableColumn<?, ?> productTypeColumn;
-
   @FXML private ListView<Product> chooseProductWindow;
-
   @FXML private TableColumn<?, ?> productManufacturerColumn;
-
   @FXML private TableColumn<?, ?> productIdColumn;
-
   @FXML private Button addEmployeeBttn;
-
   @FXML private TextField employeeNameField;
-
   @FXML private TextField employeePasswordField;
-
   @FXML private Label employeeInfo;
-
   @FXML private Label productErrorWindow;
-
   @FXML private Label employeeErrorBox;
-
   @FXML private Label productEmplBox;
-
   @FXML private Label productionEmplBox;
-
   @FXML private Label productionLogEmplBox;
 
   // There is a conflict here between CheckStyle and Google Formatting about the "}" being on a
@@ -167,7 +142,11 @@ public class Controller implements Initializable {
     System.out.println("Employee Set!");
   }
 
-  /** Called when a new product is made and needs to be inserted into the database. */
+  /**
+   * Called when a new product is made and needs to be inserted into the database.
+   *
+   * @throws java.sql.SQLException thrown if there is an SQL error.
+   */
   public void createProductObject() throws SQLException {
 
     String[] product = new String[3];
@@ -183,6 +162,8 @@ public class Controller implements Initializable {
   /**
    * Displays the production log in the production log text area. Called every time the production
    * log is updated to update the window.
+   *
+   * @throws java.sql.SQLException thrown if there is an SQL error.
    */
   public void displayProductionRecordLog() throws SQLException {
     productionLogTextArea.clear();
@@ -258,6 +239,8 @@ public class Controller implements Initializable {
   /**
    * Called whenever a new production record is produced. Creates production record based on input
    * from the gui, then posts it to production log area.
+   *
+   * @throws java.sql.SQLException thrown if there is an SQL error.
    */
   public void createProductionRecordObject() throws SQLException {
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
@@ -352,7 +335,13 @@ public class Controller implements Initializable {
     if (isLoggedIn()) {
       if (!(chooseProductWindow.getSelectionModel().isEmpty())) {
         productionErrorBox.setText("");
-        return true;
+        try {
+          int i = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
+          return true;
+        } catch (Exception e) {
+          productionErrorBox.setText("Please Enter a Valid Integer");
+        }
+
       } else {
         productionErrorBox.setText("Please Select a Product");
       }

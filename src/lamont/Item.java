@@ -24,8 +24,9 @@ public interface Item {
    * A method setName that would have one String parameter.
    *
    * @param name String, will set String of Item name.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
    */
-  void setName(String name);
+  void setName(String name) throws IllegalProductArgumentException;
 
   /**
    * A method getName that would return a String.
@@ -38,8 +39,9 @@ public interface Item {
    * A method setManufacturer that would have one String parameter.
    *
    * @param manufacturer String, will set Item manufacturer.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
    */
-  void setManufacturer(String manufacturer);
+  void setManufacturer(String manufacturer) throws IllegalProductArgumentException;
 
   /**
    * A method getManufacturer that would return a String.

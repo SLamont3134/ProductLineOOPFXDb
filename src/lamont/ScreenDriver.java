@@ -17,7 +17,7 @@ public class ScreenDriver {
    * @param args main arguments.
    */
   public static void main(String[] args) {
-
+    try{
     Screen screen1 = new Screen("1960x1460", 120, 1);
     Screen screen2 = new Screen();
     System.out.println(screen1.getRefreshRate());
@@ -25,5 +25,9 @@ public class ScreenDriver {
     System.out.println(screen1.getResponseTime());
     System.out.println(screen1.toString());
     System.out.println(screen2.toString());
+    }
+    catch (IllegalProductArgumentException e){
+      System.out.println(e);
+    }
   }
 }

@@ -1,5 +1,5 @@
 /**
- * The AudioPlayer class creates AudioPlayers.
+ * The AudioPlayer class is used by the GUI to create Audio Players.
  *
  * @author Sean Lamont
  * @brief The AudioPlayer class creates Audio Players.
@@ -16,21 +16,53 @@ public class AudioPlayer extends Product implements MultimediaControl {
   private String supportedPlaylistFormats;
 
   /**
+   * Sets the supported audio formats for the AudioPlayer Object.
+   *
+   * @param supportedAudioFormats String, supported types.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
+   */
+  public void setSupportedAudioFormats(String supportedAudioFormats)
+      throws IllegalProductArgumentException {
+    if (supportedAudioFormats != null && supportedAudioFormats.length() > 0) {
+      this.supportedAudioFormats = supportedAudioFormats;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Formats " + supportedAudioFormats + " Must be at least one character.");
+  }
+
+  /**
+   * Sets the supported playlist formats for the AudioPlayer Object.
+   *
+   * @param supportedPlaylistFormats String, supported types.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
+   */
+  public void setSupportedPlaylistFormats(String supportedPlaylistFormats)
+      throws IllegalProductArgumentException {
+    if (supportedPlaylistFormats != null && supportedPlaylistFormats.length() > 0) {
+      this.supportedPlaylistFormats = supportedPlaylistFormats;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Formats " + supportedPlaylistFormats + " Must be at least one character.");
+  }
+
+  /**
    * Four argument Constructor.
    *
    * @param name String, name of AudioPlayer.
    * @param manufacturer String, name of manufacturer.
    * @param supportedAudioFormats String, all the supported audio formats.
    * @param supportedPlaylistFormats String, all of the supported playlist formats.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
    */
   public AudioPlayer(
       String name,
       String manufacturer,
       String supportedAudioFormats,
-      String supportedPlaylistFormats) {
+      String supportedPlaylistFormats)
+      throws IllegalProductArgumentException {
     super(name, manufacturer, ItemType.Audio);
-    this.supportedAudioFormats = supportedAudioFormats;
-    this.supportedPlaylistFormats = supportedPlaylistFormats;
+    setSupportedAudioFormats(supportedAudioFormats);
+    setSupportedPlaylistFormats(supportedPlaylistFormats);
   }
 
   /**
@@ -41,20 +73,26 @@ public class AudioPlayer extends Product implements MultimediaControl {
    * @param manufacturer String, name of manufacturer.
    * @param supportedAudioFormats String, all the supported audio formats.
    * @param supportedPlaylistFormats String, all of the supported playlist formats.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
    */
   public AudioPlayer(
       int id,
       String name,
       String manufacturer,
       String supportedAudioFormats,
-      String supportedPlaylistFormats) {
+      String supportedPlaylistFormats)
+      throws IllegalProductArgumentException {
     super(id, name, manufacturer, ItemType.Audio);
-    this.supportedAudioFormats = supportedAudioFormats;
-    this.supportedPlaylistFormats = supportedPlaylistFormats;
+    setSupportedAudioFormats(supportedAudioFormats);
+    setSupportedPlaylistFormats(supportedPlaylistFormats);
   }
 
-  /** Default Constructor. */
-  public AudioPlayer() {
+  /**
+   * Default Constructor.
+   *
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
+   */
+  public AudioPlayer() throws IllegalProductArgumentException {
     this("default", "default", "none", "none");
   }
 

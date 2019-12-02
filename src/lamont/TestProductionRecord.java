@@ -16,8 +16,9 @@ public class TestProductionRecord {
    * Main runnable class to test ProductionRecord.
    *
    * @param args main arguments.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IllegalProductArgumentException{
 
     // test constructor used when creating production records from user interface
     Integer numProduced = 3; // this will come from the combobox in the UI

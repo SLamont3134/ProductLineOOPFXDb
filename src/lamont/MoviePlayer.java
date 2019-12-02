@@ -18,11 +18,15 @@ public class MoviePlayer extends Product implements MultimediaControl {
 
   private MonitorType monitorType;
 
-  /** Default empty Constructor. */
-  public MoviePlayer() {
+  /**
+   * Default empty Constructor.
+   *
+   * @throws IllegalProductArgumentException thrown if parameter is invalid.
+   */
+  public MoviePlayer() throws IllegalProductArgumentException {
     super();
-    this.screen = new Screen();
-    this.monitorType = MonitorType.LED;
+    setScreen(new Screen());
+    setMonitorType(MonitorType.LED);
   }
 
   /**
@@ -32,11 +36,13 @@ public class MoviePlayer extends Product implements MultimediaControl {
    * @param manufacturer String, name of manufacturer.
    * @param screen Screen, type of screen in movie player.
    * @param monitorType MonitorType, type of monitor.
+   * @throws IllegalProductArgumentException thrown if parameter is invalid.
    */
-  public MoviePlayer(String name, String manufacturer, Screen screen, MonitorType monitorType) {
+  public MoviePlayer(String name, String manufacturer, Screen screen, MonitorType monitorType)
+      throws IllegalProductArgumentException {
     super(name, manufacturer, ItemType.Visual);
-    this.screen = screen;
-    this.monitorType = monitorType;
+    setScreen(screen);
+    setMonitorType(monitorType);
   }
 
   /**
@@ -47,12 +53,14 @@ public class MoviePlayer extends Product implements MultimediaControl {
    * @param manufacturer String, name of manufacturer.
    * @param screen Screen, type of screen in movie player.
    * @param monitorType MonitorType, type of monitor.
+   * @throws IllegalProductArgumentException thrown if parameter is invalid.
    */
   public MoviePlayer(
-      int id, String name, String manufacturer, Screen screen, MonitorType monitorType) {
+      int id, String name, String manufacturer, Screen screen, MonitorType monitorType)
+      throws IllegalProductArgumentException {
     super(id, name, manufacturer, ItemType.Visual);
-    this.screen = screen;
-    this.monitorType = monitorType;
+    setScreen(screen);
+    setMonitorType(monitorType);
   }
 
   // Complete the methods from the MultimediaControl interface in a similar
@@ -90,6 +98,52 @@ public class MoviePlayer extends Product implements MultimediaControl {
    */
   public String toString() {
     return super.toString() + screen.toString() + "\nMonitor Type: " + monitorType.toString();
+  }
+
+  /**
+   * Returns the Product's Screen.
+   *
+   * @return Screen, returns a Screen object.
+   */
+  public Screen getScreen() {
+    return screen;
+  }
+
+  /**
+   * Sets the MoviePlayer's screen to the parameter.
+   *
+   * @param screen the Product's screen to be set.
+   * @throws IllegalProductArgumentException thrown if parameter is invalid.
+   */
+  public void setScreen(Screen screen) throws IllegalProductArgumentException {
+    if (screen instanceof Screen && screen != null) {
+      this.screen = screen;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Screen " + screen + " Must be of type Screen.");
+  }
+
+  /**
+   * Returns the Product's monitorType.
+   *
+   * @return MonitorType.
+   */
+  public MonitorType getMonitorType() {
+    return monitorType;
+  }
+
+  /**
+   * Sets the monitor type of the MoviePlayer
+   *
+   * @param monitorType MonitorType the monitor type to be set.
+   * @throws IllegalProductArgumentException thrown if parameter is invalid.
+   */
+  public void setMonitorType(MonitorType monitorType) throws IllegalProductArgumentException {
+    if (monitorType instanceof MonitorType && monitorType != null) {
+      this.monitorType = monitorType;
+    } else
+      throw new IllegalProductArgumentException(
+          "Invalid Monitor " + monitorType + " Must be a MonitorType");
   }
 
   /**
