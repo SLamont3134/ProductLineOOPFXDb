@@ -8,7 +8,16 @@ OOP Project
 
 
 ## Diagrams
-https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/src/lamont/Package%20lamont.png
+
+Class Diagrams
+https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/lamont_class.jpg
+
+Database Diagram
+https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/PRODUCTDB.jpg
+
+OverView Of JavaDocs
+https://slamont3134.github.io/ProductLineOOPFXDb/
+
 
 ## Getting Started
 
