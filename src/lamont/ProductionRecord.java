@@ -43,21 +43,19 @@ public class ProductionRecord {
    * called when the user records production from the user interface.
    *
    * @param productID int, the id of the product.
+   * @throws IllegalProductArgumentException thrown if illegal parameter.
    */
-  ProductionRecord(int productID) {
+  ProductionRecord(int productID) throws IllegalProductionRecordArgumentException {
     // In this constructor,
-    this.productID = productID;
+    setProductID(productID);
     // Set the productionNumber to 0 (because the database will end up auto-incrementing).
-    this.productionNumber = 0;
+    setProductionNumber(0);
     // Set the serialNumber to "0" for now.
-    this.serialNumber = "0";
+    setSerialNum(0);
     // Set the date to the current date using new Date().
-    this.dateProduced = new Date();
-    this.count = 1;
-    // setSerialNum();
+    setDateProduced(new Date());
+    setCount(1);
   }
-  //
-  //
 
   /**
    * Create an overloaded constructor to use when creating ProductionRecord objects from the
@@ -67,13 +65,15 @@ public class ProductionRecord {
    * @param productID int, the product id.
    * @param serialNumber String, individual serial number.
    * @param dateProduced Date, the date produced.
+   * @throws IllegalProductArgumentException thrown if illegal parameter.
    */
-  ProductionRecord(int productionNumber, int productID, String serialNumber, Date dateProduced) {
-    this.productionNumber = productionNumber;
-    this.productID = productID;
+  ProductionRecord(int productionNumber, int productID, String serialNumber, Date dateProduced)
+      throws IllegalProductionRecordArgumentException {
+    setProductionNumber(productionNumber);
+    setProductID(productID);
     // this.serialNumber = serialNumber;
-    this.dateProduced = dateProduced;
-    this.count = 1;
+    setDateProduced(dateProduced);
+    setCount(1);
     setSerialNum(serialNumber);
   }
 
@@ -84,13 +84,32 @@ public class ProductionRecord {
    *
    * @param newProduct Product, the product that has been produced.
    * @param count int, the quantity of products produced.
+   * @throws IllegalProductArgumentException thrown if illegal parameter.
    */
-  ProductionRecord(Product newProduct, int count) {
-    this.product = newProduct;
-    this.productID = newProduct.getId();
-    this.productionNumber = 0;
-    this.dateProduced = new Date();
+  ProductionRecord(Product newProduct, int count) throws IllegalProductionRecordArgumentException {
+    setProduct(newProduct);
+    setProductID(newProduct.getId());
+    setProductionNum(0);
+    setDateProduced(new Date());
     setSerialNum(count);
+  }
+
+  /**
+   * The constructor used by the Controller class to create a production record.
+   *
+   * @param newProduct Product, the product that has been produced.
+   * @param count int, the quantity of products produced.
+   * @param employeeUsername the username of the employee who created the production record.
+   * @throws IllegalProductArgumentException thrown if illegal parameter.
+   */
+  ProductionRecord(Product newProduct, int count, String employeeUsername)
+      throws IllegalProductionRecordArgumentException {
+    setProduct(newProduct);
+    setProductID(newProduct.getId());
+    setProductionNum(1);
+    setDateProduced(new Date());
+    setSerialNum(count);
+    setEmployeeUsername(employeeUsername);
   }
 
   // Create accessors and mutators for all fields.
@@ -108,9 +127,15 @@ public class ProductionRecord {
    * Sets the production number.
    *
    * @param productionNumber int the number to be set as the production number.
+   * @throws IllegalProductionRecordArgumentException thrown if parameter is invalid.
    */
-  public void setProductionNum(int productionNumber) {
-    this.productionNumber = productionNumber;
+  public void setProductionNum(int productionNumber)
+      throws IllegalProductionRecordArgumentException {
+    if (productionNumber > 0) {
+      this.productionNumber = productionNumber;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Production Number " + productionNumber + " Must be a number greater than 0.");
   }
 
   /**
@@ -126,9 +151,14 @@ public class ProductionRecord {
    * Sets product ID to parameter passed.
    *
    * @param productID int, sets the product ID to this value.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
-  public void setProductID(int productID) {
-    this.productID = productID;
+  public void setProductID(int productID) throws IllegalProductionRecordArgumentException {
+    if (productID > 0) {
+      this.productID = productID;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Product ID " + productID + " Must be a number greater than 0.");
   }
 
   /**
@@ -147,40 +177,55 @@ public class ProductionRecord {
    * assigned.
    *
    * @param count int, the number that is to be used in the Serial Number generation.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
-  public void setSerialNum(int count) {
-    String tempString = "";
-    String countString = Integer.toString(count);
-    while (countString.length() < 5) {
-      countString = "0" + countString;
-    }
-    if (this.getProduct().getManufacturer().length() > 3) {
-      tempString = this.getProduct().getManufacturer().substring(0, 3);
-    } else {
-      tempString = this.getProduct().getManufacturer();
-    }
-    tempString = tempString.concat(this.getProduct().getItemTypeCode().getCode());
-    // need to change next line for itemtype
-    tempString = tempString.concat(countString);
-    this.serialNumber = tempString;
+  public void setSerialNum(int count) throws IllegalProductionRecordArgumentException {
+    if (count > 0) {
+      String tempString = "";
+      String countString = Integer.toString(count);
+      while (countString.length() < 5) {
+        countString = "0" + countString;
+      }
+      if (this.getProduct().getManufacturer().length() > 3) {
+        tempString = this.getProduct().getManufacturer().substring(0, 3);
+      } else {
+        tempString = this.getProduct().getManufacturer();
+      }
+      tempString = tempString.concat(this.getProduct().getItemTypeCode().getCode());
+      // need to change next line for itemtype
+      tempString = tempString.concat(countString);
+      this.serialNumber = tempString;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Number for Serial Number " + count + " Must be a number greater than 0.");
   }
 
   /**
    * Overloaded method to manually set serial number.
    *
    * @param serialNumber String, serial number to be manually set.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
-  public void setSerialNum(String serialNumber) {
-    this.serialNumber = serialNumber;
+  public void setSerialNum(String serialNumber) throws IllegalProductionRecordArgumentException {
+    if (serialNumber != null && serialNumber.length() > 0) {
+      this.serialNumber = serialNumber;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Invalid Serial Number " + serialNumber + " Must be at least one character.");
   }
 
   /**
-   * Sets the PRoduct associtated with the Production Record.
+   * Sets the Product associated with the Production Record.
    *
    * @param product the product to be set.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
-  public void setProduct(Product product) {
-    this.product = product;
+  public void setProduct(Product product) throws IllegalProductionRecordArgumentException {
+    if (product != null) {
+      this.product = product;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Invalid Product Must be of type Product.");
   }
 
   /**
@@ -196,9 +241,14 @@ public class ProductionRecord {
    * Sets the quantity of products being produced.
    *
    * @param count int, the amount of items produced.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
-  public void setCount(int count) {
-    this.count = count;
+  public void setCount(int count) throws IllegalProductionRecordArgumentException {
+    if (count > 0) {
+      this.count = count;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Count " + count + " Must be a number greater than 0.");
   }
 
   /**
@@ -224,9 +274,15 @@ public class ProductionRecord {
    * Sets the date the products were produced.
    *
    * @param dateProduced Date, the date of production.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
-  public void setProdDate(Date dateProduced) {
-    this.dateProduced = new Date(dateProduced.getTime());
+  public void setProdDate(Date dateProduced) throws IllegalProductionRecordArgumentException {
+    if (dateProduced != null) {
+      this.dateProduced = new Date(dateProduced.getTime());
+    } else {
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Production Date, must be a valid date");
+    }
   }
 
   /**
@@ -239,28 +295,45 @@ public class ProductionRecord {
     return productionNumber;
   }
 
-  public void setProductionNumber(int productionNumber) {
-    this.productionNumber = productionNumber;
-  }
-
-  public void setSerialNumber(String serialNumber) {
-    this.serialNumber = serialNumber;
+  /**
+   * Sets the production number of the production record.
+   *
+   * @param productionNumber int, unique id to identify the record.
+   * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
+   */
+  public void setProductionNumber(int productionNumber)
+      throws IllegalProductionRecordArgumentException {
+    if (productionNumber > 0) {
+      this.productionNumber = productionNumber;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Production Number " + productionNumber + " Must be a number greater than 0.");
   }
 
   public Date getDateProduced() {
-    return dateProduced;
+    return new Date(dateProduced.getTime());
   }
 
-  public void setDateProduced(Date dateProduced) {
-    this.dateProduced = dateProduced;
+  public void setDateProduced(Date dateProduced) throws IllegalProductionRecordArgumentException {
+    if (dateProduced != null) {
+      this.dateProduced = new Date(dateProduced.getTime());
+    } else {
+      throw new IllegalProductionRecordArgumentException(
+          "Illegal Production Date, must be a valid date");
+    }
   }
 
   public String getEmployeeUsername() {
     return employeeUsername;
   }
 
-  public void setEmployeeUsername(String employeeUsername) {
-    this.employeeUsername = employeeUsername;
+  public void setEmployeeUsername(String employeeUsername)
+      throws IllegalProductionRecordArgumentException {
+    if (employeeUsername != null && employeeUsername.length() > 0) {
+      this.employeeUsername = employeeUsername;
+    } else
+      throw new IllegalProductionRecordArgumentException(
+          "Invalid Name " + employeeUsername + " Must be at least one character.");
   }
 
   @Override

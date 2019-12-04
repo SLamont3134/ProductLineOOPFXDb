@@ -42,8 +42,6 @@ public class Controller implements Initializable {
 
   private int audioCount;
   private int visualCount;
-  private int audioMobileCount;
-  private int visualMobileCount;
   private ArrayList<ProductionRecord> productionRecord = new ArrayList<>();
   ObservableList<Product> observableProductLine = FXCollections.observableArrayList();
   DatabaseManager database = new DatabaseManager();
@@ -76,14 +74,14 @@ public class Controller implements Initializable {
 
   // There is a conflict here between CheckStyle and Google Formatting about the "}" being on a
   // separate line
-  public Controller() throws SQLException, IOException {}
+  public Controller() {}
 
   public static final String addNameError = "Name Length Must Be Greater Than Zero";
   public static final String addManufacturerError = "Manufacturer Must Be Longer Than 3 Letters";
   public static final String employeeNameError = "Name Must be two Words with a space";
   public static final String passwordError =
       "Password Must Have One UpperCase Letter and One Symbol";
-  public static final String employeeError = "You Must Log In";
+  public static final String employeeError = "You Must Login";
 
   /**
    * The addButtonAction this method handle the event of the addButton being pressed.
@@ -99,6 +97,7 @@ public class Controller implements Initializable {
       displayProductionRecordLog();
       setProductWindow();
       setProductLineTable();
+      clearProductLineTab();
     }
   }
 
@@ -114,15 +113,21 @@ public class Controller implements Initializable {
     if (verifyProductionRecord()) {
       createProductionRecordObject();
       showProduction();
+      clearProductTab();
     }
   }
 
   @FXML
   void addEmployeeButtonAction(ActionEvent event) {
     System.out.println("Add employee Button Pressed");
-    if (verifyEmployee()) {
-      creatEmployee();
-      showProduction();
+    if (!(isLoggedIn())) {
+      if (verifyEmployee()) {
+        creatEmployee();
+        showProduction();
+        clearEmployeeTab();
+      }
+    } else {
+      logOut();
     }
   }
 
@@ -135,11 +140,27 @@ public class Controller implements Initializable {
     String password = employeePasswordField.getText();
     currentEmployee = new Employee(name, password);
     employeeInfo.setText("Current User Information: \n" + currentEmployee.secureToString());
-    employeeInfo.setOpacity(1.0);
+    employeeInfo.setOpacity(1);
+    existingProductWindow.setOpacity(1);
+    chooseProductWindow.setOpacity(1);
     productEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
     productionEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
     productionLogEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
     System.out.println("Employee Set!");
+  }
+
+  public void logOut() {
+    currentEmployee = null;
+    employeeInfo.setOpacity(0);
+    chooseProductWindow.setOpacity(0);
+    productEmplBox.setText("Not Logged In");
+    productionEmplBox.setText("Not Logged In");
+    productionLogEmplBox.setText("Not Logged In");
+    addEmployeeBttn.setText("Login");
+    productionLogTextArea.clear();
+    productionLogTextArea.setText(employeeError);
+    existingProductWindow.setOpacity(0);
+    System.out.println("Logged Out");
   }
 
   /**
@@ -255,16 +276,21 @@ public class Controller implements Initializable {
         tempInt = ++visualCount;
         // System.out.println("Visual Count is " + tempInt);
       }
-      ProductionRecord tempRecord = new ProductionRecord(tempProduct, tempInt);
-      productionRecord.add(tempRecord);
-      if (!(database.checkDbForProductionRecordName(tempRecord))) {
-        String[] tempString = new String[4];
-        tempString[0] = String.valueOf(0);
-        tempString[1] = String.valueOf(tempProduct.getId());
-        tempString[2] = tempRecord.getSerialNumber();
-        tempString[3] = currentEmployee.getUsername();
-        database.addToProductionDbMethod(tempString);
-        System.out.println("Production Record Added to Database");
+      try {
+        ProductionRecord tempRecord =
+            new ProductionRecord(tempProduct, tempInt, currentEmployee.getUsername());
+        productionRecord.add(tempRecord);
+        if (!(database.checkDbForProductionRecordName(tempRecord))) {
+          String[] tempString = new String[4];
+          tempString[0] = String.valueOf(0);
+          tempString[1] = String.valueOf(tempProduct.getId());
+          tempString[2] = tempRecord.getSerialNumber();
+          tempString[3] = currentEmployee.getUsername();
+          database.addToProductionDbMethod(tempString);
+          System.out.println("Production Record Added to Database");
+        }
+      } catch (IllegalProductionRecordArgumentException e) {
+        productionErrorBox.setText("Invalid Parameter");
       }
     }
   }
@@ -336,7 +362,7 @@ public class Controller implements Initializable {
       if (!(chooseProductWindow.getSelectionModel().isEmpty())) {
         productionErrorBox.setText("");
         try {
-          int i = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
+          Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
           return true;
         } catch (Exception e) {
           productionErrorBox.setText("Please Enter a Valid Integer");
@@ -397,5 +423,25 @@ public class Controller implements Initializable {
     } else {
       return false;
     }
+  }
+
+  /** Clears all fields in the Product Line tab when called. */
+  public void clearProductLineTab() {
+    productNameWindow.clear();
+    manufacturerNameWindow.clear();
+    itemTypeCB.getSelectionModel().selectFirst();
+  }
+
+  /** Clears all fields in the Product Tab when called. */
+  public void clearProductTab() {
+    chooseQtyBox.getSelectionModel().selectFirst();
+    chooseProductWindow.getSelectionModel().clearSelection();
+  }
+
+  /** Clears all fields in the Employee Tab when cleared. */
+  public void clearEmployeeTab() {
+    employeeNameField.clear();
+    employeePasswordField.clear();
+    addEmployeeBttn.setText("Log Out");
   }
 }

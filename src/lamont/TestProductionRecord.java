@@ -23,6 +23,7 @@ public class TestProductionRecord {
     // test constructor used when creating production records from user interface
     Integer numProduced = 3; // this will come from the combobox in the UI
 
+    try{
     for (int productionRunProduct = 0; productionRunProduct < numProduced; productionRunProduct++) {
       ProductionRecord pr = new ProductionRecord(0);
       System.out.println(pr.toString());
@@ -53,5 +54,9 @@ public class TestProductionRecord {
 
     System.out.println(moviePlayer1);
     System.out.println(test1);
+    }
+    catch (IllegalProductionRecordArgumentException e){
+      System.out.println(e);
+    }
   }
 }

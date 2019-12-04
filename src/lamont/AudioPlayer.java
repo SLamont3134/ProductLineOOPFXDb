@@ -88,6 +88,24 @@ public class AudioPlayer extends Product implements MultimediaControl {
   }
 
   /**
+   * Three argument Constructor. Sets Audio format and Playlist format to default settings.
+   *
+   * @param id int, id of the AudioPlayer.
+   * @param name String, name of AudioPlayer.
+   * @param manufacturer String, name of manufacturer.
+   * @throws IllegalProductArgumentException thrown if a parameter is invalid.
+   */
+  public AudioPlayer(
+      int id,
+      String name,
+      String manufacturer)
+      throws IllegalProductArgumentException {
+    super(id, name, manufacturer, ItemType.Audio);
+    setSupportedAudioFormats("DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC");
+    setSupportedPlaylistFormats("M3U/PLS/WPL");
+  }
+
+  /**
    * Default Constructor.
    *
    * @throws IllegalProductArgumentException thrown if a parameter is invalid.

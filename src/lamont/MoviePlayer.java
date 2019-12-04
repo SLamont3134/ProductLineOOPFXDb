@@ -63,6 +63,22 @@ public class MoviePlayer extends Product implements MultimediaControl {
     setMonitorType(monitorType);
   }
 
+  /**
+   * Three argument constructor. Used by DatabaseManager.
+   *
+   * @param id int, the id for the MoviePlayer.
+   * @param name String, name of movie player.
+   * @param manufacturer String, name of manufacturer.
+   * @throws IllegalProductArgumentException thrown if parameter is invalid.
+   */
+  public MoviePlayer(
+      int id, String name, String manufacturer)
+      throws IllegalProductArgumentException {
+    super(id, name, manufacturer, ItemType.Visual);
+    setScreen(new Screen("720x480", 40, 22));
+    setMonitorType(MonitorType.LCD);
+  }
+
   // Complete the methods from the MultimediaControl interface in a similar
   // fashion to the audio player.
 
@@ -116,11 +132,11 @@ public class MoviePlayer extends Product implements MultimediaControl {
    * @throws IllegalProductArgumentException thrown if parameter is invalid.
    */
   public void setScreen(Screen screen) throws IllegalProductArgumentException {
-    if (screen instanceof Screen && screen != null) {
+    if (screen != null) {
       this.screen = screen;
     } else
       throw new IllegalProductArgumentException(
-          "Invalid Screen " + screen + " Must be of type Screen.");
+          "Invalid Set, Screen Must be of type Screen and not null.");
   }
 
   /**
@@ -139,11 +155,11 @@ public class MoviePlayer extends Product implements MultimediaControl {
    * @throws IllegalProductArgumentException thrown if parameter is invalid.
    */
   public void setMonitorType(MonitorType monitorType) throws IllegalProductArgumentException {
-    if (monitorType instanceof MonitorType && monitorType != null) {
+    if (monitorType != null) {
       this.monitorType = monitorType;
     } else
       throw new IllegalProductArgumentException(
-          "Invalid Monitor " + monitorType + " Must be a MonitorType");
+          "Invalid Set, Monitor Must be of type MonitorType and not null.");
   }
 
   /**

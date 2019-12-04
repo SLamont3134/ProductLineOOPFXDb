@@ -146,11 +146,11 @@ public abstract class Product implements Item {
    * @throws IllegalProductArgumentException thrown if a parameter is not valid.
    */
   public void setType(ItemType type) throws IllegalProductArgumentException {
-    if (type instanceof ItemType) {
+    if (type != null) {
       this.type = type;
     } else
       throw new IllegalProductArgumentException(
-          "Invalid Item Type " + type + " Must be of ItemType");
+          "Invalid Set, Type Must be of type ItemType and not null.");
   }
 
   /**

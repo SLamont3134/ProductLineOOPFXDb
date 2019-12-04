@@ -29,7 +29,7 @@
       <RowConstraints />
   </rowConstraints>
   <children>
-    <TabPane prefHeight="590.0" prefWidth="777.0" style="-fx-background-color: black;" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
+    <TabPane prefHeight="590.0" prefWidth="778.0" style="-fx-background-color: black;" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
       <tabs>
             <Tab fx:id="employeeTab" style="-fx-background-color: grey;" text="Employee">
               <content>
@@ -53,7 +53,7 @@
                                     <Image url="file:/C:/Users/Sean%20Lamont/IdeaProjects/ProductLineOOPFXDb/rsc/peopleclipart.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="addEmployeeBttn" mnemonicParsing="false" onAction="#addEmployeeButtonAction" prefHeight="35.0" prefWidth="388.0" text="Add Employee" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                              <Button fx:id="addEmployeeBttn" mnemonicParsing="false" onAction="#addEmployeeButtonAction" prefHeight="35.0" prefWidth="388.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -100,9 +100,9 @@
             </Tab>
         <Tab style="-fx-background-color: grey;" text="Product Line">
           <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" stylesheets="@OOPStyleSheet.css">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: grey;" stylesheets="@OOPStyleSheet.css">
               <children>
-                <GridPane alignment="CENTER" layoutX="1.0" layoutY="-3.0" prefHeight="281.0" prefWidth="777.0" style="-fx-background-color: grey;">
+                <GridPane alignment="CENTER" layoutX="1.0" layoutY="-3.0" prefHeight="281.0" prefWidth="778.0" style="-fx-background-color: grey;">
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -155,7 +155,7 @@
                               </Label>
                   </children>
                 </GridPane>
-                <TableView fx:id="existingProductWindow" layoutX="1.0" layoutY="277.0" prefHeight="275.0" prefWidth="778.0" stylesheets="@OOPStyleSheet.css">
+                <TableView fx:id="existingProductWindow" layoutX="1.0" layoutY="282.0" opacity="0.0" prefHeight="270.0" prefWidth="778.0" stylesheets="@OOPStyleSheet.css">
                   <columns>
                               <TableColumn prefWidth="776.0" text="Existing Products">
                                  <columns>
@@ -180,7 +180,6 @@
                     <Font size="24.0" />
                   </font>
                 </Label>
-                <ListView fx:id="chooseProductWindow" layoutX="9.0" layoutY="51.0" prefHeight="374.0" prefWidth="759.0" />
                 <Label layoutX="33.0" layoutY="445.0" text="Choose Quantity">
                   <font>
                     <Font size="24.0" />
@@ -205,6 +204,12 @@
                               <Insets right="20.0" />
                            </padding>
                         </Label>
+                        <Label layoutX="239.0" layoutY="202.0" text="Please Login to See Products">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                <ListView fx:id="chooseProductWindow" layoutX="9.0" layoutY="51.0" opacity="0.0" prefHeight="374.0" prefWidth="759.0" />
               </children>
             </AnchorPane>
           </content>

@@ -9,7 +9,6 @@ package lamont;
 // Conflict between Google Format and CheckStyle.
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import javafx.collections.FXCollections;
@@ -91,11 +89,10 @@ public class DatabaseManager {
     int count = 1;
     try {
       statement = conn.createStatement();
-      rs =
-          statement.executeQuery(
-              "SELECT COUNT(SERIAL_NUM) FROM PRODUCTIONRECORD WHERE SERIAL_NUM = \'"
-                  + productionRecord.getSerialNumber()
-                  + "\' ;");
+      String tempString = "SELECT COUNT(SERIAL_NUM) FROM PRODUCTIONRECORD WHERE SERIAL_NUM = ?;";
+      pstmt = conn.prepareStatement(tempString);
+      pstmt.setString(1, productionRecord.getSerialNumber());
+      rs = pstmt.executeQuery();
       while (rs.next()) {
         count = rs.getInt(1);
       }
@@ -130,37 +127,10 @@ public class DatabaseManager {
   }
 
   /**
-   * Searches the database Product table for a product with a matching Id to the passed in Product.
-   *
-   * @param product The product to compare to the database.
-   * @return returns the id of the matching product. Returns 0 if no matching product is found.
-   */
-  public int selectProductIdFromDb(Product product) {
-    int id = 0;
-    connectToDB();
-    ResultSet rs = null;
-    try {
-      statement = conn.createStatement();
-      rs =
-          statement.executeQuery(
-              "SELECT ID FROM PRODUCT WHERE NAME = \'" + product.getName() + "\';");
-
-      while (rs.next()) {
-        id = rs.getInt("ID");
-      }
-
-    } catch (SQLException e) {
-      System.out.println("ERROR: QUERY FAILED!");
-    }
-    disconnectFromDB();
-    return id;
-  }
-
-  /**
    * Reads each row from the Product Table importing each of them and creating the appropriate
    * Product.
    *
-   * @return An ObservaleList of Products to be displayed by the GUI.
+   * @return An ObservableList of Products to be displayed by the GUI.
    * @throws SQLException database error.
    */
   public ObservableList loadProductList() throws SQLException {
@@ -175,28 +145,18 @@ public class DatabaseManager {
       String manufacturer = rs.getString(4);
       switch (type) {
         case "AU":
-          try{
-          AudioPlayer tempObject1 =
-              new AudioPlayer(
-                  id,
-                  name,
-                  manufacturer,
-                  "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
-                  "M3U/PLS/WPL");
-          observableProductLine.add(tempObject1);
-          }
-          catch (IllegalProductArgumentException e){
+          try {
+            AudioPlayer tempObject1 = new AudioPlayer(id, name, manufacturer);
+            observableProductLine.add(tempObject1);
+          } catch (IllegalProductArgumentException e) {
             System.out.println(e);
           }
           break;
         case "VI":
-          try{
-          Screen newScreen = new Screen("720x480", 40, 22);
-          MoviePlayer tempObject2 =
-              new MoviePlayer(id, name, manufacturer, newScreen, MonitorType.LCD);
-          observableProductLine.add(tempObject2);
-          }
-          catch (IllegalProductArgumentException e){
+          try {
+            MoviePlayer tempObject2 = new MoviePlayer(id, name, manufacturer);
+            observableProductLine.add(tempObject2);
+          } catch (IllegalProductArgumentException e) {
             System.out.println(e);
           }
           break;
@@ -236,29 +196,35 @@ public class DatabaseManager {
       String serialNumber = rs.getString(3);
       Timestamp date = rs.getTimestamp(4);
       String employeeUsername = rs.getString(5);
-      ProductionRecord tempRecord =
-          new ProductionRecord(productionNumber, productID, serialNumber, new Date(date.getTime()));
-      tempRecord.setEmployeeUsername(employeeUsername);
-      for (Product product : tempList) {
-        if (product.getId() == tempRecord.getProductID()) {
-          tempRecord.setProduct(product);
+      try {
+        ProductionRecord tempRecord =
+            new ProductionRecord(
+                productionNumber, productID, serialNumber, new Date(date.getTime()));
+        tempRecord.setEmployeeUsername(employeeUsername);
+        for (Product product : tempList) {
+          if (product.getId() == tempRecord.getProductID()) {
+            tempRecord.setProduct(product);
+          }
         }
-      }
-      productionRecordList.add(tempRecord);
-      tempSerial = tempRecord.getSerialNumber();
-      tempSerial = tempSerial.substring(tempSerial.length() - 5, tempSerial.length());
+        productionRecordList.add(tempRecord);
+        tempSerial = tempRecord.getSerialNumber();
+        tempSerial = tempSerial.substring(tempSerial.length() - 5, tempSerial.length());
 
-      if (tempRecord.getProduct() instanceof AudioPlayer) {
-        if (audioCount <= Integer.parseInt(tempSerial)) {
-          audioCount = Integer.parseInt(tempSerial);
+        if (tempRecord.getProduct() instanceof AudioPlayer) {
+          if (audioCount <= Integer.parseInt(tempSerial)) {
+            audioCount = Integer.parseInt(tempSerial);
+          }
         }
-      }
-      if (tempRecord.getProduct() instanceof MoviePlayer) {
-        if (visualCount <= Integer.parseInt(tempSerial)) {
-          visualCount = Integer.parseInt(tempSerial);
+        if (tempRecord.getProduct() instanceof MoviePlayer) {
+          if (visualCount <= Integer.parseInt(tempSerial)) {
+            visualCount = Integer.parseInt(tempSerial);
+          }
         }
+      } catch (IllegalProductionRecordArgumentException e) {
+        System.out.println(e);
       }
     }
+
     disconnectFromDB();
     return productionRecordList;
   }
@@ -273,14 +239,13 @@ public class DatabaseManager {
     connectToDB();
     String insertQuery =
         "INSERT INTO PRODUCTIONRECORD "
-            + "(PRODUCTION_NUM, PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED, EMPLOYEE)"
-            + " VALUES (?, ?, ?, ?,?)";
+            + "(PRODUCT_ID, SERIAL_NUM, DATE_PRODUCED, EMPLOYEE)"
+            + " VALUES (?, ?, ?,?)";
     pstmt = conn.prepareStatement(insertQuery);
-    pstmt.setInt(1, Integer.parseInt(insertValues[0]));
-    pstmt.setInt(2, Integer.parseInt(insertValues[1]));
-    pstmt.setString(3, insertValues[2]);
-    pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-    pstmt.setString(5, insertValues[3]);
+    pstmt.setInt(1, Integer.parseInt(insertValues[1]));
+    pstmt.setString(2, insertValues[2]);
+    pstmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+    pstmt.setString(4, insertValues[3]);
     pstmt.executeUpdate();
     disconnectFromDB();
   }
@@ -305,8 +270,9 @@ public class DatabaseManager {
   }
 
   /**
-   * This method is used to decrypt the databse password that is pulled from the properties file.
+   * This method is used to decrypt the database password that is pulled from the properties file.
    *
+   * @author https://beginnersbook.com/2017/09/java-program-to-reverse-a-string-using-recursion/
    * @param string Password to be decoded.
    * @return String decoded database password.
    */
