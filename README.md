@@ -22,6 +22,7 @@ Database Diagrams:
 
 ## Built With
 Intellij IDE
+
 SceneBuilder
 
 ## Contributing
