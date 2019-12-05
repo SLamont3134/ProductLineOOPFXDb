@@ -11,9 +11,11 @@ This program utilizes full SQL databse integration into a JavaFX graphical user 
 ## Diagrams
 
 Class Diagrams:
+
 ![Class Diagrams](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/lamont_class.jpg)
 
 Database Diagrams:
+
 ![Database Diagram](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/PRODUCTDB.jpg)
 
 
