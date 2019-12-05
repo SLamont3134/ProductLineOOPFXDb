@@ -10,8 +10,6 @@ import javafx.stage.Stage;
  * The Main Class that contains the Main method and initializes the stage.
  *
  * @author Sean Lamont
- * @brief This is the main file which builds the environment and calls the controller
- * @date 9/28/19
  */
 public class Main extends Application {
 

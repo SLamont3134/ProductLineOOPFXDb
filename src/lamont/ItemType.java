@@ -4,7 +4,6 @@ package lamont;
  * The ItemType enum. The acceptable item types for the product
  *
  * @author Sean Lamont
- * @date 10/7/19
  */
 public enum ItemType {
   Audio("AU"),

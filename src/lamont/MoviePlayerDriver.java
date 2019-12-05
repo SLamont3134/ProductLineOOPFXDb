@@ -4,8 +4,6 @@ package lamont;
  * The MoviePlayerDriver class was created simply to test the MoviePlayer class.
  *
  * @author Sean Lamont
- * @brief The MoviePlayerDriver class was created simply to test the MoviePlayer class.
- * @date 10/8/19
  */
 public class MoviePlayerDriver {
   public static void main(String[] args) {

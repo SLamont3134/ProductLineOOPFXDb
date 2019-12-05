@@ -4,7 +4,6 @@ package lamont;
  * The Item Interface. The acceptable item methods.
  *
  * @author Sean Lamont
- * @date 10/7/19
  */
 public interface Item {
 

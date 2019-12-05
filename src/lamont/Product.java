@@ -7,8 +7,6 @@ import java.util.Date;
  * implement it.
  *
  * @author Sean Lamont
- * @brief The Abstract Product class that establishes the framework for all of it's child classes .
- * @date 10/8/19
  */
 public abstract class Product implements Item {
 

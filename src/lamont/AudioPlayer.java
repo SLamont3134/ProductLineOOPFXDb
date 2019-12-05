@@ -5,8 +5,6 @@ package lamont;
  * MultimediaControl.
  *
  * @author Sean Lamont
- * @brief The AudioPlayer class creates Audio Players.
- * @date 10/8/19
  */
 public class AudioPlayer extends Product implements MultimediaControl {
 

@@ -4,8 +4,6 @@ package lamont;
  * The ScreenDriver class was created simply to test the Screen class.
  *
  * @author Sean Lamont
- * @brief The ScreenDriver class was created simply to test the Screen class.
- * @date 10/8/19
  */
 public class ScreenDriver {
 

@@ -4,8 +4,6 @@ package lamont;
  * The AudioPlayerDriver class was created simply to test the AudioPlayer class.
  *
  * @author Sean Lamont
- * @brief The AudioPlayerDriver class was created simply to test the AudioPlayer class.
- * @date 10/8/19
  */
 public class AudioPlayerDriver {
 

@@ -5,9 +5,6 @@ package lamont;
  * MultimediaControl.
  *
  * @author Sean Lamont
- * @brief * The MoviePlayer class that creates screen object extending Product and implementing
- *     MultimediaControl.
- * @date 10/8/19
  */
 public class MoviePlayer extends Product implements MultimediaControl {
 

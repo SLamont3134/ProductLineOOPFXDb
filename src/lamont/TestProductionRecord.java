@@ -6,8 +6,6 @@ import java.util.Date;
  * Class designed to test the ProductionRecord class.
  *
  * @author Sean Lamont
- * @brief Tests the ProductionRecord class.
- * @date 11/5/19
  */
 public class TestProductionRecord {
 

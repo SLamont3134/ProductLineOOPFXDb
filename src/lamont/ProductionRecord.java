@@ -7,8 +7,6 @@ import java.util.Date;
  * production runs of products produced.
  *
  * @author Sean Lamont
- * @brief The Production Record class will align with items in the database.
- * @date 10/15/19
  */
 public class ProductionRecord {
 

@@ -19,8 +19,6 @@ import javafx.collections.ObservableList;
  * The DatabaseManager class the handles all of the database interactions.
  *
  * @author Sean Lamont
- * @brief This is the main database handler class which controls all interactions with the databse.
- * @date 10/20/19
  */
 public class DatabaseManager {
 

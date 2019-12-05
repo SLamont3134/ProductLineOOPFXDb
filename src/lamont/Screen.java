@@ -4,8 +4,6 @@ package lamont;
  * The Screen class that creates screen object implementing ScreenSpec.
  *
  * @author Sean Lamont
- * @brief The Screen class that creates screen object implementing ScreenSpec..
- * @date 10/8/19
  */
 public class Screen implements ScreenSpec {
 

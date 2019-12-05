@@ -25,8 +25,6 @@ import javafx.scene.image.ImageView;
  * The Controller class where all of the code will be stored, carries out the functions of the GUI.
  *
  * @author Sean Lamont
- * @brief This is the main controller file which handles all of the operations of the GUI
- * @date 9/28/19
  */
 public class Controller implements Initializable {
 
