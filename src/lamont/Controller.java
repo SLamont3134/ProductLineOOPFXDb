@@ -427,6 +427,8 @@ public class Controller implements Initializable {
 
   /** Clears all fields in the Employee Tab when cleared. */
   public void clearEmployeeTab() {
+    productErrorWindow.setText("");
+    productionErrorBox.setText("");
     employeeNameField.clear();
     employeePasswordField.clear();
     addEmployeeBttn.setText("Log Out");
