@@ -30,6 +30,8 @@ SceneBuilder
 ## Contributing
 Prof. Vanselow
 
+Damian Morgan 
+
 ## Author
 Sean Lamont
 
