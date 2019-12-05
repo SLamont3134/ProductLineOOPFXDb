@@ -35,6 +35,7 @@ Sean Lamont
 
 ## License
 
+[Licensing Information](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/LICENSE)
 
 ## Acknowledgments
 [Professor Vanselow](https://sites.google.com/site/profvanselow/course/cop-3003/oop-project?authuser=0)
