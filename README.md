@@ -5,11 +5,15 @@ This program utilizes full SQL databse integration into a JavaFX graphical user 
 
 
 ## Documentation
+
 [Overview of JavaDocs](https://slamont3134.github.io/ProductLineOOPFXDb/)
 
 ## Diagrams
+
+Class Diagrams:
 ![Class Diagrams](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/lamont_class.jpg)
 
+Database Diagrams:
 ![Database Diagram](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/PRODUCTDB.jpg)
 
 
@@ -30,7 +34,9 @@ Sean Lamont
 
 
 ## Acknowledgments
-https://sites.google.com/site/profvanselow/course/cop-3003/oop-project?authuser=0
+[Professor Vanselow](https://sites.google.com/site/profvanselow/course/cop-3003/oop-project?authuser=0)
+[beginnersbook.com](https://beginnersbook.com/2017/09/java-program-to-reverse-a-string-using-recursion/)
+[Stack Overflow](https://stackoverflow.com/)
 
 ## History
 
