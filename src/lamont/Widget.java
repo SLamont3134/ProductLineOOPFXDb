@@ -1,17 +1,11 @@
+package lamont;
+
 /**
  * The Widget class was built as a test class for Product.
  *
  * @author Sean Lamont
  * @brief The Widget class was built as a test class for Product.
  * @date 10/8/19
- */
-package lamont;
-// conflict between CheckStyle and google format.
-
-/**
- * Test Widget class to test Product.
- *
- * @author Sean Lamont
  */
 public class Widget extends Product {
 

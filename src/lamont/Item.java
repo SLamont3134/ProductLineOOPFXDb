@@ -1,15 +1,10 @@
+package lamont;
+
 /**
  * The Item Interface. The acceptable item methods.
  *
  * @author Sean Lamont
  * @date 10/7/19
- */
-package lamont;
-// conflict between CheckStyle and Google Formatting.
-
-/**
- * Create an interface called Item that will force all classes to implement the following
- * functions:.
  */
 public interface Item {
 

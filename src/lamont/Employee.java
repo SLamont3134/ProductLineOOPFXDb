@@ -1,11 +1,11 @@
 package lamont;
 
 /**
- * The program is required to create an audit trail of the production line so that it records which
- * employee recorded production. To accomplish this you will need to create a class and tab named
- * Employee that will allow the user to input their full name and then create a user id of their
- * first name, a period, and then their surname, an email address of their first initial and last
- * name.
+ * The program is required to create an audit trail of the lamont.production line so that it records
+ * which employee recorded lamont.production. To accomplish this you will need to create a class and
+ * tab named Employee that will allow the user to input their full name and then create a user id of
+ * their first name, a period, and then their surname, an email address of their first initial and
+ * last name.
  */
 public class Employee {
 
@@ -170,6 +170,7 @@ public class Employee {
 
   /**
    * Test method to test the Employee class. Not used for GUI.
+   *
    * @param args runnable code segment.
    */
   public static void main(String[] args) {

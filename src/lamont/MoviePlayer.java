@@ -1,3 +1,5 @@
+package lamont;
+
 /**
  * The MoviePlayer class that creates screen object extending Product and implementing
  * MultimediaControl.
@@ -7,10 +9,6 @@
  *     MultimediaControl.
  * @date 10/8/19
  */
-package lamont;
-// conflict between google formats and CheckStyle.
-
-/** Create a class called MoviePlayer that extends Product and implements MultimediaControl. */
 public class MoviePlayer extends Product implements MultimediaControl {
 
   // Add 2 fields to this class called screen and monitor type and assign appropriate types to them.
@@ -71,8 +69,7 @@ public class MoviePlayer extends Product implements MultimediaControl {
    * @param manufacturer String, name of manufacturer.
    * @throws IllegalProductArgumentException thrown if parameter is invalid.
    */
-  public MoviePlayer(
-      int id, String name, String manufacturer)
+  public MoviePlayer(int id, String name, String manufacturer)
       throws IllegalProductArgumentException {
     super(id, name, manufacturer, ItemType.Visual);
     setScreen(new Screen("720x480", 40, 22));
@@ -134,9 +131,10 @@ public class MoviePlayer extends Product implements MultimediaControl {
   public void setScreen(Screen screen) throws IllegalProductArgumentException {
     if (screen != null) {
       this.screen = screen;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Set, Screen Must be of type Screen and not null.");
+    }
   }
 
   /**
@@ -149,7 +147,7 @@ public class MoviePlayer extends Product implements MultimediaControl {
   }
 
   /**
-   * Sets the monitor type of the MoviePlayer
+   * Sets the monitor type of the MoviePlayer.
    *
    * @param monitorType MonitorType the monitor type to be set.
    * @throws IllegalProductArgumentException thrown if parameter is invalid.
@@ -157,9 +155,10 @@ public class MoviePlayer extends Product implements MultimediaControl {
   public void setMonitorType(MonitorType monitorType) throws IllegalProductArgumentException {
     if (monitorType != null) {
       this.monitorType = monitorType;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Set, Monitor Must be of type MonitorType and not null.");
+    }
   }
 
   /**

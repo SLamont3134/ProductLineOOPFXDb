@@ -1,21 +1,14 @@
+package lamont;
+
+import java.util.Date;
+
 /**
- * The Production Record class will align with items in the database.
+ * The Production Record class will align with items in the database. Used to keep track of
+ * production runs of products produced.
  *
  * @author Sean Lamont
  * @brief The Production Record class will align with items in the database.
  * @date 10/15/19
- */
-package lamont;
-// conflict between google format and CheckStyle.
-
-import com.sun.scenario.effect.impl.prism.PrReflectionPeer;
-import java.util.Date;
-
-/**
- * Create a ProductionRecord class with int fields for productionNumber (this will be unique for
- * every item produced and get auto incremented by the database), an int field for productID (to
- * correspond to the productID from the Product table / class), String field for serialNumber, and a
- * field for the dateProduced that is type Date(from java.util).
  */
 public class ProductionRecord {
 
@@ -40,7 +33,7 @@ public class ProductionRecord {
 
   /**
    * Make one constructor that just has a parameter for the productID. This will be the constructor
-   * called when the user records production from the user interface.
+   * called when the user records lamont.production from the user interface.
    *
    * @param productID int, the id of the product.
    * @throws IllegalProductArgumentException thrown if illegal parameter.
@@ -61,7 +54,7 @@ public class ProductionRecord {
    * Create an overloaded constructor to use when creating ProductionRecord objects from the
    * database. This constructor needs parameters for all fields.
    *
-   * @param productionNumber int, the production number.
+   * @param productionNumber int, the lamont.production number.
    * @param productID int, the product id.
    * @param serialNumber String, individual serial number.
    * @param dateProduced Date, the date produced.
@@ -95,11 +88,11 @@ public class ProductionRecord {
   }
 
   /**
-   * The constructor used by the Controller class to create a production record.
+   * The constructor used by the Controller class to create a lamont.production record.
    *
    * @param newProduct Product, the product that has been produced.
    * @param count int, the quantity of products produced.
-   * @param employeeUsername the username of the employee who created the production record.
+   * @param employeeUsername the username of the employee who created the lamont.production record.
    * @throws IllegalProductArgumentException thrown if illegal parameter.
    */
   ProductionRecord(Product newProduct, int count, String employeeUsername)
@@ -115,27 +108,28 @@ public class ProductionRecord {
   // Create accessors and mutators for all fields.
 
   /**
-   * Get production number.
+   * Get lamont.production number.
    *
-   * @return int, the production number.
+   * @return int, the lamont.production number.
    */
   public int getProductionNum() {
     return productionNumber;
   }
 
   /**
-   * Sets the production number.
+   * Sets the lamont.production number.
    *
-   * @param productionNumber int the number to be set as the production number.
+   * @param productionNumber int the number to be set as the lamont.production number.
    * @throws IllegalProductionRecordArgumentException thrown if parameter is invalid.
    */
   public void setProductionNum(int productionNumber)
       throws IllegalProductionRecordArgumentException {
     if (productionNumber > 0) {
       this.productionNumber = productionNumber;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Illegal Production Number " + productionNumber + " Must be a number greater than 0.");
+    }
   }
 
   /**
@@ -156,13 +150,14 @@ public class ProductionRecord {
   public void setProductID(int productID) throws IllegalProductionRecordArgumentException {
     if (productID > 0) {
       this.productID = productID;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Illegal Product ID " + productID + " Must be a number greater than 0.");
+    }
   }
 
   /**
-   * Gets the product the production record is referring to.
+   * Gets the product the lamont.production record is referring to.
    *
    * @return Product, returns the actual product the record is of.
    */
@@ -195,9 +190,10 @@ public class ProductionRecord {
       // need to change next line for itemtype
       tempString = tempString.concat(countString);
       this.serialNumber = tempString;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Illegal Number for Serial Number " + count + " Must be a number greater than 0.");
+    }
   }
 
   /**
@@ -209,9 +205,10 @@ public class ProductionRecord {
   public void setSerialNum(String serialNumber) throws IllegalProductionRecordArgumentException {
     if (serialNumber != null && serialNumber.length() > 0) {
       this.serialNumber = serialNumber;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Invalid Serial Number " + serialNumber + " Must be at least one character.");
+    }
   }
 
   /**
@@ -223,9 +220,10 @@ public class ProductionRecord {
   public void setProduct(Product product) throws IllegalProductionRecordArgumentException {
     if (product != null) {
       this.product = product;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Invalid Product Must be of type Product.");
+    }
   }
 
   /**
@@ -246,24 +244,25 @@ public class ProductionRecord {
   public void setCount(int count) throws IllegalProductionRecordArgumentException {
     if (count > 0) {
       this.count = count;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Illegal Count " + count + " Must be a number greater than 0.");
+    }
   }
 
   /**
    * Gets the count of items produced.
    *
-   * @return int, the number of items produced in this production record.
+   * @return int, the number of items produced in this lamont.production record.
    */
   public int getCount() {
     return count;
   }
 
   /**
-   * Gets production date.
+   * Gets lamont.production date.
    *
-   * @return Date, the date the production occurred on.
+   * @return Date, the date the lamont.production occurred on.
    */
   public Date getProdDate() {
     Date newDate = new Date(dateProduced.getTime());
@@ -273,7 +272,7 @@ public class ProductionRecord {
   /**
    * Sets the date the products were produced.
    *
-   * @param dateProduced Date, the date of production.
+   * @param dateProduced Date, the date of lamont.production.
    * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
    */
   public void setProdDate(Date dateProduced) throws IllegalProductionRecordArgumentException {
@@ -289,14 +288,14 @@ public class ProductionRecord {
    * Override toString to return a string in the format "Production Num:. 0 Product ID: 0 Serial
    * Num:. 0 Date: Mon Oct 14 10:29:48 UTC 2019"
    *
-   * @return String, the production record description in String format.
+   * @return String, the lamont.production record description in String format.
    */
   public int getProductionNumber() {
     return productionNumber;
   }
 
   /**
-   * Sets the production number of the production record.
+   * Sets the lamont.production number of the lamont.production record.
    *
    * @param productionNumber int, unique id to identify the record.
    * @throws IllegalProductionRecordArgumentException thrown if a parameter is invalid.
@@ -305,15 +304,27 @@ public class ProductionRecord {
       throws IllegalProductionRecordArgumentException {
     if (productionNumber > 0) {
       this.productionNumber = productionNumber;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Illegal Production Number " + productionNumber + " Must be a number greater than 0.");
+    }
   }
 
+  /**
+   * Returns the ProductionRecord's dateProduced when called.
+   *
+   * @return Date, dateProduced.
+   */
   public Date getDateProduced() {
     return new Date(dateProduced.getTime());
   }
 
+  /**
+   * Sets the ProductionRecord's dateProduced.
+   *
+   * @param dateProduced the Date() to be set.
+   * @throws IllegalProductionRecordArgumentException thrown if invalid parameter is found.
+   */
   public void setDateProduced(Date dateProduced) throws IllegalProductionRecordArgumentException {
     if (dateProduced != null) {
       this.dateProduced = new Date(dateProduced.getTime());
@@ -323,19 +334,36 @@ public class ProductionRecord {
     }
   }
 
+  /**
+   * Returns the ProductionRecord's employeeUsername.
+   *
+   * @return String, employeeUsername.
+   */
   public String getEmployeeUsername() {
     return employeeUsername;
   }
 
+  /**
+   * Sets the ProductionRecord's employeeUsername to the value passed.
+   *
+   * @param employeeUsername String, the value to be set.
+   * @throws IllegalProductionRecordArgumentException thrown if invalid parameter.
+   */
   public void setEmployeeUsername(String employeeUsername)
       throws IllegalProductionRecordArgumentException {
     if (employeeUsername != null && employeeUsername.length() > 0) {
       this.employeeUsername = employeeUsername;
-    } else
+    } else {
       throw new IllegalProductionRecordArgumentException(
           "Invalid Name " + employeeUsername + " Must be at least one character.");
+    }
   }
 
+  /**
+   * toString method to format to a readable list ProductionRecord's output.
+   *
+   * @return String, the formatted values of ProductionRecord.
+   */
   @Override
   public String toString() {
     return "Prod. Num: "

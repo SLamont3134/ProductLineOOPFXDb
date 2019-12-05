@@ -1,23 +1,19 @@
+package lamont;
+
+import java.util.Date;
+
 /**
- * The Abstract Product class that establishes the framework for all of it's child classes .
+ * The Abstract Product class that establishes the basic functionality for all classes that
+ * implement it.
  *
  * @author Sean Lamont
  * @brief The Abstract Product class that establishes the framework for all of it's child classes .
  * @date 10/8/19
  */
-package lamont;
-// conflict between CheckStyle and google format.
-
-import java.util.Date;
-import javax.xml.crypto.Data;
-
-/**
- * Create an abstract type called Product that will implement the Item interface Product will
- * implement the basic functionality that all items on a production line should have.
- */
 public abstract class Product implements Item {
 
-  // Product will implement the basic functionality that all items on a production line should have.
+  // Product will implement the basic functionality that all items on a lamont.production line
+  // should have.
   // Add the following fields to Product
 
   //    int id
@@ -51,9 +47,10 @@ public abstract class Product implements Item {
   public void setId(int newId) throws IllegalProductArgumentException {
     if (newId > 0) {
       this.id = newId;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Illegal ID " + newId + " Must be a number greater than 0.");
+    }
   }
 
   /**
@@ -65,9 +62,10 @@ public abstract class Product implements Item {
   public void setName(String name) throws IllegalProductArgumentException {
     if (name != null && name.length() > 0) {
       this.name = name;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Name " + name + " Must be at least one character.");
+    }
   }
 
   /**
@@ -88,9 +86,10 @@ public abstract class Product implements Item {
   public void setManufacturer(String manufacturer) throws IllegalProductArgumentException {
     if (manufacturer != null && manufacturer.length() > 0) {
       this.manufacturer = manufacturer;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Manufacturer " + manufacturer + " Must be at least one character.");
+    }
   }
 
   /**
@@ -140,7 +139,7 @@ public abstract class Product implements Item {
   }
 
   /**
-   * Sets the ItemType of the Product
+   * Sets the ItemType of the Product.
    *
    * @param type ItemType Enum. the Product's type.
    * @throws IllegalProductArgumentException thrown if a parameter is not valid.
@@ -148,9 +147,10 @@ public abstract class Product implements Item {
   public void setType(ItemType type) throws IllegalProductArgumentException {
     if (type != null) {
       this.type = type;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Set, Type Must be of type ItemType and not null.");
+    }
   }
 
   /**

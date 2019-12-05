@@ -1,12 +1,4 @@
-/**
- * The DatabaseManager class the handles all of the database interactions.
- *
- * @author Sean Lamont
- * @brief This is the main database handler class which controls all interactions with the databse.
- * @date 10/20/19
- */
 package lamont;
-// Conflict between Google Format and CheckStyle.
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +15,13 @@ import java.util.Properties;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * The DatabaseManager class the handles all of the database interactions.
+ *
+ * @author Sean Lamont
+ * @brief This is the main database handler class which controls all interactions with the databse.
+ * @date 10/20/19
+ */
 public class DatabaseManager {
 
   static final String JDBC_DRIVER = "org.h2.Driver";
@@ -40,9 +39,9 @@ public class DatabaseManager {
    * Default Constructor used to make the other methods reachable from outside of the
    * DatabaseManager class.
    */
-  DatabaseManager() {}
-  // There is a conflict here between CheckStyle and Google Formatting about the "}" being on a
-  // separate line
+  DatabaseManager() { // There is a conflict here between CheckStyle and Google Formatting about
+    // the "}" being on a separate line. Which is why these comments are here.
+  }
 
   /**
    * Imports the encrypted password from the database that is then passed to reverseString method to
@@ -98,7 +97,7 @@ public class DatabaseManager {
       }
 
     } catch (SQLException e) {
-      System.out.println("Couldn't Check database for production record");
+      System.out.println("Couldn't Check database for lamont.production record");
     }
     disconnectFromDB();
     if (count > 0) {

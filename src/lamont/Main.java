@@ -1,15 +1,4 @@
-/**
- * The Main Class that contains the Main method and initializes the stage.
- *
- * @author Sean Lamont
- * @brief This is the main file which builds the environment and calls the controller
- * @date 9/28/19
- */
 package lamont;
-
-// Hello
-// There is a conflict above "package lamont;" between line formatting (ctrl+alt+L) and CheckStyle,
-// they keep adding or taking away a gap respectively.
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * The Main class, sets the stage of the GUI, calls all other methods.
+ * The Main Class that contains the Main method and initializes the stage.
  *
  * @author Sean Lamont
+ * @brief This is the main file which builds the environment and calls the controller
+ * @date 9/28/19
  */
 public class Main extends Application {
 
@@ -32,8 +23,8 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     // connectToDB();
-    Parent root = FXMLLoader.load(getClass().getResource("lamont/OOPProject.fxml"));
-    primaryStage.setTitle("OOPProject");
+    Parent root = FXMLLoader.load(getClass().getResource("../lamont/lamont/OOPProject.fxml"));
+    primaryStage.setTitle("Production Wizard");
     primaryStage.setScene(new Scene(root));
     primaryStage.show();
   }

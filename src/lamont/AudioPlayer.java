@@ -1,14 +1,13 @@
+package lamont;
+
 /**
- * The AudioPlayer class is used by the GUI to create Audio Players.
+ * The AudioPlayer class is used by the GUI to create Audio Players extends Product implements
+ * MultimediaControl.
  *
  * @author Sean Lamont
  * @brief The AudioPlayer class creates Audio Players.
  * @date 10/8/19
  */
-package lamont;
-// Conflict between Google formatting and CheckStyle.
-
-/** Audio Player extends Product implements MultimediaControl. */
 public class AudioPlayer extends Product implements MultimediaControl {
 
   private String supportedAudioFormats;
@@ -25,9 +24,10 @@ public class AudioPlayer extends Product implements MultimediaControl {
       throws IllegalProductArgumentException {
     if (supportedAudioFormats != null && supportedAudioFormats.length() > 0) {
       this.supportedAudioFormats = supportedAudioFormats;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Formats " + supportedAudioFormats + " Must be at least one character.");
+    }
   }
 
   /**
@@ -40,9 +40,10 @@ public class AudioPlayer extends Product implements MultimediaControl {
       throws IllegalProductArgumentException {
     if (supportedPlaylistFormats != null && supportedPlaylistFormats.length() > 0) {
       this.supportedPlaylistFormats = supportedPlaylistFormats;
-    } else
+    } else {
       throw new IllegalProductArgumentException(
           "Invalid Formats " + supportedPlaylistFormats + " Must be at least one character.");
+    }
   }
 
   /**
@@ -95,10 +96,7 @@ public class AudioPlayer extends Product implements MultimediaControl {
    * @param manufacturer String, name of manufacturer.
    * @throws IllegalProductArgumentException thrown if a parameter is invalid.
    */
-  public AudioPlayer(
-      int id,
-      String name,
-      String manufacturer)
+  public AudioPlayer(int id, String name, String manufacturer)
       throws IllegalProductArgumentException {
     super(id, name, manufacturer, ItemType.Audio);
     setSupportedAudioFormats("DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC");

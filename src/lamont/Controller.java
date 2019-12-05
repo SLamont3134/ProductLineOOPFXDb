@@ -1,17 +1,5 @@
-/**
- * The Controller class where all of the code will be stored.
- *
- * @author Sean Lamont
- * @brief This is the main controller file which handles all of the operations of the GUI
- * @date 9/28/19
- */
 package lamont;
-// Conflict between Google Format and CheckStyle.
 
-// There is a conflict above "package lamont;" between line formatting (ctrl+alt+L) and CheckStyle,
-// they keep adding or taking away a gap respectively.
-
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,9 +22,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
 /**
- * The controller class carries out the functions of the GUI.
+ * The Controller class where all of the code will be stored, carries out the functions of the GUI.
  *
  * @author Sean Lamont
+ * @brief This is the main controller file which handles all of the operations of the GUI
+ * @date 9/28/19
  */
 public class Controller implements Initializable {
 
@@ -72,9 +62,10 @@ public class Controller implements Initializable {
   @FXML private Label productionEmplBox;
   @FXML private Label productionLogEmplBox;
 
-  // There is a conflict here between CheckStyle and Google Formatting about the "}" being on a
-  // separate line
-  public Controller() {}
+  public Controller() {
+    // There is a conflict here between CheckStyle and Google Formatting about the "}"
+    // being on a separate line. Which is why these comments are here.
+  }
 
   public static final String addNameError = "Name Length Must Be Greater Than Zero";
   public static final String addManufacturerError = "Manufacturer Must Be Longer Than 3 Letters";
@@ -149,6 +140,9 @@ public class Controller implements Initializable {
     System.out.println("Employee Set!");
   }
 
+  /**
+   * Called when the log out button is pressed. Used to set the GUI back to the logged out state.
+   */
   public void logOut() {
     currentEmployee = null;
     employeeInfo.setOpacity(0);
@@ -181,8 +175,8 @@ public class Controller implements Initializable {
   }
 
   /**
-   * Displays the production log in the production log text area. Called every time the production
-   * log is updated to update the window.
+   * Displays the lamont.production log in the lamont.production log text area. Called every time
+   * the lamont.production log is updated to update the window.
    *
    * @throws java.sql.SQLException thrown if there is an SQL error.
    */
@@ -258,8 +252,8 @@ public class Controller implements Initializable {
   }
 
   /**
-   * Called whenever a new production record is produced. Creates production record based on input
-   * from the gui, then posts it to production log area.
+   * Called whenever a new lamont.production record is produced. Creates lamont.production record
+   * based on input from the gui, then posts it to lamont.production log area.
    *
    * @throws java.sql.SQLException thrown if there is an SQL error.
    */
