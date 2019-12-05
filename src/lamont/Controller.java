@@ -82,7 +82,7 @@ public class Controller implements Initializable {
    */
   @FXML
   void addButtonAction(ActionEvent event) throws SQLException {
-    System.out.println("Add Button Pressed");
+    // System.out.println("Add Button Pressed");
     if (verifyProduct()) {
       createProductObject();
       displayProductionRecordLog();
@@ -100,7 +100,7 @@ public class Controller implements Initializable {
    */
   @FXML
   void recordProductionBttnAction(ActionEvent event) throws SQLException {
-    System.out.println("Record Production Button Pressed");
+    // System.out.println("Record Production Button Pressed");
     if (verifyProductionRecord()) {
       createProductionRecordObject();
       showProduction();
@@ -110,7 +110,7 @@ public class Controller implements Initializable {
 
   @FXML
   void addEmployeeButtonAction(ActionEvent event) {
-    System.out.println("Add employee Button Pressed");
+    // System.out.println("Add employee Button Pressed");
     if (!(isLoggedIn())) {
       if (verifyEmployee()) {
         creatEmployee();
@@ -137,7 +137,7 @@ public class Controller implements Initializable {
     productEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
     productionEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
     productionLogEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
-    System.out.println("Employee Set!");
+    // System.out.println("Employee Set!");
   }
 
   /**
@@ -154,7 +154,7 @@ public class Controller implements Initializable {
     productionLogTextArea.clear();
     productionLogTextArea.setText(employeeError);
     existingProductWindow.setOpacity(0);
-    System.out.println("Logged Out");
+    // System.out.println("Logged Out");
   }
 
   /**
@@ -185,7 +185,6 @@ public class Controller implements Initializable {
     productionRecord = database.loadProductionRecordList(observableProductLine);
     audioCount = database.getAudioCount();
     visualCount = database.getVisualCount();
-    // System.out.println(productionRecord);
     for (ProductionRecord product : productionRecord) {
       productionLogTextArea.appendText(product.toString());
     }
@@ -264,11 +263,9 @@ public class Controller implements Initializable {
       int tempInt = 0;
       if (tempProduct instanceof AudioPlayer) {
         tempInt = ++audioCount;
-        // System.out.println("Audio Count is " + tempInt);
       }
       if (tempProduct instanceof MoviePlayer) {
         tempInt = ++visualCount;
-        // System.out.println("Visual Count is " + tempInt);
       }
       try {
         ProductionRecord tempRecord =
@@ -281,7 +278,7 @@ public class Controller implements Initializable {
           tempString[2] = tempRecord.getSerialNumber();
           tempString[3] = currentEmployee.getUsername();
           database.addToProductionDbMethod(tempString);
-          System.out.println("Production Record Added to Database");
+          // System.out.println("Production Record Added to Database");
         }
       } catch (IllegalProductionRecordArgumentException e) {
         productionErrorBox.setText("Invalid Parameter");
@@ -301,7 +298,6 @@ public class Controller implements Initializable {
 
     try {
       observableProductLine = database.loadProductList();
-      // System.out.println(productionRecord);
     } catch (SQLException e) {
       System.out.println("Couldn't Load Product List");
     }
@@ -313,7 +309,6 @@ public class Controller implements Initializable {
 
     setProductLineTable();
     setProductWindow();
-    // loadProductionLog();
     showProduction();
   }
 
