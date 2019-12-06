@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ProductLineOOPFXDb:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ProductLineOOPFXDb_jar</output-path>
+    <root id="archive" name="ProductLineOOPFXDb.jar">
+      <element id="module-output" name="ProductLineOOPFXDb" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/rsc/h2-1.4.199.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
