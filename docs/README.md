@@ -50,6 +50,14 @@ Sean Lamont
 
 
 ## Key Programming Concepts Utilized
-Building a GUI
+Building a GUI utilizing SceneBuilder and JAvaFX libraries.
 
-Basic SQL database creation, connection and manipulation.
+Basic SQL H2 database creation, connection and manipulation.
+
+Designing and implementing class hierchies.
+
+Utilizing Interfaces and Enums for class structure.
+
+Using Encapsulation for data privacy.
+
+
