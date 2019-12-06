@@ -274,8 +274,8 @@ public class DatabaseManager {
    * @return String decoded database password.
    */
   public String reverseString(String string) {
-    if(!(string.length() == 0)){
-      return reverseString(string.substring(1,string.length())) + string.charAt(0);
+    if (!(string.length() == 0)) {
+      return reverseString(string.substring(1, string.length())) + string.charAt(0);
     }
     return string;
   }
