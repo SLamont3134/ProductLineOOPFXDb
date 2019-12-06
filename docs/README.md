@@ -61,4 +61,6 @@ Utilizing Interfaces and Enums for class structure.
 
 Using Encapsulation for data privacy.
 
+Created and implemented Custom Exception classes to verify parameters.
+
 
