@@ -48,6 +48,7 @@ Sean Lamont
 
 ## History
 
+Version 1.0 now released and stable
 
 ## Key Programming Concepts Utilized
 Building a GUI utilizing SceneBuilder and JAvaFX libraries.
