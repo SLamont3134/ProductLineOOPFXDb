@@ -2,17 +2,17 @@
 This program utilizes full SQL databse integration into a JavaFX graphical user interface. It uses prepared SQL statements, exception handling, and input verification to ensure valid data protection and integrity.This project was created for COP 3003 as an assignment. It was made by Sean Lamont with assistance from Professor Vanselow. The project was created during the fall semester of 2019 while a Junior in the Software Engineering program at Florida Gulf Coast University. This program demonstrates class hierchies, dynamic dispatch, encapsulation, iterators and operations on aggregates.
 
 ## Demonstration
-![Production Wizard](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/pJ70bhFcSS.gif)
+![Production Wizard](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/pJ70bhFcSS.gif)
 
 ## Documentation
 
-[Overview of JavaDocs](https://slamont3134.github.io/ProductLineOOPFXDb/)
+[Overview of JavaDocs](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/index.html)
 
 ## Diagrams
 
 Class Diagrams:
 
-![Class Diagrams](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/lamont_class.jpg)
+![Class Diagrams](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/lamont_class.jpg)
 
 Database Diagrams:
 
