@@ -6,7 +6,7 @@ This program utilizes full SQL databse integration into a JavaFX graphical user 
 
 ## Documentation
 
-[Overview of JavaDocs](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/index.html)
+[Overview of JavaDocs](https://slamont3134.github.io/ProductLineOOPFXDb/)
 
 ## Diagrams
 
