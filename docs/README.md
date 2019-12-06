@@ -16,7 +16,7 @@ Class Diagrams:
 
 Database Diagrams:
 
-![Database Diagram](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/PRODUCTDB.jpg)
+![Database Diagram](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/PRODUCTDB.jpg)
 
 
 ## Getting Started
