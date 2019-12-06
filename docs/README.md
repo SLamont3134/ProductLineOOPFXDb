@@ -2,25 +2,25 @@
 This program utilizes full SQL databse integration into a JavaFX graphical user interface. It uses prepared SQL statements, exception handling, and input verification to ensure valid data protection and integrity.This project was created for COP 3003 as an assignment. It was made by Sean Lamont with assistance from Professor Vanselow. The project was created during the fall semester of 2019 while a Junior in the Software Engineering program at Florida Gulf Coast University. This program demonstrates class hierchies, dynamic dispatch, encapsulation, iterators and operations on aggregates.
 
 ## Demonstration
-![Production Wizard](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/pJ70bhFcSS.gif)
+![Production Wizard](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/pJ70bhFcSS.gif)
 
 ## Documentation
 
-[Overview of JavaDocs](https://slamont3134.github.io/ProductLineOOPFXDb/)
+[Overview of JavaDocs](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/index.html)
 
 ## Diagrams
 
 Class Diagrams:
 
-![Class Diagrams](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/lamont_class.jpg)
+![Class Diagrams](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/lamont_class.jpg)
 
 Database Diagrams:
 
-![Database Diagram](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/PRODUCTDB.jpg)
+![Database Diagram](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/PRODUCTDB.jpg)
 
 
 ## Getting Started
-
+Will update soon.
 
 ## Built With
 Intellij IDE
@@ -37,7 +37,7 @@ Sean Lamont
 
 ## License
 
-[Licensing Information](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/LICENSE)
+[Licensing Information](https://github.com/SLamont3134/ProductLineOOPFXDb/blob/master/docs/LICENSE)
 
 ## Acknowledgments
 [Professor Vanselow](https://sites.google.com/site/profvanselow/course/cop-3003/oop-project?authuser=0)
@@ -48,8 +48,17 @@ Sean Lamont
 
 ## History
 
+Version 1.0 now released and stable
 
 ## Key Programming Concepts Utilized
-Building a GUI
+Building a GUI utilizing SceneBuilder and JAvaFX libraries.
 
-Basic SQL database creation, connection and manipulation.
+Basic SQL H2 database creation, connection and manipulation.
+
+Designing and implementing class hierchies.
+
+Utilizing Interfaces and Enums for class structure.
+
+Using Encapsulation for data privacy.
+
+
