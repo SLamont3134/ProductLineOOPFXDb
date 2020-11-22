@@ -51,7 +51,7 @@ Sean Lamont
 Version 1.0 now released and stable
 
 ## Key Programming Concepts Utilized
-Building a GUI utilizing SceneBuilder and JAvaFX libraries.
+Building a GUI utilizing SceneBuilder and JavaFX libraries.
 
 Basic SQL H2 database creation, connection and manipulation.
 
