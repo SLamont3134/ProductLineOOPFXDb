@@ -33,6 +33,8 @@ public class Employee {
     return email;
   }
 
+  public boolean nullEmployee;
+
   // StringBuilder name;
   StringBuilder name;
 
@@ -141,6 +143,19 @@ public class Employee {
     } else {
       this.password = "pw";
     }
+    if(name.compareTo("Null Employee") == 0 && password.compareTo("Null") == 0){
+      nullEmployee = true;
+    }else{
+      nullEmployee = false;
+    }
+  }
+
+  public boolean isNullEmployee(){
+    return nullEmployee;
+  }
+
+  Employee(){
+    this("Null Employee", "Null");
   }
 
   /**

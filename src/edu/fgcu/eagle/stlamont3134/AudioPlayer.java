@@ -12,6 +12,7 @@ public class AudioPlayer extends Product implements MultimediaControl {
 
   private String supportedPlaylistFormats;
 
+
   /**
    * Sets the supported audio formats for the AudioPlayer Object.
    *

@@ -32,6 +32,7 @@ public class DatabaseManager {
   private int audioCount;
   private int visualCount;
   private String tempSerial;
+  private ProductManager productManager;
 
   /**
    * Default Constructor used to make the other methods reachable from outside of the
@@ -140,32 +141,13 @@ public class DatabaseManager {
       String name = rs.getString(2);
       String type = rs.getString(3);
       String manufacturer = rs.getString(4);
-      switch (type) {
-        case "AU":
-          try {
-            AudioPlayer tempObject1 = new AudioPlayer(id, name, manufacturer);
-            observableProductLine.add(tempObject1);
-          } catch (IllegalProductArgumentException e) {
-            System.out.println(e);
-          }
-          break;
-        case "VI":
-          try {
-            MoviePlayer tempObject2 = new MoviePlayer(id, name, manufacturer);
-            observableProductLine.add(tempObject2);
-          } catch (IllegalProductArgumentException e) {
-            System.out.println(e);
-          }
-          break;
-        case "AM":
-          System.out.println("Feature Coming Soon");
-          break;
-        case "VM":
-          System.out.println("Feature Coming Soonish");
-          break;
-        default:
-          break;
+
+      //Refactored Product Manager Class to extract switch statement
+      try {
+        observableProductLine.add(productManager.createProduct(id, name, type, manufacturer));
+      }catch (IllegalProductArgumentException e){
       }
+
     }
     disconnectFromDB();
     return observableProductLine;
@@ -198,6 +180,7 @@ public class DatabaseManager {
             new ProductionRecord(
                 productionNumber, productID, serialNumber, new Date(date.getTime()));
         tempRecord.setEmployeeUsername(employeeUsername);
+        
         for (Product product : tempList) {
           if (product.getId() == tempRecord.getProductID()) {
             tempRecord.setProduct(product);
@@ -207,16 +190,8 @@ public class DatabaseManager {
         tempSerial = tempRecord.getSerialNumber();
         tempSerial = tempSerial.substring(tempSerial.length() - 5, tempSerial.length());
 
-        if (tempRecord.getProduct() instanceof AudioPlayer) {
-          if (audioCount <= Integer.parseInt(tempSerial)) {
-            audioCount = Integer.parseInt(tempSerial);
-          }
-        }
-        if (tempRecord.getProduct() instanceof MoviePlayer) {
-          if (visualCount <= Integer.parseInt(tempSerial)) {
-            visualCount = Integer.parseInt(tempSerial);
-          }
-        }
+        incrementCounts(tempRecord.getProduct().getItemTypeCode());//Extracted Method
+
       } catch (IllegalProductionRecordArgumentException e) {
         System.out.println(e);
       }
@@ -224,6 +199,23 @@ public class DatabaseManager {
 
     disconnectFromDB();
     return productionRecordList;
+  }
+
+  /**
+   * Increments the count to keep track of serial numbers when pulling from Database
+   * @param type Product Type
+   */
+  public void incrementCounts(ItemType type){
+    if (type == ItemType.Audio) {
+      if (audioCount <= Integer.parseInt(tempSerial)) {
+        audioCount = Integer.parseInt(tempSerial);
+      }
+    }
+    if (type == ItemType.Visual) {
+      if (visualCount <= Integer.parseInt(tempSerial)) {
+        visualCount = Integer.parseInt(tempSerial);
+      }
+    }
   }
 
   /**

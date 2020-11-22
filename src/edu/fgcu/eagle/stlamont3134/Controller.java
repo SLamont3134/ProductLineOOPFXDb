@@ -35,30 +35,54 @@ public class Controller implements Initializable {
   DatabaseManager database = new DatabaseManager();
   Employee currentEmployee;
 
-  @FXML private Label productionErrorBox;
-  @FXML private ImageView productImage;
-  @FXML private TextField productNameWindow;
-  @FXML private TextField manufacturerNameWindow;
-  @FXML private ChoiceBox<ItemType> itemTypeCB;
-  @FXML private Button addButton;
-  @FXML private TableView<Product> existingProductWindow;
-  @FXML private ComboBox<String> chooseQtyBox;
-  @FXML private Button recordProductionBttn;
-  @FXML private TextArea productionLogTextArea;
-  @FXML private TableColumn<?, ?> productNameColumn;
-  @FXML private TableColumn<?, ?> productTypeColumn;
-  @FXML private ListView<Product> chooseProductWindow;
-  @FXML private TableColumn<?, ?> productManufacturerColumn;
-  @FXML private TableColumn<?, ?> productIdColumn;
-  @FXML private Button addEmployeeBttn;
-  @FXML private TextField employeeNameField;
-  @FXML private TextField employeePasswordField;
-  @FXML private Label employeeInfo;
-  @FXML private Label productErrorWindow;
-  @FXML private Label employeeErrorBox;
-  @FXML private Label productEmplBox;
-  @FXML private Label productionEmplBox;
-  @FXML private Label productionLogEmplBox;
+  @FXML
+  private Label productionErrorBox;
+  @FXML
+  private ImageView productImage;
+  @FXML
+  private TextField productNameWindow;
+  @FXML
+  private TextField manufacturerNameWindow;
+  @FXML
+  private ChoiceBox<ItemType> itemTypeCB;
+  @FXML
+  private Button addButton;
+  @FXML
+  private TableView<Product> existingProductWindow;
+  @FXML
+  private ComboBox<String> chooseQtyBox;
+  @FXML
+  private Button recordProductionBttn;
+  @FXML
+  private TextArea productionLogTextArea;
+  @FXML
+  private TableColumn<?, ?> productNameColumn;
+  @FXML
+  private TableColumn<?, ?> productTypeColumn;
+  @FXML
+  private ListView<Product> chooseProductWindow;
+  @FXML
+  private TableColumn<?, ?> productManufacturerColumn;
+  @FXML
+  private TableColumn<?, ?> productIdColumn;
+  @FXML
+  private Button addEmployeeBttn;
+  @FXML
+  private TextField employeeNameField;
+  @FXML
+  private TextField employeePasswordField;
+  @FXML
+  private Label employeeInfo;
+  @FXML
+  private Label productErrorWindow;
+  @FXML
+  private Label employeeErrorBox;
+  @FXML
+  private Label productEmplBox;
+  @FXML
+  private Label productionEmplBox;
+  @FXML
+  private Label productionLogEmplBox;
 
   public Controller() {
     // There is a conflict here between CheckStyle and Google Formatting about the "}"
@@ -71,12 +95,13 @@ public class Controller implements Initializable {
   public static final String passwordError =
       "Password Must Have One UpperCase Letter and One Symbol";
   public static final String employeeError = "You Must Login";
+  public static final String blankMessage = "";
 
   /**
    * The addButtonAction this method handle the event of the addButton being pressed.
    *
-   * @return void
    * @param event sets the action event
+   * @return void
    */
   @FXML
   void addButtonAction(ActionEvent event) throws SQLException {
@@ -84,8 +109,8 @@ public class Controller implements Initializable {
     if (verifyProduct()) {
       createProductObject();
       displayProductionRecordLog();
-      setProductWindow();
-      setProductLineTable();
+      initializeProductWindow();
+      initializeProductLineTable();
       clearProductLineTab();
     }
   }
@@ -93,8 +118,8 @@ public class Controller implements Initializable {
   /**
    * The recordProductionButton this method handle the event of the productionButton being pressed.
    *
-   * @return void
    * @param event this event handles the record product button
+   * @return void
    */
   @FXML
   void recordProductionBttnAction(ActionEvent event) throws SQLException {
@@ -112,47 +137,68 @@ public class Controller implements Initializable {
     if (!(isLoggedIn())) {
       if (verifyEmployee()) {
         creatEmployee();
+        loginEmployee(currentEmployee);
         showProduction();
         clearEmployeeTab();
       }
     } else {
-      logOut();
+      logOutEmployee();
     }
   }
 
   /**
-   * Createes a new employee object that allows access to other functions of the program. Also
-   * populates several fields to indicate the current employee.
+   * Creates a new employee object that allows access to other functions of the program.
    */
   public void creatEmployee() {
-    String name = employeeNameField.getText();
-    String password = employeePasswordField.getText();
-    currentEmployee = new Employee(name, password);
-    employeeInfo.setText("Current User Information: \n" + currentEmployee.secureToString());
+    currentEmployee = new Employee(employeeNameField.getText(),
+        employeePasswordField.getText());
+  }
+
+  /**
+   * Populates several fields to indicate the current employee.
+   *
+   * @param employee currently logged in employee
+   */
+  public void loginEmployee(Employee employee) {
+    employeeInfo.setText("Current User Information: \n" + employee.secureToString());
     employeeInfo.setOpacity(1);
     existingProductWindow.setOpacity(1);
     chooseProductWindow.setOpacity(1);
-    productEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
-    productionEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
-    productionLogEmplBox.setText("Logged In As: " + currentEmployee.getUsername());
+    productEmplBox.setText("Logged In As: " + employee.getUsername());
+    productionEmplBox.setText("Logged In As: " + employee.getUsername());
+    productionLogEmplBox.setText("Logged In As: " + employee.getUsername());
     // System.out.println("Employee Set!");
   }
 
   /**
    * Called when the log out button is pressed. Used to set the GUI back to the logged out state.
    */
-  public void logOut() {
-    currentEmployee = null;
+  public void logOutEmployee() {
+    currentEmployee = new Employee();
+    clearEmployeeInformation();
+    // System.out.println("Logged Out");
+  }
+
+  public void clearEmployeeInformation(){
     employeeInfo.setOpacity(0);
     chooseProductWindow.setOpacity(0);
+
+    clearEmployeeProductPage();//Extracted Method
+
+    clearEmployeeInformationProductionPage();//Extracted Method
+  }
+
+  public void clearEmployeeProductPage(){
     productEmplBox.setText("Not Logged In");
     productionEmplBox.setText("Not Logged In");
     productionLogEmplBox.setText("Not Logged In");
+  }
+
+  public void clearEmployeeInformationProductionPage(){
     addEmployeeBttn.setText("Login");
     productionLogTextArea.clear();
     productionLogTextArea.setText(employeeError);
     existingProductWindow.setOpacity(0);
-    // System.out.println("Logged Out");
   }
 
   /**
@@ -166,8 +212,25 @@ public class Controller implements Initializable {
     product[0] = productNameWindow.getText();
     product[1] = itemTypeCB.getValue().getCode();
     product[2] = manufacturerNameWindow.getText();
+
     database.insertProductIntoDB(product);
+
+    updateProductLine();
+
+    clearProductPage();
+  }
+
+  /**
+   * Reloads the database information for Product into the observable list
+   */
+  public void updateProductLine() throws SQLException {
     observableProductLine = database.loadProductList();
+  }
+
+  /**
+   * Clears the Product Page fields
+   */
+  public void clearProductPage() {
     productNameWindow.clear();
     manufacturerNameWindow.clear();
   }
@@ -188,10 +251,29 @@ public class Controller implements Initializable {
     }
   }
 
-  /** Sets up the boxes, called once at initialization. */
-  public void setUpBoxes() {
+  /**
+   * Sets up the boxes, called once at initialization.
+   */
+  public void initializeBoxes() {
+
+    initializeItemTypeComboBox();
+
+    initializeProductionRecordQuantityBox();
+
+  }
+
+  /**
+   * Initializes the Product Page item type combo box at startup
+   */
+  public void initializeItemTypeComboBox() {
     itemTypeCB.getItems().setAll(ItemType.values());
     itemTypeCB.getSelectionModel().selectFirst();
+  }
+
+  /**
+   * Initiaizes the Production Record Choose Quantity Box at start-up
+   */
+  public void initializeProductionRecordQuantityBox() {
     chooseQtyBox.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
     chooseQtyBox.setEditable(true);
     chooseQtyBox.getSelectionModel().selectFirst();
@@ -201,7 +283,7 @@ public class Controller implements Initializable {
    * Sets up the product line table as well as the observable list. Called once at initialization,
    * currently starts with test data, will be replaced once database is running.
    */
-  public void setProductLineTable() {
+  public void initializeProductLineTable() {
     productNameColumn.setCellValueFactory(new PropertyValueFactory("name"));
     productIdColumn.setCellValueFactory(new PropertyValueFactory("id"));
     productTypeColumn.setCellValueFactory(new PropertyValueFactory("type"));
@@ -213,7 +295,7 @@ public class Controller implements Initializable {
    * Sets the product window to display the observable list. Called once at initialize then.
    * automatically updated with observable list.
    */
-  public void setProductWindow() {
+  public void initializeProductWindow() {
     chooseProductWindow.getItems().clear();
     chooseProductWindow.getItems().addAll(observableProductLine);
   }
@@ -225,23 +307,10 @@ public class Controller implements Initializable {
    * product produced
    */
   public void showProduction() {
-    String tempString;
     productionLogTextArea.clear();
     if (isLoggedIn()) {
       for (ProductionRecord record : productionRecord) {
-        tempString =
-            "Prod. Name: "
-                + record.getProduct().getName()
-                + " Product ID: "
-                + record.getProductID()
-                + " Serial Num: "
-                + record.getSerialNumber()
-                + " Date: "
-                + record.getProdDate()
-                + " UsrNme: "
-                + record.getEmployeeUsername()
-                + "\n";
-        productionLogTextArea.appendText(tempString);
+        productionLogTextArea.appendText(formatProdRecForTextArea(record));
       }
     } else {
       productionLogTextArea.appendText(employeeError);
@@ -249,8 +318,30 @@ public class Controller implements Initializable {
   }
 
   /**
-   * Called whenever a new lamont.production record is produced. Creates lamont.production record
-   * based on input from the gui, then posts it to lamont.production log area.
+   * Takes a production record and formats it into a string to display nicely in the production
+   * record log area
+   *
+   * @param record the record to be displayed
+   * @return the formatted production record string.
+   */
+  public String formatProdRecForTextArea(ProductionRecord record) {
+    return
+        "Prod. Name: "
+            + record.getProduct().getName()
+            + " Product ID: "
+            + record.getProductID()
+            + " Serial Num: "
+            + record.getSerialNumber()
+            + " Date: "
+            + record.getProdDate()
+            + " UsrNme: "
+            + record.getEmployeeUsername()
+            + "\n";
+  }
+
+  /**
+   * Called whenever a new production record is produced. Creates production record based on input
+   * from the gui, then posts it to production log area.
    *
    * @throws java.sql.SQLException thrown if there is an SQL error.
    */
@@ -258,29 +349,48 @@ public class Controller implements Initializable {
     int qnty = Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
     for (int i = qnty; i > 0; i--) {
       Product tempProduct = chooseProductWindow.getSelectionModel().getSelectedItem();
-      int tempInt = 0;
-      if (tempProduct instanceof AudioPlayer) {
-        tempInt = ++audioCount;
-      }
-      if (tempProduct instanceof MoviePlayer) {
-        tempInt = ++visualCount;
-      }
+
       try {
         ProductionRecord tempRecord =
-            new ProductionRecord(tempProduct, tempInt, currentEmployee.getUsername());
+            new ProductionRecord(tempProduct, incrementProductCount(tempProduct.getItemTypeCode()),
+                currentEmployee.getUsername());
+
         productionRecord.add(tempRecord);
-        if (!(database.checkDbForProductionRecordName(tempRecord))) {
-          String[] tempString = new String[4];
-          tempString[0] = String.valueOf(0);
-          tempString[1] = String.valueOf(tempProduct.getId());
-          tempString[2] = tempRecord.getSerialNumber();
-          tempString[3] = currentEmployee.getUsername();
-          database.addToProductionDbMethod(tempString);
-          // System.out.println("Production Record Added to Database");
-        }
+
+        insertProductionRecordIntoDB(tempRecord);//Extracted Method
+
       } catch (IllegalProductionRecordArgumentException e) {
         productionErrorBox.setText("Invalid Parameter");
       }
+    }
+  }
+
+  /**
+   * Returns the value needed to create a product with the propery incrementing serial number
+   */
+  public int incrementProductCount(ItemType type) {
+    int tempInt = 0;
+    if (type == ItemType.Audio) {
+      tempInt = ++audioCount;
+    }
+    if (type == ItemType.Visual) {
+      tempInt = ++visualCount;
+    }
+    return tempInt;
+  }
+
+  /**
+   * Inserts a new production record into the database if it does not already exist
+   */
+  void insertProductionRecordIntoDB(ProductionRecord record) throws SQLException {
+    if (!(database.checkDbForProductionRecordName(record))) {
+      String[] tempString = new String[4];
+      tempString[0] = String.valueOf(0);
+      tempString[1] = String.valueOf(record.getProduct().getId());
+      tempString[2] = record.getSerialNumber();
+      tempString[3] = currentEmployee.getUsername();
+      database.addToProductionDbMethod(tempString);
+      // System.out.println("Production Record Added to Database");
     }
   }
 
@@ -292,7 +402,10 @@ public class Controller implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    setUpBoxes();
+
+    currentEmployee = new Employee();//Refactored Method to create null instance
+
+    initializeBoxes();
 
     try {
       observableProductLine = database.loadProductList();
@@ -305,8 +418,8 @@ public class Controller implements Initializable {
       System.out.println("Couldn't Load Production Record");
     }
 
-    setProductLineTable();
-    setProductWindow();
+    initializeProductLineTable();
+    initializeProductWindow();
     showProduction();
   }
 
@@ -316,14 +429,10 @@ public class Controller implements Initializable {
    * @return Returns true if all of the parameters are met and returns false if any are not met.
    */
   public boolean verifyProduct() {
-    productErrorWindow.setText("");
+    productErrorWindow.setText(blankMessage);
     if (isLoggedIn()) {
-      if ((productNameWindow.getLength() > 0)
-          && (productNameWindow.getText() != null)
-          && !(productNameWindow.getText().equals(addNameError))) {
-        if ((manufacturerNameWindow.getLength() > 3)
-            && (manufacturerNameWindow.getText() != null)
-            && !(manufacturerNameWindow.getText().equals(addManufacturerError))) {
+      if (productNameContentsIsValid()) {
+        if (manufacturerNameContentsIsValid()) {
           return true;
         } else {
           productErrorWindow.setText(addManufacturerError);
@@ -338,23 +447,42 @@ public class Controller implements Initializable {
   }
 
   /**
+   * Verifies the contents of the product name window and returns it's state.
+   *
+   * @return bool
+   */
+  public boolean productNameContentsIsValid() {
+    return ((productNameWindow.getLength() > 0)
+        && (productNameWindow.getText() != null)
+        && !(productNameWindow.getText().equals(addNameError)));
+  }
+
+  /**
+   * Verifies the contents of the manufacturer name window and returns it's state.
+   */
+  public boolean manufacturerNameContentsIsValid() {
+    return ((manufacturerNameWindow.getLength() > 3)
+        && (manufacturerNameWindow.getText() != null)
+        && !(manufacturerNameWindow.getText().equals(addManufacturerError)));
+  }
+
+  /**
    * Verifies all necessary input and employee information needed to create a Production Record.
    * Then sets the errors and warning dependant on the missing information.
    *
    * @return returns true if all parameters are correct, false if any of the parameters are wrong.
    */
   public boolean verifyProductionRecord() {
-    productionErrorBox.setText("");
+    productionErrorBox.setText(blankMessage);
     if (isLoggedIn()) {
-      if (!(chooseProductWindow.getSelectionModel().isEmpty())) {
-        productionErrorBox.setText("");
+      if (verifyProductWindowContents()) {
+        productionErrorBox.setText(blankMessage);
         try {
           Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
           return true;
         } catch (Exception e) {
           productionErrorBox.setText("Please Enter a Valid Integer");
         }
-
       } else {
         productionErrorBox.setText("Please Select a Product");
       }
@@ -365,33 +493,26 @@ public class Controller implements Initializable {
   }
 
   /**
+   * Verifies the product window contents and returns their status.
+   */
+  public boolean verifyProductWindowContents() {
+    return (!(chooseProductWindow.getSelectionModel().isEmpty()));
+  }
+
+  /**
    * Verifies all necessary information needed to create an Employee. Then sets the errors and
    * warning dependant on the missing information.
    *
    * @return returns true if all parameters are correct, false if any of the parameters are wrong.
    */
   public boolean verifyEmployee() {
-    employeeErrorBox.setText("");
-    if ((employeeNameField.getLength() > 0)
-        && (employeeNameField.getText() != null)
-        && !(employeeNameField.getText().equals(employeeNameError))) {
-      Boolean hasSpace = false;
-      for (int i = 0; i < employeeNameField.getText().length(); i++) {
-        if (employeeNameField.getText().charAt(i) == ' ') {
-          hasSpace = true;
-        }
-      }
-      if (hasSpace) {
-        if ((employeePasswordField.getLength() > 0)
-            && (employeePasswordField.getText() != null)
-            && !(employeePasswordField.getText().equals(employeeNameError))) {
-          employeeErrorBox.setText("");
-          return true;
-        } else {
-          employeeErrorBox.setText(passwordError);
-        }
+    employeeErrorBox.setText(blankMessage);
+    if (verifyEmployeeNameContents()) {
+      if (verifyEmployeePasswordContents()) {
+        employeeErrorBox.setText(blankMessage);
+        return true;
       } else {
-        employeeErrorBox.setText("Name must contain a space.");
+        employeeErrorBox.setText(passwordError);
       }
     } else {
       employeeErrorBox.setText(employeeNameError);
@@ -400,35 +521,71 @@ public class Controller implements Initializable {
   }
 
   /**
+   * Verifies the employee page's name field
+   *
+   * @return bool
+   */
+  public boolean verifyEmployeeNameContents() {
+    if ((employeeNameField.getLength() > 0)
+        && (employeeNameField.getText() != null)
+        && !(employeeNameField.getText().equals(employeeNameError))) {
+      Boolean hasSpace = false;
+      for (int i = 0; i < employeeNameField.getText().length(); i++) {
+        if (employeeNameField.getText().charAt(i) == ' ') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Verifies the employee page's password field
+   *
+   * @return bool
+   */
+  public boolean verifyEmployeePasswordContents() {
+    return ((employeePasswordField.getLength() > 0)
+        && (employeePasswordField.getText() != null)
+        && !(employeePasswordField.getText().equals(employeeNameError)));
+  }
+
+  /**
    * Verifies if there is an Employee Currently logged into the system.
    *
    * @return Returns true if there is an Employee logged in, false if there is not.
    */
   public boolean isLoggedIn() {
-    if (!(currentEmployee == null)) {
+    if (!currentEmployee.isNullEmployee()) {
       return true;
     } else {
       return false;
     }
   }
 
-  /** Clears all fields in the Product Line tab when called. */
+  /**
+   * Clears all fields in the Product Line tab when called.
+   */
   public void clearProductLineTab() {
     productNameWindow.clear();
     manufacturerNameWindow.clear();
     itemTypeCB.getSelectionModel().selectFirst();
   }
 
-  /** Clears all fields in the Product Tab when called. */
+  /**
+   * Clears all fields in the Product Tab when called.
+   */
   public void clearProductTab() {
     chooseQtyBox.getSelectionModel().selectFirst();
     chooseProductWindow.getSelectionModel().clearSelection();
   }
 
-  /** Clears all fields in the Employee Tab when cleared. */
+  /**
+   * Clears all fields in the Employee Tab when cleared.
+   */
   public void clearEmployeeTab() {
-    productErrorWindow.setText("");
-    productionErrorBox.setText("");
+    productErrorWindow.setText(blankMessage);
+    productionErrorBox.setText(blankMessage);
     employeeNameField.clear();
     employeePasswordField.clear();
     addEmployeeBttn.setText("Log Out");
