@@ -420,14 +420,8 @@ public class Controller implements Initializable {
             if (productNameContentsIsValid()) {
                 if (manufacturerNameContentsIsValid()) {
                     return true;
-                } else {
-                    productErrorWindow.setText(addManufacturerError);
                 }
-            } else {
-                productErrorWindow.setText(addNameError);
             }
-        } else {
-            productErrorWindow.setText(employeeError);
         }
         return false;
     }
@@ -438,9 +432,15 @@ public class Controller implements Initializable {
      * @return bool
      */
     public boolean productNameContentsIsValid() {
-        return ((productNameWindow.getLength() > 0)
+        if ((productNameWindow.getLength() > 0)
                 && (productNameWindow.getText() != null)
-                && !(productNameWindow.getText().equals(addNameError)));
+                && !(productNameWindow.getText().equals(addNameError))) {
+            return true;
+        } else {
+            productErrorWindow.setText(addNameError);
+            productErrorWindow.setText(addManufacturerError);
+            return false;
+        }
     }
 
     /**
@@ -463,26 +463,35 @@ public class Controller implements Initializable {
         if (isLoggedIn()) {
             if (verifyProductWindowContents()) {
                 productionErrorBox.setText(blankMessage);
-                try {
-                    Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
-                    return true;
-                } catch (Exception e) {
-                    productionErrorBox.setText("Please Enter a Valid Integer");
-                }
-            } else {
-                productionErrorBox.setText("Please Select a Product");
+                return verifyQuantityBox();
             }
-        } else {
-            productionErrorBox.setText(employeeError);
         }
         return false;
+    }
+
+    /**
+     * Verifies the quantity box
+     */
+    public boolean verifyQuantityBox() {
+        try {
+            Integer.parseInt(chooseQtyBox.getSelectionModel().getSelectedItem());
+            return true;
+        } catch (Exception e) {
+            productionErrorBox.setText("Please Enter a Valid Integer");
+            return false;
+        }
     }
 
     /**
      * Verifies the product window contents and returns their status.
      */
     public boolean verifyProductWindowContents() {
-        return (!(chooseProductWindow.getSelectionModel().isEmpty()));
+        if (!(chooseProductWindow.getSelectionModel().isEmpty())) {
+            return true;
+        } else {
+            productionErrorBox.setText("Please Select a Product");
+            return false;
+        }
     }
 
     /**
@@ -497,11 +506,7 @@ public class Controller implements Initializable {
             if (verifyEmployeePasswordContents()) {
                 employeeErrorBox.setText(blankMessage);
                 return true;
-            } else {
-                employeeErrorBox.setText(passwordError);
             }
-        } else {
-            employeeErrorBox.setText(employeeNameError);
         }
         return false;
     }
@@ -521,6 +526,8 @@ public class Controller implements Initializable {
                     return true;
                 }
             }
+        } else {
+            employeeErrorBox.setText(employeeNameError);
         }
         return false;
     }
@@ -531,9 +538,14 @@ public class Controller implements Initializable {
      * @return bool
      */
     public boolean verifyEmployeePasswordContents() {
-        return ((employeePasswordField.getLength() > 0)
+        if ((employeePasswordField.getLength() > 0)
                 && (employeePasswordField.getText() != null)
-                && !(employeePasswordField.getText().equals(employeeNameError)));
+                && !(employeePasswordField.getText().equals(employeeNameError))) {
+            return true;
+        } else {
+            employeeErrorBox.setText(passwordError);
+            return false;
+        }
     }
 
     /**
@@ -545,6 +557,9 @@ public class Controller implements Initializable {
         if (!currentEmployee.isNullEmployee()) {
             return true;
         } else {
+            productionErrorBox.setText(employeeError);
+            productErrorWindow.setText(employeeError);
+
             return false;
         }
     }

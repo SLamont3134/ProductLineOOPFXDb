@@ -25,7 +25,35 @@ public abstract class Product implements Item {
 
     private Date manDate;
 
+    private static int audioCount = 0;
+
+    private static int visualCount = 0;
+
     // Complete the methods from the interface Item.
+
+    /**
+     * Increments the count depending on the ItemType
+     */
+    public void setCount() {
+        if (this.getItemTypeCode().compareTo(ItemType.Audio) == 0) {
+            audioCount++;
+        } else if (this.getItemTypeCode().compareTo(ItemType.Visual) == 0) {
+            visualCount++;
+        }
+    }
+
+    /**
+     * Returns the count of the specific item type
+     */
+    public int getItemCount() {
+        if (this.getItemTypeCode().compareTo(ItemType.Audio) == 0) {
+            return audioCount;
+        } else if (this.getItemTypeCode().compareTo(ItemType.Visual) == 0) {
+            return visualCount;
+        } else {
+            return -1;
+        }
+    }
 
     /**
      * A method getId that would return an int Gets the product ID.
@@ -202,9 +230,10 @@ public abstract class Product implements Item {
      * @throws IllegalProductArgumentException thrown if a parameter is not valid.
      */
     Product() throws IllegalProductArgumentException {
-        setName("Default");
+        setName("Null");
         setManufacturer("None");
-        setType(ItemType.Audio);
+        setType(ItemType.Null);
+        setId(0000);
     }
 
     /**

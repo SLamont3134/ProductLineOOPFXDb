@@ -105,6 +105,17 @@ public class ProductionRecord {
         setEmployeeUsername(employeeUsername);
     }
 
+    /**
+     * Null object Production Record
+     */
+    ProductionRecord() throws IllegalProductionRecordArgumentException, IllegalProductArgumentException {
+        setProduct(new NullProduct());
+        setProductID(getProduct().getId());
+        setProductionNum(0);
+        setDateProduced(new Date());
+        setSerialNum();
+    }
+
     // Create accessors and mutators for all fields.
 
     /**
